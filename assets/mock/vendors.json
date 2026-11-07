@@ -1,0 +1,238 @@
+{
+  "generated_at": "2026-10-11T08:00:00Z",
+  "data": [
+    {
+      "id": "01KN40WX00PQVQFM5AJAK7W6YH",
+      "name": "Royal Canopies & Chairs",
+      "handle": "royalcanopies",
+      "specialty": "canopies_chairs",
+      "bio": "Canopies, chairs and tables for 20 to 2,000 guests. Set-up included.",
+      "city": "Accra",
+      "logo": {
+        "url": "https://ui-avatars.com/api/?name=Royal+Canopies+%26+Chairs&background=B5446E&color=fff&bold=true&size=256",
+        "blurhash": "LFLn7x-pDPrE$kj[fQay8wM{%#x]",
+        "width": 256,
+        "height": 256
+      },
+      "cover": {
+        "url": "https://picsum.photos/id/100/1600/900",
+        "blurhash": "LXNAhc~p9Ft2?uRkaeofD%RjWBWC",
+        "width": 1600,
+        "height": 900
+      },
+      "rating": 4.44,
+      "reviews_count": 184,
+      "followers_count": 7472,
+      "verified": true,
+      "event_types": [
+        "wedding",
+        "birthday",
+        "corporate"
+      ],
+      "members": [
+        {
+          "user_id": "01KK67BN00FWWT9PCC060FWN3G",
+          "role": "owner"
+        }
+      ],
+      "response_time_minutes": 15,
+      "delivery": {
+        "offers_delivery": true,
+        "offers_pickup": true,
+        "base_fee_minor": 15000,
+        "currency": "GHS"
+      },
+      "created_at": "2025-09-06T08:00:00Z"
+    },
+    {
+      "id": "01KAG4E100TKK7EZ2CJ776QYHG",
+      "name": "Golden Touch Décor",
+      "handle": "goldentouchdecor",
+      "specialty": "decor",
+      "bio": "Florals, backdrops and tablescapes with a Ghanaian twist.",
+      "city": "Accra",
+      "logo": {
+        "url": "https://ui-avatars.com/api/?name=Golden+Touch+D%C3%A9cor&background=C08B2C&color=fff&bold=true&size=256",
+        "blurhash": "LJM=:j%1I9$z$zjsj[j[8^WAx^j[",
+        "width": 256,
+        "height": 256
+      },
+      "cover": {
+        "url": "https://picsum.photos/id/140/1600/900",
+        "blurhash": "LULXYwofbps:_Mj]NHfl9GV[WBbF",
+        "width": 1600,
+        "height": 900
+      },
+      "rating": 4.56,
+      "reviews_count": 64,
+      "followers_count": 10763,
+      "verified": true,
+      "event_types": [
+        "wedding",
+        "birthday"
+      ],
+      "members": [],
+      "response_time_minutes": 15,
+      "delivery": {
+        "offers_delivery": true,
+        "offers_pickup": true,
+        "base_fee_minor": 20000,
+        "currency": "GHS"
+      },
+      "created_at": "2025-05-12T08:00:00Z"
+    },
+    {
+      "id": "01KBVX6800C536SFRJS51X9700",
+      "name": "Bassline Sound & Lights",
+      "handle": "basslinegh",
+      "specialty": "sound_lighting",
+      "bio": "PA, DJ gear, uplighting and LED dance floors. Engineers on site.",
+      "city": "Accra",
+      "logo": {
+        "url": "https://ui-avatars.com/api/?name=Bassline+Sound+%26+Lights&background=2F5BEA&color=fff&bold=true&size=256",
+        "blurhash": "LF9*:k-=4rD]W^j[oeWE05IX?X--",
+        "width": 256,
+        "height": 256
+      },
+      "cover": {
+        "url": "https://picsum.photos/id/98/1600/900",
+        "blurhash": "LgGbYMtRIqWB~pt7W=ae%NkCoyn*",
+        "width": 1600,
+        "height": 900
+      },
+      "rating": 4.85,
+      "reviews_count": 236,
+      "followers_count": 10934,
+      "verified": true,
+      "event_types": [
+        "wedding",
+        "birthday",
+        "corporate"
+      ],
+      "members": [
+        {
+          "user_id": "01KVMK3400D29Q7MWJS0ASXP4E",
+          "role": "owner"
+        }
+      ],
+      "response_time_minutes": 45,
+      "delivery": {
+        "offers_delivery": true,
+        "offers_pickup": true,
+        "base_fee_minor": 25000,
+        "currency": "GHS"
+      },
+      "created_at": "2025-06-04T08:00:00Z"
+    },
+    {
+      "id": "01KGY47H00131Q6Y716V1B6P0D",
+      "name": "Sweet Crumbs Cake & Catering Gear",
+      "handle": "sweetcrumbs",
+      "specialty": "cakes_catering",
+      "bio": "Cake stands, chafing dishes and dessert displays.",
+      "city": "Tema",
+      "logo": {
+        "url": "https://ui-avatars.com/api/?name=Sweet+Crumbs+Cake+%26+Catering+Gear&background=E4475B&color=fff&bold=true&size=256",
+        "blurhash": "LGQXxf-VMJ,G,tj[j[jZHXaKu4kC",
+        "width": 256,
+        "height": 256
+      },
+      "cover": {
+        "url": "https://picsum.photos/id/81/1600/900",
+        "blurhash": "LFEfA+yTM{%K*D%eoKxsV[ofxut7",
+        "width": 1600,
+        "height": 900
+      },
+      "rating": 4.58,
+      "reviews_count": 229,
+      "followers_count": 10628,
+      "verified": false,
+      "event_types": [
+        "wedding",
+        "birthday",
+        "corporate"
+      ],
+      "members": [],
+      "response_time_minutes": 30,
+      "delivery": {
+        "offers_delivery": true,
+        "offers_pickup": true,
+        "base_fee_minor": 10000,
+        "currency": "GHS"
+      },
+      "created_at": "2026-03-04T08:00:00Z"
+    },
+    {
+      "id": "01KE6JQ300Y0J72CABBTAR2JE1",
+      "name": "Pop & Party Balloons",
+      "handle": "popandparty",
+      "specialty": "balloons_kids",
+      "bio": "Balloon garlands, bouncy castles and kids' party fun.",
+      "city": "Accra",
+      "logo": {
+        "url": "https://ui-avatars.com/api/?name=Pop+%26+Party+Balloons&background=F28C28&color=fff&bold=true&size=256",
+        "blurhash": "LIR]Ze-nQl-7-Tj]axjFQRaKpdkC",
+        "width": 256,
+        "height": 256
+      },
+      "cover": {
+        "url": "https://picsum.photos/id/24/1600/900",
+        "blurhash": "LuKUAjt7ayt6_Mf*WCj[IVWBWBWC",
+        "width": 1600,
+        "height": 900
+      },
+      "rating": 4.72,
+      "reviews_count": 238,
+      "followers_count": 3350,
+      "verified": false,
+      "event_types": [
+        "birthday"
+      ],
+      "members": [],
+      "response_time_minutes": 45,
+      "delivery": {
+        "offers_delivery": true,
+        "offers_pickup": true,
+        "base_fee_minor": 12000,
+        "currency": "GHS"
+      },
+      "created_at": "2024-10-20T08:00:00Z"
+    },
+    {
+      "id": "01K99GF800SJD0HZ436KZQVW6V",
+      "name": "Stagecraft Corporate Events",
+      "handle": "stagecraftgh",
+      "specialty": "corporate_staging",
+      "bio": "Stages, LED walls and AV for conferences and launches.",
+      "city": "Accra",
+      "logo": {
+        "url": "https://ui-avatars.com/api/?name=Stagecraft+Corporate+Events&background=1F8A70&color=fff&bold=true&size=256",
+        "blurhash": "LE8t3Wx]4nSwkpj[j[fk0JRj?bt7",
+        "width": 256,
+        "height": 256
+      },
+      "cover": {
+        "url": "https://picsum.photos/id/20/1600/900",
+        "blurhash": "LUNvoN_N4UM{xZpIkrV@IUt6xtf5",
+        "width": 1600,
+        "height": 900
+      },
+      "rating": 4.42,
+      "reviews_count": 25,
+      "followers_count": 11217,
+      "verified": true,
+      "event_types": [
+        "corporate"
+      ],
+      "members": [],
+      "response_time_minutes": 30,
+      "delivery": {
+        "offers_delivery": true,
+        "offers_pickup": true,
+        "base_fee_minor": 40000,
+        "currency": "GHS"
+      },
+      "created_at": "2024-12-15T08:00:00Z"
+    }
+  ]
+}

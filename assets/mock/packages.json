@@ -1,0 +1,196 @@
+{
+  "generated_at": "2026-10-11T08:00:00Z",
+  "data": [
+    {
+      "id": "01KPJC1V00CZQXC4TEVXCX71KM",
+      "vendor_id": "01KN40WX00PQVQFM5AJAK7W6YH",
+      "title": "White wedding essentials (100 guests)",
+      "description": "Everything you need, bundled by Royal Canopies & Chairs.",
+      "cover": {
+        "url": "https://picsum.photos/id/180/1600/900",
+        "blurhash": "LKFiGT?wMJ+slV%$VYH=gi%#jFDi",
+        "width": 1600,
+        "height": 900
+      },
+      "event_types": [
+        "wedding"
+      ],
+      "items": [
+        {
+          "item_id": "695cc100d4039aee0ffbd3f9",
+          "variant_id": "6a27c800d35c648f10fbd3fa",
+          "quantity": 3
+        },
+        {
+          "item_id": "6aa11200ae100c0304fbd3ff",
+          "variant_id": "6a0ac70000e2f47ccafbd400",
+          "quantity": 100
+        },
+        {
+          "item_id": "6a17f6009872e54fcafbd409",
+          "variant_id": "699d5a80f441c18232fbd40a",
+          "quantity": 10
+        }
+      ],
+      "amount_minor": 233200,
+      "compare_at_minor": 265000,
+      "currency": "GHS"
+    },
+    {
+      "id": "01KADJ1A001XBQAJR3JM0FRQQ5",
+      "vendor_id": "01KAG4E100TKK7EZ2CJ776QYHG",
+      "title": "Golden glam reception décor",
+      "description": "Everything you need, bundled by Golden Touch Décor.",
+      "cover": {
+        "url": "https://picsum.photos/id/176/1600/900",
+        "blurhash": "LzHVhqozayof?^oejZj[S*bHbFfk",
+        "width": 1600,
+        "height": 900
+      },
+      "event_types": [
+        "wedding"
+      ],
+      "items": [
+        {
+          "item_id": "699ffd807dd04bda0ffbd411",
+          "variant_id": "69b515807d2c7930cefbd413",
+          "quantity": 10
+        },
+        {
+          "item_id": "69e1e8800ad8a63131fbd414",
+          "variant_id": "6a3ce0005434c1f6a4fbd415",
+          "quantity": 100
+        },
+        {
+          "item_id": "6a704a80139564aa43fbd419",
+          "variant_id": "69ca2d804bb194ab2ffbd41a",
+          "quantity": 10
+        },
+        {
+          "item_id": "6aa3b50056293bfc18fbd417",
+          "variant_id": "69a14f00ee1fa17d52fbd418",
+          "quantity": 1
+        }
+      ],
+      "amount_minor": 225000,
+      "compare_at_minor": 250000,
+      "currency": "GHS"
+    },
+    {
+      "id": "01K5XBS2008HAP0YQ0HW77APSV",
+      "vendor_id": "01KBVX6800C536SFRJS51X9700",
+      "title": "Party starter sound & light",
+      "description": "Everything you need, bundled by Bassline Sound & Lights.",
+      "cover": {
+        "url": "https://picsum.photos/id/141/1600/900",
+        "blurhash": "LIC?=vyZjFt7F%xtt7X9MHMxR-jY",
+        "width": 1600,
+        "height": 900
+      },
+      "event_types": [
+        "wedding",
+        "birthday"
+      ],
+      "items": [
+        {
+          "item_id": "6aa3b50080d76422b8fbd426",
+          "variant_id": "6a08240005defd2680fbd427",
+          "quantity": 1
+        },
+        {
+          "item_id": "6a9a7a8041f980db14fbd428",
+          "variant_id": "6a55ec80727a1c2b26fbd429",
+          "quantity": 1
+        },
+        {
+          "item_id": "6a018c8052b75541ecfbd42d",
+          "variant_id": "6a50a680eb69cf2189fbd42e",
+          "quantity": 1
+        }
+      ],
+      "amount_minor": 123200,
+      "compare_at_minor": 145000,
+      "currency": "GHS"
+    },
+    {
+      "id": "01KJYG5G00GH23TNB1FMK7THHN",
+      "vendor_id": "01KE6JQ300Y0J72CABBTAR2JE1",
+      "title": "Kids' birthday bash",
+      "description": "Everything you need, bundled by Pop & Party Balloons.",
+      "cover": {
+        "url": "https://picsum.photos/id/25/1600/900",
+        "blurhash": "LbOC{p^kRkoe_NM{MyayI.IoaeRj",
+        "width": 1600,
+        "height": 900
+      },
+      "event_types": [
+        "birthday"
+      ],
+      "items": [
+        {
+          "item_id": "6a534980cff276a3d4fbd450",
+          "variant_id": "69bcfe8024cba4e926fbd452",
+          "quantity": 1
+        },
+        {
+          "item_id": "69b2728073d774f2fffbd448",
+          "variant_id": "69e09700e934b5f76efbd449",
+          "quantity": 1
+        },
+        {
+          "item_id": "6a2e5f802e8b08cc02fbd44c",
+          "variant_id": "6a0ebb807d67a51d0ffbd44d",
+          "quantity": 2
+        },
+        {
+          "item_id": "699eac00e956386e03fbd455",
+          "variant_id": "69f45d80c403c20ff6fbd456",
+          "quantity": 2
+        }
+      ],
+      "amount_minor": 130500,
+      "compare_at_minor": 145000,
+      "currency": "GHS"
+    },
+    {
+      "id": "01KM2HQJ00CVYTSSPVRVAXESXT",
+      "vendor_id": "01K99GF800SJD0HZ436KZQVW6V",
+      "title": "Conference in a box",
+      "description": "Everything you need, bundled by Stagecraft Corporate Events.",
+      "cover": {
+        "url": "https://picsum.photos/id/52/1600/900",
+        "blurhash": "L@JuWIIWWBofyZogayfkpJWXaza}",
+        "width": 1600,
+        "height": 900
+      },
+      "event_types": [
+        "corporate"
+      ],
+      "items": [
+        {
+          "item_id": "6a8e9d00cb430c2a0dfbd459",
+          "variant_id": "69a3f200a38147de77fbd45a",
+          "quantity": 1
+        },
+        {
+          "item_id": "6a3e3180bdabe8dae1fbd45e",
+          "variant_id": "6a0d6a00b2a2f74f95fbd45f",
+          "quantity": 1
+        },
+        {
+          "item_id": "6a34f700b6139af889fbd464",
+          "variant_id": "6a59e100962c46bfc7fbd465",
+          "quantity": 1
+        },
+        {
+          "item_id": "69c396004987cedb0bfbd461",
+          "variant_id": "6a704a80a8625e7e24fbd462",
+          "quantity": 4
+        }
+      ],
+      "amount_minor": 444400,
+      "compare_at_minor": 505000,
+      "currency": "GHS"
+    }
+  ]
+}

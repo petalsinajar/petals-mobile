@@ -1,0 +1,142 @@
+{
+  "generated_at": "2026-10-11T08:00:00Z",
+  "data": [
+    {
+      "id": "01KYVJZW008WYGJRQREQSS0FS7",
+      "slug": "canopies",
+      "name": "Canopies & tents",
+      "icon": "deck",
+      "event_types": [
+        "wedding",
+        "birthday",
+        "corporate"
+      ],
+      "position": 0
+    },
+    {
+      "id": "01KSHMRE00AHAWBHJJX8RAS2ND",
+      "slug": "chairs",
+      "name": "Chairs",
+      "icon": "chair",
+      "event_types": [
+        "wedding",
+        "birthday",
+        "corporate"
+      ],
+      "position": 1
+    },
+    {
+      "id": "01KEBQGH000GF3P6H3EB2T6GC8",
+      "slug": "tables",
+      "name": "Tables",
+      "icon": "table_restaurant",
+      "event_types": [
+        "wedding",
+        "birthday",
+        "corporate"
+      ],
+      "position": 2
+    },
+    {
+      "id": "01K5XBS200E9259RSDZS5PDXEM",
+      "slug": "decor",
+      "name": "Décor & florals",
+      "icon": "local_florist",
+      "event_types": [
+        "wedding",
+        "birthday"
+      ],
+      "position": 3
+    },
+    {
+      "id": "01K85EX600AFT7EEMHZYRMHQDS",
+      "slug": "linens",
+      "name": "Linens",
+      "icon": "texture",
+      "event_types": [
+        "wedding",
+        "birthday",
+        "corporate"
+      ],
+      "position": 4
+    },
+    {
+      "id": "01K9H7ND00ZPRVAZAZMJ4FVZC7",
+      "slug": "sound",
+      "name": "Sound",
+      "icon": "speaker",
+      "event_types": [
+        "wedding",
+        "birthday",
+        "corporate"
+      ],
+      "position": 5
+    },
+    {
+      "id": "01K73ZQV002VXXKBGMJ9JW5JWP",
+      "slug": "lighting",
+      "name": "Lighting",
+      "icon": "light",
+      "event_types": [
+        "wedding",
+        "birthday",
+        "corporate"
+      ],
+      "position": 6
+    },
+    {
+      "id": "01KCXCBK00BCZ9M9NWJTC80390",
+      "slug": "cake",
+      "name": "Cake & dessert",
+      "icon": "cake",
+      "event_types": [
+        "wedding",
+        "birthday"
+      ],
+      "position": 7
+    },
+    {
+      "id": "01K9H7ND00RWN6Q87TVRYTY7EY",
+      "slug": "catering",
+      "name": "Catering equipment",
+      "icon": "restaurant",
+      "event_types": [
+        "wedding",
+        "birthday",
+        "corporate"
+      ],
+      "position": 8
+    },
+    {
+      "id": "01KH0PM800M5BZB2XN2JNHRB99",
+      "slug": "balloons",
+      "name": "Balloons",
+      "icon": "celebration",
+      "event_types": [
+        "birthday",
+        "wedding"
+      ],
+      "position": 9
+    },
+    {
+      "id": "01KC8S5V00ZJRE4VMPC1391JJS",
+      "slug": "kids",
+      "name": "Kids' party",
+      "icon": "child_care",
+      "event_types": [
+        "birthday"
+      ],
+      "position": 10
+    },
+    {
+      "id": "01KGENV700G1GD789TB2R5MD23",
+      "slug": "staging",
+      "name": "Staging & AV",
+      "icon": "stadium",
+      "event_types": [
+        "corporate"
+      ],
+      "position": 11
+    }
+  ]
+}

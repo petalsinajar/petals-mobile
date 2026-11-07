@@ -1,0 +1,479 @@
+{
+  "generated_at": "2026-10-11T08:00:00Z",
+  "data": [
+    {
+      "id": "01M4TS07R02ZWKXASREESTWEWT",
+      "type": "wedding",
+      "title": "Ama & Kojo's White Wedding",
+      "description": "Join us for Ama & Kojo's White Wedding!",
+      "starts_at": "2026-12-12T14:00:00Z",
+      "ends_at": "2026-12-12T22:00:00Z",
+      "venue": {
+        "name": "Aburi Botanical Gardens",
+        "city": "Aburi",
+        "address": "Aburi Botanical Gardens, Aburi, Ghana"
+      },
+      "guest_count": 250,
+      "visibility": "guests",
+      "cover": {
+        "url": "https://picsum.photos/id/29/1600/900",
+        "blurhash": "LLDJxA_2IARjyZM{aKt7T2M{Rjt7",
+        "width": 1600,
+        "height": 900
+      },
+      "host_id": "01KK67BN00FWWT9PCC060FWN3G",
+      "co_host_ids": [
+        "01KXZ8KZ00HC8S17K6JZDENBT6"
+      ],
+      "guests": [
+        {
+          "user_id": "01KBYFJZ00GJ391TFXSKV5QDRZ",
+          "status": "going"
+        },
+        {
+          "user_id": "01KCGGC000T5S9RDH6SQF3ZGGX",
+          "status": "maybe"
+        },
+        {
+          "user_id": "01KYEQ09005GT9KCJ69YFJRBQS",
+          "status": "declined"
+        },
+        {
+          "user_id": "01KBCESY009HF1AKBBSJ59BCTR",
+          "status": "invited"
+        },
+        {
+          "user_id": "01KTTV3Y000HSS3ZF48Y9P1WTW",
+          "status": "invited"
+        },
+        {
+          "user_id": "01KVMK3400D29Q7MWJS0ASXP4E",
+          "status": "maybe"
+        }
+      ],
+      "rsvp_counts": {
+        "going": 78,
+        "maybe": 22,
+        "declined": 1,
+        "invited": 2
+      },
+      "created_at": "2026-10-13T14:00:00Z"
+    },
+    {
+      "id": "01M0X4PAW05D2XVWAAXV4R2F88",
+      "type": "birthday",
+      "title": "Efua turns 30 🎉",
+      "description": "Join us for Efua turns 30 🎉!",
+      "starts_at": "2026-10-24T19:00:00Z",
+      "ends_at": "2026-10-25T00:00:00Z",
+      "venue": {
+        "name": "Sandbox Beach Club, Labadi",
+        "city": "Accra",
+        "address": "Sandbox Beach Club, Labadi, Accra, Ghana"
+      },
+      "guest_count": 80,
+      "visibility": "public",
+      "cover": {
+        "url": "https://picsum.photos/id/153/1600/900",
+        "blurhash": "LWFF4#My0N%e-oVuoetQ?FIVR+%K",
+        "width": 1600,
+        "height": 900
+      },
+      "host_id": "01KBYFJZ00GJ391TFXSKV5QDRZ",
+      "co_host_ids": [],
+      "guests": [
+        {
+          "user_id": "01KK67BN00FWWT9PCC060FWN3G",
+          "status": "going"
+        },
+        {
+          "user_id": "01KYEQ09005GT9KCJ69YFJRBQS",
+          "status": "going"
+        },
+        {
+          "user_id": "01KTTV3Y000HSS3ZF48Y9P1WTW",
+          "status": "declined"
+        },
+        {
+          "user_id": "01KXZ8KZ00HC8S17K6JZDENBT6",
+          "status": "going"
+        }
+      ],
+      "rsvp_counts": {
+        "going": 31,
+        "maybe": 11,
+        "declined": 1,
+        "invited": 0
+      },
+      "created_at": "2026-08-25T19:00:00Z"
+    },
+    {
+      "id": "01M1XHH1M0ZRYACAENJW8ZKHTD",
+      "type": "corporate",
+      "title": "Fintech Ghana Summit 2026",
+      "description": "Join us for Fintech Ghana Summit 2026!",
+      "starts_at": "2026-11-06T09:00:00Z",
+      "ends_at": "2026-11-06T18:00:00Z",
+      "venue": {
+        "name": "Accra International Conference Centre",
+        "city": "Accra",
+        "address": "Accra International Conference Centre, Accra, Ghana"
+      },
+      "guest_count": 600,
+      "visibility": "public",
+      "cover": {
+        "url": "https://picsum.photos/id/67/1600/900",
+        "blurhash": "LvIOhGWBIUof~qWBRjayt7oft7WB",
+        "width": 1600,
+        "height": 900
+      },
+      "host_id": "01KCGGC000T5S9RDH6SQF3ZGGX",
+      "co_host_ids": [],
+      "guests": [
+        {
+          "user_id": "01KVMK3400D29Q7MWJS0ASXP4E",
+          "status": "going"
+        },
+        {
+          "user_id": "01KXZ8KZ00HC8S17K6JZDENBT6",
+          "status": "going"
+        },
+        {
+          "user_id": "01KK67BN00FWWT9PCC060FWN3G",
+          "status": "going"
+        }
+      ],
+      "rsvp_counts": {
+        "going": 209,
+        "maybe": 88,
+        "declined": 0,
+        "invited": 0
+      },
+      "created_at": "2026-09-07T09:00:00Z"
+    },
+    {
+      "id": "01KZXKAH40R77R6EDZCJ4MGD4V",
+      "type": "birthday",
+      "title": "Nana Yaw's 5th birthday",
+      "description": "Join us for Nana Yaw's 5th birthday!",
+      "starts_at": "2026-10-12T13:00:00Z",
+      "ends_at": "2026-10-12T17:00:00Z",
+      "venue": {
+        "name": "Legon Botanical Gardens",
+        "city": "Accra",
+        "address": "Legon Botanical Gardens, Accra, Ghana"
+      },
+      "guest_count": 40,
+      "visibility": "guests",
+      "cover": {
+        "url": "https://picsum.photos/id/57/1600/900",
+        "blurhash": "LRCGY}WB00D%^+tR9FIotSt6M{WB",
+        "width": 1600,
+        "height": 900
+      },
+      "host_id": "01KBCESY009HF1AKBBSJ59BCTR",
+      "co_host_ids": [],
+      "guests": [
+        {
+          "user_id": "01KK67BN00FWWT9PCC060FWN3G",
+          "status": "declined"
+        },
+        {
+          "user_id": "01KBYFJZ00GJ391TFXSKV5QDRZ",
+          "status": "invited"
+        },
+        {
+          "user_id": "01KYEQ09005GT9KCJ69YFJRBQS",
+          "status": "maybe"
+        }
+      ],
+      "rsvp_counts": {
+        "going": 22,
+        "maybe": 5,
+        "declined": 1,
+        "invited": 1
+      },
+      "created_at": "2026-08-13T13:00:00Z"
+    },
+    {
+      "id": "01M348XP80Q8S0PFPMKV6SFYCK",
+      "type": "wedding",
+      "title": "Abena & Kwesi's traditional engagement",
+      "description": "Join us for Abena & Kwesi's traditional engagement!",
+      "starts_at": "2026-11-21T10:00:00Z",
+      "ends_at": "2026-11-21T17:00:00Z",
+      "venue": {
+        "name": "Golden Tulip Kumasi City",
+        "city": "Kumasi",
+        "address": "Golden Tulip Kumasi City, Kumasi, Ghana"
+      },
+      "guest_count": 150,
+      "visibility": "guests",
+      "cover": {
+        "url": "https://picsum.photos/id/11/1600/900",
+        "blurhash": "L~I=_LRPIUof_Ne.WBazx[xut7WB",
+        "width": 1600,
+        "height": 900
+      },
+      "host_id": "01KTTV3Y000HSS3ZF48Y9P1WTW",
+      "co_host_ids": [],
+      "guests": [
+        {
+          "user_id": "01KK67BN00FWWT9PCC060FWN3G",
+          "status": "going"
+        },
+        {
+          "user_id": "01KBYFJZ00GJ391TFXSKV5QDRZ",
+          "status": "going"
+        },
+        {
+          "user_id": "01KYEQ09005GT9KCJ69YFJRBQS",
+          "status": "going"
+        },
+        {
+          "user_id": "01KXZ8KZ00HC8S17K6JZDENBT6",
+          "status": "declined"
+        }
+      ],
+      "rsvp_counts": {
+        "going": 85,
+        "maybe": 8,
+        "declined": 1,
+        "invited": 0
+      },
+      "created_at": "2026-09-22T10:00:00Z"
+    },
+    {
+      "id": "01M5AN4080BZTK8FK7T5WRH22M",
+      "type": "corporate",
+      "title": "Bassline end-of-year staff party",
+      "description": "Join us for Bassline end-of-year staff party!",
+      "starts_at": "2026-12-18T18:00:00Z",
+      "ends_at": "2026-12-19T00:00:00Z",
+      "venue": {
+        "name": "Mövenpick Ambassador Hotel",
+        "city": "Accra",
+        "address": "Mövenpick Ambassador Hotel, Accra, Ghana"
+      },
+      "guest_count": 120,
+      "visibility": "private",
+      "cover": {
+        "url": "https://picsum.photos/id/139/1600/900",
+        "blurhash": "LNINKet74;jY0fNHs:WW9vf6xaa#",
+        "width": 1600,
+        "height": 900
+      },
+      "host_id": "01KVMK3400D29Q7MWJS0ASXP4E",
+      "co_host_ids": [],
+      "guests": [
+        {
+          "user_id": "01KCGGC000T5S9RDH6SQF3ZGGX",
+          "status": "declined"
+        },
+        {
+          "user_id": "01KBCESY009HF1AKBBSJ59BCTR",
+          "status": "going"
+        }
+      ],
+      "rsvp_counts": {
+        "going": 58,
+        "maybe": 14,
+        "declined": 1,
+        "invited": 0
+      },
+      "created_at": "2026-10-19T18:00:00Z"
+    },
+    {
+      "id": "01KV8F4JC0FET5ZK897R6N4ZSV",
+      "type": "wedding",
+      "title": "Akosua & Daniel's garden wedding",
+      "description": "Join us for Akosua & Daniel's garden wedding!",
+      "starts_at": "2026-08-15T15:00:00Z",
+      "ends_at": "2026-08-15T23:00:00Z",
+      "venue": {
+        "name": "Peduase Valley Resort",
+        "city": "Aburi",
+        "address": "Peduase Valley Resort, Aburi, Ghana"
+      },
+      "guest_count": 200,
+      "visibility": "public",
+      "cover": {
+        "url": "https://picsum.photos/id/34/1600/900",
+        "blurhash": "LfHv@k#U0}AC={afSeM|NvbasoaL",
+        "width": 1600,
+        "height": 900
+      },
+      "host_id": "01KYEQ09005GT9KCJ69YFJRBQS",
+      "co_host_ids": [],
+      "guests": [
+        {
+          "user_id": "01KK67BN00FWWT9PCC060FWN3G",
+          "status": "going"
+        },
+        {
+          "user_id": "01KBYFJZ00GJ391TFXSKV5QDRZ",
+          "status": "going"
+        },
+        {
+          "user_id": "01KCGGC000T5S9RDH6SQF3ZGGX",
+          "status": "invited"
+        },
+        {
+          "user_id": "01KTTV3Y000HSS3ZF48Y9P1WTW",
+          "status": "declined"
+        },
+        {
+          "user_id": "01KXZ8KZ00HC8S17K6JZDENBT6",
+          "status": "going"
+        },
+        {
+          "user_id": "01KVMK3400D29Q7MWJS0ASXP4E",
+          "status": "maybe"
+        }
+      ],
+      "rsvp_counts": {
+        "going": 64,
+        "maybe": 14,
+        "declined": 1,
+        "invited": 1
+      },
+      "created_at": "2026-06-16T15:00:00Z"
+    },
+    {
+      "id": "01KY5PKRG0HZBH0Q2RHTKKS5C7",
+      "type": "birthday",
+      "title": "Kwame's 40th rooftop party",
+      "description": "Join us for Kwame's 40th rooftop party!",
+      "starts_at": "2026-09-20T20:00:00Z",
+      "ends_at": "2026-09-21T01:00:00Z",
+      "venue": {
+        "name": "Sky Bar 25, Villaggio",
+        "city": "Accra",
+        "address": "Sky Bar 25, Villaggio, Accra, Ghana"
+      },
+      "guest_count": 90,
+      "visibility": "public",
+      "cover": {
+        "url": "https://picsum.photos/id/147/1600/900",
+        "blurhash": "LSDJ-g%LIAoz_4jYM{fQ%3RPRjae",
+        "width": 1600,
+        "height": 900
+      },
+      "host_id": "01KVMK3400D29Q7MWJS0ASXP4E",
+      "co_host_ids": [],
+      "guests": [
+        {
+          "user_id": "01KK67BN00FWWT9PCC060FWN3G",
+          "status": "invited"
+        },
+        {
+          "user_id": "01KCGGC000T5S9RDH6SQF3ZGGX",
+          "status": "going"
+        },
+        {
+          "user_id": "01KBCESY009HF1AKBBSJ59BCTR",
+          "status": "invited"
+        },
+        {
+          "user_id": "01KBYFJZ00GJ391TFXSKV5QDRZ",
+          "status": "going"
+        }
+      ],
+      "rsvp_counts": {
+        "going": 47,
+        "maybe": 12,
+        "declined": 0,
+        "invited": 2
+      },
+      "created_at": "2026-07-22T20:00:00Z"
+    },
+    {
+      "id": "01KWSKHYM0ZVGT9CEMN0DM1JS6",
+      "type": "corporate",
+      "title": "Accra Startup Week mixer",
+      "description": "Join us for Accra Startup Week mixer!",
+      "starts_at": "2026-09-03T17:00:00Z",
+      "ends_at": "2026-09-03T21:00:00Z",
+      "venue": {
+        "name": "Impact Hub Accra",
+        "city": "Accra",
+        "address": "Impact Hub Accra, Accra, Ghana"
+      },
+      "guest_count": 150,
+      "visibility": "public",
+      "cover": {
+        "url": "https://picsum.photos/id/132/1600/900",
+        "blurhash": "LqGHxR-nM{og~B%LWAjZ?FxtWVo1",
+        "width": 1600,
+        "height": 900
+      },
+      "host_id": "01KCGGC000T5S9RDH6SQF3ZGGX",
+      "co_host_ids": [],
+      "guests": [
+        {
+          "user_id": "01KXZ8KZ00HC8S17K6JZDENBT6",
+          "status": "maybe"
+        },
+        {
+          "user_id": "01KTTV3Y000HSS3ZF48Y9P1WTW",
+          "status": "going"
+        },
+        {
+          "user_id": "01KVMK3400D29Q7MWJS0ASXP4E",
+          "status": "maybe"
+        }
+      ],
+      "rsvp_counts": {
+        "going": 53,
+        "maybe": 17,
+        "declined": 0,
+        "invited": 0
+      },
+      "created_at": "2026-07-05T17:00:00Z"
+    },
+    {
+      "id": "01KZTT22W050AZN2TVGZBWEKR5",
+      "type": "birthday",
+      "title": "Kofi's birthday brunch",
+      "description": "Join us for Kofi's birthday brunch!",
+      "starts_at": "2026-10-11T11:00:00Z",
+      "ends_at": "2026-10-11T15:00:00Z",
+      "venue": {
+        "name": "Kofi's garden, East Legon",
+        "city": "Accra",
+        "address": "Kofi's garden, East Legon, Accra, Ghana"
+      },
+      "guest_count": 30,
+      "visibility": "guests",
+      "cover": {
+        "url": "https://picsum.photos/id/49/1600/900",
+        "blurhash": "L$LEym-;s:t7?wt6ayofNHRPaxay",
+        "width": 1600,
+        "height": 900
+      },
+      "host_id": "01KCGGC000T5S9RDH6SQF3ZGGX",
+      "co_host_ids": [],
+      "guests": [
+        {
+          "user_id": "01KK67BN00FWWT9PCC060FWN3G",
+          "status": "going"
+        },
+        {
+          "user_id": "01KVMK3400D29Q7MWJS0ASXP4E",
+          "status": "going"
+        },
+        {
+          "user_id": "01KBYFJZ00GJ391TFXSKV5QDRZ",
+          "status": "going"
+        }
+      ],
+      "rsvp_counts": {
+        "going": 19,
+        "maybe": 4,
+        "declined": 0,
+        "invited": 0
+      },
+      "created_at": "2026-08-12T11:00:00Z"
+    }
+  ]
+}
