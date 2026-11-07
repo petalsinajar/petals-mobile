@@ -5,6 +5,8 @@ import 'package:petalsinajar/core/storage/token_storage.dart';
 
 import '../../helpers/fake_http_adapter.dart';
 
+const _old = AuthTokens(access: 'old', refresh: 'refresh-old');
+
 void main() {
   late InMemoryTokenStorage tokens;
   late FakeHttpAdapter adapter;
@@ -13,14 +15,20 @@ void main() {
   late bool refreshSucceeds;
 
   setUp(() {
-    tokens = InMemoryTokenStorage('old');
+    tokens = InMemoryTokenStorage(_old);
     expiredCount = 0;
     refreshSucceeds = true;
     adapter = FakeHttpAdapter((o) async {
       if (o.path == AuthInterceptor.refreshPath) {
+        // The backend rejects a bad refresh token with a 422, not a 401.
         return refreshSucceeds
-            ? jsonBody(200, {'token': 'new'})
-            : jsonBody(401, {'message': 'Unauthenticated.'});
+            ? jsonBody(200, {
+                'token_type': 'Bearer',
+                'access_token': 'new',
+                'refresh_token': 'refresh-new',
+                'expires_at': '2026-11-07T13:00:00+00:00',
+              })
+            : jsonBody(422, {'message': 'Session expired.'});
       }
       return o.headers['Authorization'] == 'Bearer new'
           ? jsonBody(200, {'ok': true})
@@ -39,20 +47,31 @@ void main() {
       );
   });
 
-  test('adds the bearer token', () async {
-    await tokens.write('new');
+  test('adds the access token as the bearer', () async {
+    await tokens.write(const AuthTokens(access: 'new', refresh: 'r'));
     await dio.get<dynamic>('/me');
     expect(adapter.requests.single.headers['Authorization'], 'Bearer new');
   });
 
-  test('on 401 refreshes once, stores the token and retries', () async {
-    final response = await dio.get<Map<String, dynamic>>('/me');
+  test(
+    'on 401 refreshes with the refresh token, stores the pair, retries',
+    () async {
+      final response = await dio.get<Map<String, dynamic>>('/me');
 
-    expect(response.data, {'ok': true});
-    expect(await tokens.read(), 'new');
-    expect(adapter.countPath(AuthInterceptor.refreshPath), 1);
-    expect(expiredCount, 0);
-  });
+      expect(response.data, {'ok': true});
+      final refresh = adapter.requests.firstWhere(
+        (r) => r.path == AuthInterceptor.refreshPath,
+      );
+      expect(refresh.data, {'refresh_token': 'refresh-old'});
+      expect(refresh.headers['Authorization'], isNull);
+      expect(
+        await tokens.read(),
+        const AuthTokens(access: 'new', refresh: 'refresh-new'),
+      );
+      expect(adapter.countPath(AuthInterceptor.refreshPath), 1);
+      expect(expiredCount, 0);
+    },
+  );
 
   test('concurrent 401s share a single refresh', () async {
     await Future.wait([
@@ -63,7 +82,7 @@ void main() {
     expect(adapter.countPath(AuthInterceptor.refreshPath), 1);
   });
 
-  test('failed refresh clears the token and expires the session', () async {
+  test('failed refresh clears the tokens and expires the session', () async {
     refreshSucceeds = false;
 
     await expectLater(

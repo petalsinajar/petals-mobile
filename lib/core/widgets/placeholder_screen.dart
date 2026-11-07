@@ -10,6 +10,7 @@ class PlaceholderScreen extends StatelessWidget {
     this.icon,
     this.actionLabel,
     this.onAction,
+    this.appBarActions,
     super.key,
   });
 
@@ -19,11 +20,12 @@ class PlaceholderScreen extends StatelessWidget {
   final IconData? icon;
   final String? actionLabel;
   final VoidCallback? onAction;
+  final List<Widget>? appBarActions;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(title: Text(title), actions: appBarActions),
       body: EmptyState(
         title: headline,
         message: message,

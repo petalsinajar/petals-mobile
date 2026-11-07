@@ -4,7 +4,8 @@ part 'app_config.g.dart';
 
 enum AppFlavor { dev, staging, prod }
 
-/// Build-time configuration, read from `--dart-define`s.
+/// Build-time configuration, read from `--dart-define`s — usually supplied as a
+/// whole file: `--dart-define-from-file=.env.dev` (template: `.env.example`).
 ///
 /// * `USE_MOCKS` (default `true`) — repositories use seed JSON instead of Dio.
 /// * `API_BASE_URL` — Laravel host, without `/v1`. Required when not mocking.
@@ -41,9 +42,15 @@ class AppConfig {
   void _validate() {
     if (!useMocks && apiBaseUrl.isEmpty) {
       throw StateError(
-        'USE_MOCKS=false requires --dart-define=API_BASE_URL=<host>.',
+        'USE_MOCKS=false requires API_BASE_URL — set it in your .env file '
+        'or pass --dart-define=API_BASE_URL=<host>.',
       );
     }
+    // TODO(you): reject insecure base URLs for builds that ship to devices.
+    // Release builds block cleartext http, so e.g. FLAVOR=prod with an
+    // http:// API_BASE_URL compiles fine but every request fails at runtime.
+    // Decide which flavors must use https (prod only? staging too?) and
+    // throw a StateError naming the offending value.
   }
 
   static String _trimTrailingSlash(String url) =>

@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:petalsinajar/core/storage/token_storage.dart';
 
-/// Adds `Authorization: Bearer <token>` and handles 401s per the API
-/// contract: refresh once via `POST /auth/refresh`, retry the request, and if
-/// that fails clear the token and report the session as expired.
+/// Adds `Authorization: Bearer <access token>` and handles 401s per the API
+/// contract: trade the refresh token for a new pair once via
+/// `POST /auth/refresh` `{ refresh_token }`, retry the request, and if that
+/// fails clear the tokens and report the session as expired.
 ///
 /// It is a [QueuedInterceptor], so concurrent 401s wait for one refresh
 /// instead of each triggering their own.
@@ -30,8 +31,10 @@ class AuthInterceptor extends QueuedInterceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final token = await _tokens.read();
-    if (token != null) options.headers['Authorization'] = 'Bearer $token';
+    final tokens = await _tokens.read();
+    if (tokens != null) {
+      options.headers['Authorization'] = 'Bearer ${tokens.access}';
+    }
     handler.next(options);
   }
 
@@ -51,8 +54,8 @@ class AuthInterceptor extends QueuedInterceptor {
     final usedToken = _bearerOf(options);
     final current = await _tokens.read();
     // Another queued request may already have refreshed the token.
-    final fresh = (current != null && current != usedToken)
-        ? current
+    final fresh = (current != null && current.access != usedToken)
+        ? current.access
         : await _refresh(current);
 
     if (fresh == null) {
@@ -72,16 +75,20 @@ class AuthInterceptor extends QueuedInterceptor {
     }
   }
 
-  Future<String?> _refresh(String? token) async {
-    if (token == null) return null;
+  /// Returns the new access token, or null when the session can't continue.
+  /// The server rotates the pair, so the old refresh token is now dead.
+  Future<String?> _refresh(AuthTokens? tokens) async {
+    if (tokens == null) return null;
     try {
       final response = await _refreshClient.post<Map<String, dynamic>>(
         refreshPath,
-        options: Options(headers: {'Authorization': 'Bearer $token'}),
+        data: {'refresh_token': tokens.refresh},
       );
-      final fresh = response.data?['token'] as String?;
-      if (fresh != null) await _tokens.write(fresh);
-      return fresh;
+      final access = response.data?['access_token'] as String?;
+      final refresh = response.data?['refresh_token'] as String?;
+      if (access == null || refresh == null) return null;
+      await _tokens.write(AuthTokens(access: access, refresh: refresh));
+      return access;
     } on DioException {
       return null;
     }

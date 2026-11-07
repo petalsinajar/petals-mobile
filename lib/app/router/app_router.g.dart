@@ -8,20 +8,23 @@ part of 'app_router.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// The app's single [GoRouter]. Switching [activeActorProvider] re-runs the
-/// redirect, which moves the user into the matching shell.
+/// The app's single [GoRouter]. Signing in or out, and switching
+/// [activeActorProvider], re-run the redirects: the auth gate first, then
+/// the one that keeps the user in the matching shell.
 
 @ProviderFor(appRouter)
 final appRouterProvider = AppRouterProvider._();
 
-/// The app's single [GoRouter]. Switching [activeActorProvider] re-runs the
-/// redirect, which moves the user into the matching shell.
+/// The app's single [GoRouter]. Signing in or out, and switching
+/// [activeActorProvider], re-run the redirects: the auth gate first, then
+/// the one that keeps the user in the matching shell.
 
 final class AppRouterProvider
     extends $FunctionalProvider<GoRouter, GoRouter, GoRouter>
     with $Provider<GoRouter> {
-  /// The app's single [GoRouter]. Switching [activeActorProvider] re-runs the
-  /// redirect, which moves the user into the matching shell.
+  /// The app's single [GoRouter]. Signing in or out, and switching
+  /// [activeActorProvider], re-run the redirects: the auth gate first, then
+  /// the one that keeps the user in the matching shell.
   AppRouterProvider._()
     : super(
         from: null,
@@ -55,4 +58,4 @@ final class AppRouterProvider
   }
 }
 
-String _$appRouterHash() => r'8f604bf5765aee133046bb264958610e535f925f';
+String _$appRouterHash() => r'7b88dc56bade0d22f4d1b161b102082d60e5e49b';

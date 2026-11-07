@@ -1,0 +1,41 @@
+import 'package:petalsinajar/core/network/dio_client.dart';
+import 'package:petalsinajar/core/session/active_actor.dart';
+import 'package:petalsinajar/features/auth/data/auth_repository_impl.dart';
+import 'package:petalsinajar/features/auth/domain/me.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'auth_session.g.dart';
+
+/// Who is signed in: `null` when signed out. Restored from stored tokens
+/// on launch; signs out by itself when the API reports the session expired.
+@Riverpod(keepAlive: true)
+class AuthSession extends _$AuthSession {
+  @override
+  Future<Me?> build() {
+    final expired = ref
+        .read(sessionExpiredEventsProvider)
+        .stream
+        .listen((_) => _signedOut());
+    ref.onDispose(expired.cancel);
+    return ref.watch(authRepositoryProvider).restore();
+  }
+
+  /// Signs in with the code sent to [phone]. Throws on a wrong code, leaving
+  /// the session as it was.
+  Future<void> verify({required String phone, required String code}) async {
+    final me = await ref
+        .read(authRepositoryProvider)
+        .verify(phone: phone, code: code);
+    state = AsyncData(me);
+  }
+
+  Future<void> signOut() async {
+    await ref.read(authRepositoryProvider).signOut();
+    _signedOut();
+  }
+
+  void _signedOut() {
+    ref.read(activeActorProvider.notifier).actAsSelf();
+    state = const AsyncData(null);
+  }
+}

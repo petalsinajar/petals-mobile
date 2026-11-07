@@ -57,7 +57,7 @@ assets/
 
 ## API contract (for remote sources)
 
-- Base URL from `--dart-define=API_BASE_URL=...`, all paths under `/v1`.
+- Base URL from `API_BASE_URL`, set per environment in `.env.dev` / `.env.prod` (gitignored; template `.env.example`) and passed with `--dart-define-from-file=.env.<env>`. All paths under `/v1`.
 - Auth: `Authorization: Bearer <token>`; refresh on 401 once via `POST /v1/auth/refresh`, then sign out.
 - Lists use cursor pagination: `{ "data": [...], "next_cursor": "..." | null }` → `Paginated<T>`.
 - Errors: `{ "message": "...", "errors": { "field": ["..."] } }` → `ApiException` with field errors.
@@ -89,4 +89,4 @@ Later, not in the prototype: firebase_messaging (push), pusher-protocol client f
 
 - Work in small, reviewable steps; finish one phase, summarize what changed, then stop for review.
 - Prefer composition over inheritance; keep widgets small (split files over ~200 lines).
-- Never commit secrets; config only through dart-defines.
+- Never commit secrets; config only through dart-defines (`.env.*` files are compiled into the binary, so they hold URLs and flags, never secrets).

@@ -23,6 +23,20 @@ abstract final class Routes {
   static const vendorInventory = '/vendor/inventory';
   static const vendorProfile = '/vendor/profile';
 
+  // Sign in. Both carry `?from=` — where to go once signed in.
+  static const signIn = '/sign-in';
+  static const verifyCode = '/sign-in/verify';
+
+  static String signInFrom(String? from) => Uri(
+    path: signIn,
+    queryParameters: {'from': ?from},
+  ).toString();
+
+  static String verifyCodeFor({required String phone, String? from}) => Uri(
+    path: verifyCode,
+    queryParameters: {'phone': phone, 'from': ?from},
+  ).toString();
+
   // Full-screen flows.
   /// Declared before [eventPattern] so `new` isn't read as an event id.
   static const createEvent = '/events/new';
