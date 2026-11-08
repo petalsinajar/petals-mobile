@@ -6,6 +6,9 @@ enum AuthStatus {
   /// session (e.g. offline). Screens handle their own errors meanwhile.
   unknown,
   signedIn,
+
+  /// Signed in, but a new account that hasn't chosen a name yet.
+  needsProfile,
   signedOut,
 }
 
@@ -15,14 +18,17 @@ const List<String> _accountPaths = [
   Routes.myEvents,
   Routes.profile,
   Routes.createEvent,
+  Routes.completeProfile,
+  Routes.startBusiness,
 ];
 
 bool _needsAccount(String location) =>
     location.startsWith(Routes.vendorShellPrefix) ||
     _accountPaths.any((p) => location == p || location.startsWith('$p/'));
 
-/// Sends signed-out users to sign in for account screens, and signed-in
-/// users out of sign in to where they were headed.
+/// Sends signed-out users to sign in for account screens, new accounts to
+/// pick a name before anything else, and everyone out of those screens to
+/// where they were headed once done.
 ///
 /// [location] is the matched path; [uri] the full one with its query.
 String? authRedirect({
@@ -31,15 +37,21 @@ String? authRedirect({
   required Uri uri,
 }) {
   final onSignIn = location == Routes.signIn || location == Routes.verifyCode;
+  final onWelcome = location == Routes.completeProfile;
+  // The sign-in and welcome screens carry the destination in `?from=`.
+  final from = onSignIn || onWelcome
+      ? uri.queryParameters['from']
+      : uri.toString();
 
   return switch (status) {
     AuthStatus.unknown => null,
     AuthStatus.signedOut when _needsAccount(location) => Routes.signInFrom(
       uri.toString(),
     ),
-    AuthStatus.signedIn when onSignIn => _safeFrom(
-      uri.queryParameters['from'],
+    AuthStatus.needsProfile when !onWelcome => Routes.completeProfileFrom(
+      from,
     ),
+    AuthStatus.signedIn when onSignIn || onWelcome => _safeFrom(from),
     _ => null,
   };
 }

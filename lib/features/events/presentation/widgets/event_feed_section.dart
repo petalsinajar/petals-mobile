@@ -14,8 +14,8 @@ import 'package:petalsinajar/features/events/presentation/events_controllers.dar
 
 /// Posts shared to the event, newest first.
 ///
-/// Uses a compact card of its own until the posts feature's `PostCard`
-/// (likes, comments, shop-the-look) can be reused here.
+/// Uses a compact card of its own. The full `PostCard` (likes, comments)
+/// lives in the feed feature; move it to `core/` to share it here.
 class EventFeedSection extends ConsumerWidget {
   const EventFeedSection({required this.eventId, super.key});
 

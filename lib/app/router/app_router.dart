@@ -14,6 +14,7 @@ part 'app_router.g.dart';
 
 AuthStatus _statusOf(AsyncValue<Me?> session) => switch (session) {
   AsyncData(value: null) => AuthStatus.signedOut,
+  AsyncData(value: Me(needsProfile: true)) => AuthStatus.needsProfile,
   AsyncData() => AuthStatus.signedIn,
   _ => AuthStatus.unknown,
 };

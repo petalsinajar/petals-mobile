@@ -29,6 +29,49 @@ class AuthSession extends _$AuthSession {
     state = AsyncData(me);
   }
 
+  /// Saves a new account's name (and handle, if they chose one). Throws on
+  /// a rejected value, leaving the session as it was.
+  Future<void> completeProfile({
+    required String displayName,
+    String? handle,
+  }) async {
+    final me = await ref
+        .read(authRepositoryProvider)
+        .updateProfile(displayName: displayName, handle: handle);
+    state = AsyncData(me);
+  }
+
+  /// Saves a profile edit, uploading [photoPath] first when the user picked
+  /// a new picture. Throws on a rejected value, leaving the session as it was.
+  Future<void> updateProfile(
+    ProfileChanges changes, {
+    String? photoPath,
+  }) async {
+    final repo = ref.read(authRepositoryProvider);
+    final avatarUrl = photoPath == null
+        ? null
+        : await repo.uploadPhoto(photoPath);
+    final me = await repo.updateMe(
+      avatarUrl == null ? changes : changes.copyWith(avatarUrl: avatarUrl),
+    );
+    state = AsyncData(me);
+  }
+
+  /// Re-reads the signed-in user, e.g. after starting a business so its
+  /// vendor shows up. Keeps the current user on screen meanwhile.
+  Future<void> refresh() async {
+    final me = await ref.read(authRepositoryProvider).restore();
+    if (ref.mounted) state = AsyncData(me);
+  }
+
+  /// Email and password for the vendors' web dashboard.
+  Future<void> setDashboardSignIn({
+    required String email,
+    required String password,
+  }) => ref
+      .read(authRepositoryProvider)
+      .setDashboardSignIn(email: email, password: password);
+
   Future<void> signOut() async {
     await ref.read(authRepositoryProvider).signOut();
     _signedOut();

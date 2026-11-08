@@ -6,7 +6,10 @@ import 'package:petalsinajar/features/events/domain/event_type.dart';
 
 part 'event_dtos.g.dart';
 
-/// `co_host` → `coHost`, `pending_vendor` → `pendingVendor`.
+// Shapes mirror the backend's resources (app/Modules/*/Http/Resources and
+// Social/Services/PostPresenter); the mock source emits the same JSON.
+
+/// `pending_vendor` → `pendingVendor`.
 T _enumBySnake<T extends Enum>(List<T> values, String raw, T fallback) {
   final camel = raw.replaceAllMapped(
     RegExp('_([a-z])'),
@@ -15,56 +18,42 @@ T _enumBySnake<T extends Enum>(List<T> values, String raw, T fallback) {
   return values.asNameMap()[camel] ?? fallback;
 }
 
-/// `coHost` → `co_host`, for request bodies.
-String enumToSnake(Enum value) => value.name.replaceAllMapped(
-  RegExp('[A-Z]'),
-  (m) => '_${m[0]!.toLowerCase()}',
-);
+EventImage? _image(String? url, {int? width, int? height, String? blurhash}) =>
+    url == null || url.isEmpty
+    ? null
+    : EventImage(url: url, width: width, height: height, blurhash: blurhash);
 
+/// `ActorResource`: a user or vendor as embedded in other resources.
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
-class ImageDto {
-  ImageDto({required this.url, this.blurhash, this.width, this.height});
-
-  factory ImageDto.fromJson(Map<String, dynamic> json) =>
-      _$ImageDtoFromJson(json);
-
-  final String url;
-  final String? blurhash;
-  final int? width;
-  final int? height;
-
-  EventImage toDomain() =>
-      EventImage(url: url, blurhash: blurhash, width: width, height: height);
-}
-
-@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
-class PersonDto {
-  PersonDto({
+class ActorDto {
+  ActorDto({
     required this.id,
-    required this.name,
+    this.type = 'user',
+    this.name,
     this.handle,
-    this.avatar,
-    this.isVendor = false,
+    this.avatarUrl,
   });
 
-  factory PersonDto.fromJson(Map<String, dynamic> json) =>
-      _$PersonDtoFromJson(json);
+  factory ActorDto.fromJson(Map<String, dynamic> json) =>
+      _$ActorDtoFromJson(json);
 
   final String id;
-  final String name;
+  final String type;
+  final String? name;
   final String? handle;
-  final ImageDto? avatar;
-  final bool isVendor;
+  final String? avatarUrl;
 
   EventPerson toDomain() => EventPerson(
     id: id,
-    name: name,
+    // New accounts have no display name yet.
+    name: (name ?? '').isEmpty ? '@${handle ?? 'guest'}' : name!,
     handle: handle,
-    avatar: avatar?.toDomain(),
-    isVendor: isVendor,
+    avatar: _image(avatarUrl),
+    isVendor: type == 'vendor',
   );
 }
 
+/// `EventResource`.
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class EventDto {
   EventDto({
@@ -72,18 +61,16 @@ class EventDto {
     required this.type,
     required this.title,
     required this.startsAt,
+    required this.endsAt,
     required this.venue,
-    required this.guestCount,
     required this.visibility,
-    required this.hostId,
-    required this.createdAt,
-    this.description = '',
-    this.endsAt,
-    this.cover,
-    this.coHostIds = const [],
-    this.rsvpCounts = const {},
-    this.viewerRole,
-    this.viewerRsvp,
+    required this.host,
+    this.description,
+    this.coverUrl,
+    this.guestCount,
+    this.counts = const {},
+    this.myRsvp,
+    this.isHost = false,
   });
 
   factory EventDto.fromJson(Map<String, dynamic> json) =>
@@ -92,136 +79,170 @@ class EventDto {
   final String id;
   final EventType type;
   final String title;
-  final String description;
+  final String? description;
+  final String? coverUrl;
   final DateTime startsAt;
-  final DateTime? endsAt;
+  final DateTime endsAt;
   final Map<String, dynamic> venue;
-  final int guestCount;
+  final int? guestCount;
   final EventVisibility visibility;
-  final ImageDto? cover;
-  final String hostId;
-  final List<String> coHostIds;
-  final Map<String, int> rsvpCounts;
-  final String? viewerRole;
-  final RsvpStatus? viewerRsvp;
-  final DateTime createdAt;
+  final ActorDto host;
+  final Map<String, int?> counts;
+  final RsvpStatus? myRsvp;
+  final bool isHost;
 
   Event toDomain() => Event(
     id: id,
     type: type,
     title: title,
-    description: description,
-    startsAt: startsAt,
-    endsAt: endsAt,
+    description: description ?? '',
+    startsAt: startsAt.toLocal(),
+    endsAt: endsAt.toLocal(),
     venue: EventVenue(
-      name: venue['name'] as String,
+      name: venue['name'] as String? ?? '',
       city: venue['city'] as String? ?? '',
       address: venue['address'] as String?,
     ),
-    guestCount: guestCount,
+    guestCount: guestCount ?? 0,
     visibility: visibility,
-    cover: cover?.toDomain(),
-    hostId: hostId,
-    coHostIds: coHostIds,
+    cover: _image(coverUrl),
+    hostId: host.id,
     rsvpCounts: RsvpCounts(
-      going: rsvpCounts['going'] ?? 0,
-      maybe: rsvpCounts['maybe'] ?? 0,
-      declined: rsvpCounts['declined'] ?? 0,
-      invited: rsvpCounts['invited'] ?? 0,
+      going: counts['going'] ?? 0,
+      maybe: counts['maybe'] ?? 0,
+      declined: counts['declined'] ?? 0,
     ),
-    viewerRole: viewerRole == null
-        ? ViewerRole.none
-        : _enumBySnake(ViewerRole.values, viewerRole!, ViewerRole.none),
-    viewerRsvp: viewerRsvp,
-    createdAt: createdAt,
+    viewerRole: isHost
+        ? ViewerRole.host
+        : myRsvp != null
+        ? ViewerRole.guest
+        : ViewerRole.none,
+    viewerRsvp: myRsvp,
   );
 }
 
+/// `UserResource`, as embedded in a member row.
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
-class GuestDto {
-  GuestDto({required this.user, required this.status});
+class MemberUserDto {
+  MemberUserDto({
+    required this.id,
+    this.handle,
+    this.displayName,
+    this.avatarUrl,
+  });
 
-  factory GuestDto.fromJson(Map<String, dynamic> json) =>
-      _$GuestDtoFromJson(json);
+  factory MemberUserDto.fromJson(Map<String, dynamic> json) =>
+      _$MemberUserDtoFromJson(json);
 
-  final PersonDto user;
-  final RsvpStatus status;
+  final String id;
+  final String? handle;
+  final String? displayName;
+  final String? avatarUrl;
+
+  EventPerson toDomain() => ActorDto(
+    id: id,
+    name: displayName,
+    handle: handle,
+    avatarUrl: avatarUrl,
+  ).toDomain();
 }
 
-/// `GET /v1/events/{id}`: the event resource plus embedded people.
-class EventDetailDto {
-  EventDetailDto.fromJson(Map<String, dynamic> json)
-    : event = EventDto.fromJson(json),
-      host = PersonDto.fromJson(json['host'] as Map<String, dynamic>),
-      coHosts = [
-        for (final p in json['co_hosts'] as List? ?? const [])
-          PersonDto.fromJson(p as Map<String, dynamic>),
-      ],
-      guests = [
-        for (final g in json['guests'] as List? ?? const [])
-          GuestDto.fromJson(g as Map<String, dynamic>),
-      ];
+/// `GET /v1/events/{id}/members` row. `role` is host, cohost or guest.
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
+class MemberDto {
+  MemberDto({required this.role, required this.rsvp, required this.user});
 
-  final EventDto event;
-  final PersonDto host;
-  final List<PersonDto> coHosts;
-  final List<GuestDto> guests;
+  factory MemberDto.fromJson(Map<String, dynamic> json) =>
+      _$MemberDtoFromJson(json);
 
-  EventDetail toDomain() => EventDetail(
-    event: event.toDomain(),
-    host: host.toDomain(),
-    coHosts: [for (final p in coHosts) p.toDomain()],
+  final String role;
+  final RsvpStatus rsvp;
+  final MemberUserDto user;
+}
+
+/// The event page's header: the event plus its members, from two calls.
+/// The server reports co-hosts as `is_host` too, so they get
+/// [ViewerRole.host]; the app treats both the same.
+EventDetail eventDetailFrom(EventDto event, List<MemberDto> members) {
+  final coHosts = [
+    for (final m in members)
+      if (m.role == 'cohost') m.user,
+  ];
+  return EventDetail(
+    event: event.toDomain().copyWith(
+      coHostIds: [for (final u in coHosts) u.id],
+    ),
+    host: event.host.toDomain(),
+    coHosts: [for (final u in coHosts) u.toDomain()],
     guests: [
-      for (final g in guests)
-        EventGuest(person: g.user.toDomain(), status: g.status),
+      for (final m in members)
+        if (m.role == 'guest')
+          EventGuest(person: m.user.toDomain(), status: m.rsvp),
     ],
   );
 }
 
+/// One photo or video in a post: `{ url, type, w, h, blurhash }`.
+@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
+class PostMediaDto {
+  PostMediaDto({required this.url, this.w, this.h, this.blurhash});
+
+  factory PostMediaDto.fromJson(Map<String, dynamic> json) =>
+      _$PostMediaDtoFromJson(json);
+
+  final String url;
+  final int? w;
+  final int? h;
+  final String? blurhash;
+
+  EventImage toDomain() =>
+      EventImage(url: url, width: w, height: h, blurhash: blurhash);
+}
+
+/// `PostPresenter` output.
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class EventPostDto {
   EventPostDto({
     required this.id,
-    required this.author,
     required this.createdAt,
-    this.caption = '',
+    this.author,
+    this.caption,
     this.media = const [],
-    this.likeCount = 0,
-    this.commentCount = 0,
+    this.counts = const {},
   });
 
   factory EventPostDto.fromJson(Map<String, dynamic> json) =>
       _$EventPostDtoFromJson(json);
 
   final String id;
-  final PersonDto author;
-  final String caption;
-  final List<ImageDto> media;
-  final int likeCount;
-  final int commentCount;
+  final ActorDto? author;
+  final String? caption;
+  final List<PostMediaDto> media;
+  final Map<String, int?> counts;
   final DateTime createdAt;
 
   EventPost toDomain() => EventPost(
     id: id,
-    author: author.toDomain(),
-    caption: caption,
+    author:
+        author?.toDomain() ??
+        const EventPerson(id: '', name: 'Deleted account'),
+    caption: caption ?? '',
     media: [for (final m in media) m.toDomain()],
-    likeCount: likeCount,
-    commentCount: commentCount,
-    createdAt: createdAt,
+    likeCount: counts['likes'] ?? 0,
+    commentCount: counts['comments'] ?? 0,
+    createdAt: createdAt.toLocal(),
   );
 }
 
+/// `BookingResource`, as the host sees it on their event.
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
 class EventBookingDto {
   EventBookingDto({
     required this.id,
-    required this.vendor,
     required this.status,
-    required this.startsOn,
-    required this.endsOn,
-    required this.totalMinor,
-    required this.currency,
+    required this.window,
+    required this.totals,
+    this.vendor = const {},
     this.lines = const [],
   });
 
@@ -229,60 +250,31 @@ class EventBookingDto {
       _$EventBookingDtoFromJson(json);
 
   final String id;
-  final PersonDto vendor;
   final String status;
-  final DateTime startsOn;
-  final DateTime endsOn;
-  final int totalMinor;
-  final String currency;
+  final Map<String, dynamic> vendor;
+  final Map<String, dynamic> window;
+  final Map<String, dynamic> totals;
   final List<Map<String, dynamic>> lines;
 
   EventBooking toDomain() => EventBooking(
     id: id,
-    vendor: vendor.toDomain(),
+    vendor: ActorDto(
+      id: vendor['id'] as String? ?? '',
+      type: 'vendor',
+      name: vendor['name'] as String?,
+      handle: vendor['handle'] as String?,
+      avatarUrl: vendor['logo_url'] as String?,
+    ).toDomain(),
     status: _enumBySnake(
       BookingStatus.values,
       status,
       BookingStatus.pendingVendor,
     ),
-    startsOn: startsOn,
-    endsOn: endsOn,
-    totalMinor: totalMinor,
-    currency: currency,
+    startsOn: DateTime.parse(window['start'] as String).toLocal(),
+    endsOn: DateTime.parse(window['end'] as String).toLocal(),
+    totalMinor: totals['total_minor'] as int? ?? 0,
+    currency: totals['currency'] as String? ?? 'GHS',
     itemTitles: [for (final l in lines) l['title'] as String],
-    itemQuantity: lines.fold(0, (sum, l) => sum + (l['quantity'] as int)),
+    itemQuantity: lines.fold(0, (sum, l) => sum + (l['qty'] as int? ?? 0)),
   );
-}
-
-/// `GET /v1/events/{id}/plan`: `{ bookings: [...], cart: { lines, currency } }`.
-class EventPlanDto {
-  EventPlanDto.fromJson(Map<String, dynamic> json)
-    : bookings = [
-        for (final b in json['bookings'] as List? ?? const [])
-          EventBookingDto.fromJson(b as Map<String, dynamic>),
-      ],
-      cart = json['cart'] as Map<String, dynamic>? ?? const {};
-
-  final List<EventBookingDto> bookings;
-  final Map<String, dynamic> cart;
-
-  EventPlan toDomain() {
-    final currency = cart['currency'] as String? ?? 'GHS';
-    return EventPlan(
-      bookings: [for (final b in bookings) b.toDomain()],
-      cart: [
-        for (final l
-            in (cart['lines'] as List? ?? const [])
-                .cast<Map<String, dynamic>>())
-          EventCartLine(
-            itemId: l['item_id'] as String,
-            title: l['title'] as String,
-            vendorName: l['vendor_name'] as String,
-            quantity: l['quantity'] as int,
-            lineTotalMinor: l['line_total_minor'] as int,
-            currency: currency,
-          ),
-      ],
-    );
-  }
 }

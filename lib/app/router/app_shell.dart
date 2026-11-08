@@ -40,19 +40,28 @@ class AppShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: _onSelect,
-        destinations: [
-          for (final d in destinations)
-            NavigationDestination(
-              icon: Icon(d.icon),
-              selectedIcon: Icon(d.selectedIcon),
-              label: d.label,
-            ),
-        ],
+    final onFirstTab = navigationShell.currentIndex == 0;
+    // System back on another tab goes to the first tab; only there does it
+    // leave the app. Screens pushed inside a tab are popped before this.
+    return PopScope(
+      canPop: onFirstTab,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) navigationShell.goBranch(0);
+      },
+      child: Scaffold(
+        body: navigationShell,
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: navigationShell.currentIndex,
+          onDestinationSelected: _onSelect,
+          destinations: [
+            for (final d in destinations)
+              NavigationDestination(
+                icon: Icon(d.icon),
+                selectedIcon: Icon(d.selectedIcon),
+                label: d.label,
+              ),
+          ],
+        ),
       ),
     );
   }

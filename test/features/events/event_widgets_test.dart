@@ -18,7 +18,6 @@ Event _event({ViewerRole role = ViewerRole.guest, RsvpStatus? rsvp}) => Event(
   guestCount: 80,
   visibility: EventVisibility.public,
   hostId: 'h1',
-  createdAt: DateTime.utc(2030),
   rsvpCounts: const RsvpCounts(going: 31, maybe: 11, declined: 1),
   viewerRole: role,
   viewerRsvp: rsvp,

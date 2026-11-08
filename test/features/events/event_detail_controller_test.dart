@@ -24,7 +24,6 @@ void main() {
       guestCount: 100,
       visibility: EventVisibility.guests,
       hostId: 'h1',
-      createdAt: DateTime.utc(2029),
       rsvpCounts: const RsvpCounts(going: 10, invited: 5),
       viewerRole: ViewerRole.guest,
       viewerRsvp: RsvpStatus.invited,

@@ -2,13 +2,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Mock",
-      "request": "launch",
-      "type": "dart",
-      "program": "lib/main.dart",
-      "args": ["--dart-define=USE_MOCKS=true"]
-    },
-    {
       "name": "Dev (.env.dev)",
       "request": "launch",
       "type": "dart",

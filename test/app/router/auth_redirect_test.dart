@@ -85,6 +85,60 @@ void main() {
     test('reaches account screens', () {
       expect(_redirect(AuthStatus.signedIn, Routes.myEvents), isNull);
     });
+
+    test('leaves the welcome screen for where they were going', () {
+      expect(
+        authRedirect(
+          status: AuthStatus.signedIn,
+          location: Routes.completeProfile,
+          uri: Uri.parse(Routes.completeProfileFrom(Routes.myEvents)),
+        ),
+        Routes.myEvents,
+      );
+    });
+  });
+
+  group('new account without a name', () {
+    test('goes from the code screen to welcome, keeping `from`', () {
+      expect(
+        authRedirect(
+          status: AuthStatus.needsProfile,
+          location: Routes.verifyCode,
+          uri: Uri.parse(
+            Routes.verifyCodeFor(phone: '+233241234567', from: Routes.myEvents),
+          ),
+        ),
+        Routes.completeProfileFrom(Routes.myEvents),
+      );
+    });
+
+    test('cannot skip welcome, even for public screens', () {
+      for (final location in [
+        Routes.feed,
+        Routes.event('e1'),
+        Routes.profile,
+      ]) {
+        expect(
+          _redirect(AuthStatus.needsProfile, location),
+          Routes.completeProfileFrom(location),
+          reason: location,
+        );
+      }
+    });
+
+    test('stays on welcome', () {
+      expect(
+        _redirect(AuthStatus.needsProfile, Routes.completeProfile),
+        isNull,
+      );
+    });
+  });
+
+  test('signed out, welcome is an account screen', () {
+    expect(
+      _redirect(AuthStatus.signedOut, Routes.completeProfile),
+      Routes.signInFrom(Routes.completeProfile),
+    );
   });
 
   test('does nothing while the session is still being restored', () {

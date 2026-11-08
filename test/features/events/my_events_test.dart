@@ -23,7 +23,6 @@ void main() {
       guestCount: 10,
       visibility: EventVisibility.guests,
       hostId: 'h1',
-      createdAt: DateTime.utc(2030),
       viewerRole: role,
       viewerRsvp: role == ViewerRole.guest ? rsvp : null,
     );

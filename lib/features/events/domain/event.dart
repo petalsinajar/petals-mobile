@@ -74,7 +74,6 @@ abstract class Event with _$Event {
     required int guestCount,
     required EventVisibility visibility,
     required String hostId,
-    required DateTime createdAt,
     @Default('') String description,
     DateTime? endsAt,
     EventImage? cover,

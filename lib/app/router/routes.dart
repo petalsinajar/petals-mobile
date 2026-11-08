@@ -7,6 +7,14 @@ abstract final class Routes {
   static const myEvents = '/my-events';
   static const profile = '/profile';
 
+  // Inside the Profile tab, so the bottom bar stays.
+  static const profileEdit = '/profile/edit';
+  static const profileSettings = '/profile/settings';
+  static const dashboardSignIn = '/profile/dashboard-sign-in';
+
+  /// Full screen: "Start a business".
+  static const startBusiness = '/business/new';
+
   static const List<String> userTabs = [
     feed,
     discover,
@@ -23,9 +31,16 @@ abstract final class Routes {
   static const vendorInventory = '/vendor/inventory';
   static const vendorProfile = '/vendor/profile';
 
-  // Sign in. Both carry `?from=` — where to go once signed in.
+  // Sign in, then (new accounts) a name. All carry `?from=` — where to go
+  // once done.
   static const signIn = '/sign-in';
   static const verifyCode = '/sign-in/verify';
+  static const completeProfile = '/welcome';
+
+  static String completeProfileFrom(String? from) => Uri(
+    path: completeProfile,
+    queryParameters: {'from': ?from},
+  ).toString();
 
   static String signInFrom(String? from) => Uri(
     path: signIn,

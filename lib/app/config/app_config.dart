@@ -7,9 +7,16 @@ enum AppFlavor { dev, staging, prod }
 /// Build-time configuration, read from `--dart-define`s — usually supplied as a
 /// whole file: `--dart-define-from-file=.env.dev` (template: `.env.example`).
 ///
-/// * `USE_MOCKS` (default `true`) — repositories use seed JSON instead of Dio.
-/// * `API_BASE_URL` — Laravel host, without `/v1`. Required when not mocking.
+/// * `USE_MOCKS` (default `false`) — `true` swaps every repository for seed
+///   JSON held in memory (demo data, reset on restart, shown with a DEMO
+///   ribbon).
+/// * `API_BASE_URL` — Laravel host, without `/v1` (default
+///   [liveApiBaseUrl]).
 /// * `FLAVOR` — `dev` | `staging` | `prod` (default `dev`).
+///
+/// The defaults are the live API, so a build made without an .env file —
+/// a plain `flutter run`, or the app reopened from the home screen — never
+/// quietly shows demo data.
 class AppConfig {
   AppConfig({
     required this.useMocks,
@@ -22,8 +29,11 @@ class AppConfig {
   /// Reads the dart-defines. They are compile-time constants, so they must be
   /// read in a const context — which is why they live in this factory.
   factory AppConfig.fromEnvironment() {
-    const useMocks = bool.fromEnvironment('USE_MOCKS', defaultValue: true);
-    const apiBaseUrl = String.fromEnvironment('API_BASE_URL');
+    const useMocks = bool.fromEnvironment('USE_MOCKS');
+    const apiBaseUrl = String.fromEnvironment(
+      'API_BASE_URL',
+      defaultValue: liveApiBaseUrl,
+    );
     const flavor = String.fromEnvironment('FLAVOR', defaultValue: 'dev');
     return AppConfig(
       useMocks: useMocks,
@@ -31,6 +41,9 @@ class AppConfig {
       flavor: AppFlavor.values.asNameMap()[flavor] ?? AppFlavor.dev,
     );
   }
+
+  /// The production API host, used when no `API_BASE_URL` is given.
+  static const liveApiBaseUrl = 'https://petalsinajar.com';
 
   final bool useMocks;
   final String apiBaseUrl;

@@ -11,7 +11,7 @@ The backend is Laravel (REST `/v1`, Sanctum bearer tokens, Reverb for real-time)
    - `data/` — DTOs with json_serializable, a `remote` source (Dio), a `mock` source (seed JSON), and the repository implementation.
    - `presentation/` — screens, widgets, and Riverpod controllers/providers.
 2. **Features never import another feature's `data/` or `presentation/` internals.** Cross-feature needs go through `domain/` interfaces or shared widgets in `lib/core/`.
-3. **Repositories are swapped by one flag.** `AppConfig.useMocks` (from `--dart-define=USE_MOCKS=true`) decides whether providers return the mock or remote implementation. Screens never know which.
+3. **Repositories are swapped by one flag.** `AppConfig.useMocks` (from `--dart-define=USE_MOCKS=true`) decides whether providers return the mock or remote implementation. Screens never know which. The default is the live API (`https://petalsinajar.com`); demo data is opt-in, in-memory, and shown with a DEMO ribbon. Mock sources must emit the backend's exact JSON so one set of DTOs parses both.
 4. **State with Riverpod + code generation** (`@riverpod`). Async screens use `AsyncValue` with consistent loading (skeletons), error (retry) and empty states from `lib/core/widgets/`.
 5. **Navigation only through go_router** with typed route constants in `lib/app/router/routes.dart`. Every shareable screen (event, post, item, vendor, profile) has a deep-linkable path.
 6. **Models mirror the backend.** Same field names (camelCase in Dart, mapped from the API's JSON keys), ids as `String`, money as `int amountMinor` + `String currency` — never doubles. Format money only in the UI via `core/utils/money.dart`.

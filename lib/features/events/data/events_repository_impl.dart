@@ -23,6 +23,10 @@ class EventsRepositoryImpl implements EventsRepository {
 
   final EventsSource _source;
 
+  /// Lists the app shows whole (My Events, guest lists) stop after this many
+  /// pages, so a huge list can't stall a screen.
+  static const _maxPages = 10;
+
   /// Malformed payloads surface as [ApiException]s, like network errors.
   Future<T> _parse<T>(Future<T> Function() run) async {
     try {
@@ -34,17 +38,43 @@ class EventsRepositoryImpl implements EventsRepository {
     }
   }
 
+  /// Every row of a cursor-paginated list, up to [_maxPages] pages.
+  Future<List<Json>> _all(Future<Json> Function(String? cursor) page) async {
+    final rows = <Json>[];
+    String? cursor;
+    for (var i = 0; i < _maxPages; i++) {
+      final body = await page(cursor);
+      rows.addAll((body['data'] as List? ?? const []).cast<Json>());
+      cursor = body['next_cursor'] as String?;
+      if (cursor == null) break;
+    }
+    return rows;
+  }
+
   @override
   Future<List<Event>> myEvents() => _parse(() async {
-    final rows = await _source.myEvents();
-    return [for (final r in rows) EventDto.fromJson(r).toDomain()];
+    // The server splits by end time; the screen re-buckets by role and RSVP.
+    final [upcoming, past] = await Future.wait([
+      _all((c) => _source.myEvents(scope: 'upcoming', cursor: c)),
+      _all((c) => _source.myEvents(scope: 'past', cursor: c)),
+    ]);
+    return [
+      for (final r in [...upcoming, ...past]) EventDto.fromJson(r).toDomain(),
+    ];
   });
 
   @override
-  Future<EventDetail> detail(String eventId) => _parse(
-    () async =>
-        EventDetailDto.fromJson(await _source.detail(eventId)).toDomain(),
-  );
+  Future<EventDetail> detail(String eventId) => _parse(() async {
+    // Future.wait, not a record's `.wait`: that wraps failures in a
+    // ParallelWaitError, and a 404 must stay a 404.
+    final [event as Json, members as List<Json>] = await Future.wait<Object>([
+      _source.detail(eventId),
+      _all((c) => _source.members(eventId, cursor: c)),
+    ]);
+    return eventDetailFrom(EventDto.fromJson(event), [
+      for (final m in members) MemberDto.fromJson(m),
+    ]);
+  });
 
   @override
   Future<Paginated<EventPost>> feed(String eventId, {String? cursor}) =>
@@ -57,38 +87,47 @@ class EventsRepositoryImpl implements EventsRepository {
       });
 
   @override
-  Future<EventPlan> plan(String eventId) => _parse(
-    () async => EventPlanDto.fromJson(await _source.plan(eventId)).toDomain(),
-  );
+  Future<EventPlan> plan(String eventId) => _parse(() async {
+    final rows = await _all((c) => _source.bookings(eventId, cursor: c));
+    // The cart lands with checkout; until then a plan is its bookings.
+    return EventPlan(
+      bookings: [for (final b in rows) EventBookingDto.fromJson(b).toDomain()],
+    );
+  });
 
   @override
   Future<Event> create(EventDraft draft) => _parse(() async {
-    final fields = {
+    final coverUrl = switch (draft.coverPath) {
+      final path? => (await _source.uploadImage(path))['url'] as String,
+      null => null,
+    };
+    final startsAt = draft.startsAt!;
+    String? optional(String value) =>
+        value.trim().isEmpty ? null : value.trim();
+
+    final json = await _source.create({
       'type': draft.type!.name,
       'title': draft.title.trim(),
-      'description': '',
-      'starts_at': draft.startsAt!.toUtc().toIso8601String(),
-      if (draft.endsAt case final ends?)
-        'ends_at': ends.toUtc().toIso8601String(),
-      'venue': {
-        'name': draft.venueName.trim(),
-        'city': draft.venueCity.trim(),
-        if (draft.venueAddress.trim().isNotEmpty)
-          'address': draft.venueAddress.trim(),
-      },
+      'starts_at': startsAt.toUtc().toIso8601String(),
+      'ends_at': draft.effectiveEndsAt.toUtc().toIso8601String(),
+      'timezone': 'Africa/Accra',
+      'venue_name': draft.venueName.trim(),
+      'venue_city': draft.venueCity.trim(),
+      'venue_address': ?optional(draft.venueAddress),
       'guest_count': draft.guestCount,
       'visibility': draft.visibility.name,
-    };
-    final json = await _source.create(fields, coverPath: draft.coverPath);
+      'cover_url': ?coverUrl,
+    });
     return EventDto.fromJson(json).toDomain();
   });
 
   @override
-  Future<EventDetail> rsvp(String eventId, RsvpStatus status) => _parse(
-    () async => EventDetailDto.fromJson(
-      await _source.rsvp(eventId, enumToSnake(status)),
-    ).toDomain(),
-  );
+  Future<EventDetail> rsvp(String eventId, RsvpStatus status) =>
+      _parse(() async {
+        await _source.rsvp(eventId, status.name);
+        // The server answers with just the RSVP; reload counts and guests.
+        return detail(eventId);
+      });
 }
 
 @Riverpod(keepAlive: true)

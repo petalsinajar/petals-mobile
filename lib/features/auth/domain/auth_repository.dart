@@ -12,6 +12,28 @@ abstract interface class AuthRepository {
   /// server rejects; rethrows other failures (e.g. offline) and keeps them.
   Future<Me?> restore();
 
+  /// Saves the name (and, if given, a new handle) a new account picks.
+  Future<Me> updateProfile({required String displayName, String? handle});
+
+  /// Saves an edit to the profile and returns the updated user. A taken or
+  /// invalid handle is an `ApiException` with a `handle` field error.
+  Future<Me> updateMe(ProfileChanges changes);
+
+  /// Uploads a new profile photo and returns its URL, to save with
+  /// [updateMe] as `avatarUrl`.
+  Future<String> uploadPhoto(String path);
+
+  /// Email and password for the vendors' web dashboard
+  /// (petalsinajar.com/vendor). The app itself signs in by phone. An email
+  /// already in use is an `ApiException` with an `email` field error.
+  Future<void> setDashboardSignIn({
+    required String email,
+    required String password,
+  });
+
+  /// Whether [handle] is free to claim. The user's own handle counts as taken.
+  Future<bool> isHandleAvailable(String handle);
+
   /// Signs this device out. Always clears local tokens, even offline.
   Future<void> signOut();
 }

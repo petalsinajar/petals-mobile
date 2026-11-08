@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, '13.0'
+platform :ios, '15.0' # firebase_core needs iOS 15
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -33,6 +33,15 @@ target 'Runner' do
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
   target 'RunnerTests' do
     inherit! :search_paths
+  end
+
+  # Rich pushes, Confirmed Delivery and badges. Exactly the pod the app gets
+  # from onesignal_flutter 5.5.2 (whole OneSignalXCFramework, 5.5.1): a
+  # subspec here would make a second pod variant copying the same frameworks
+  # ("Multiple commands produce OneSignalCore.framework").
+  target 'OneSignalNotificationServiceExtension' do
+    inherit! :search_paths
+    pod 'OneSignalXCFramework', '5.5.1'
   end
 end
 

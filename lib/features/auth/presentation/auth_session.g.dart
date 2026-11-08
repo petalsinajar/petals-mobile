@@ -39,7 +39,7 @@ final class AuthSessionProvider
   AuthSession create() => AuthSession();
 }
 
-String _$authSessionHash() => r'acbe526ba088111aec9920844b5b4088003afbf7';
+String _$authSessionHash() => r'f62592f3129cd45c778a7dddb0e31277fab796ee';
 
 /// Who is signed in: `null` when signed out. Restored from stored tokens
 /// on launch; signs out by itself when the API reports the session expired.

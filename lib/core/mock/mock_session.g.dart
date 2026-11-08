@@ -11,8 +11,9 @@ part of 'mock_session.dart';
 /// The seed user mock sources treat as signed in (Ama Mensah: hosts a
 /// wedding, attends several events, owns a vendor).
 ///
-/// Mock-only: with the real API the server knows who's calling. Replaced by
-/// the auth session's `me` once auth lands.
+/// Mock-only: with the real API the server knows who's calling. Signing in
+/// with the mock auth source always signs in as this user, so the session's
+/// `me` and the other mock sources agree.
 
 @ProviderFor(mockViewerId)
 final mockViewerIdProvider = MockViewerIdProvider._();
@@ -20,8 +21,9 @@ final mockViewerIdProvider = MockViewerIdProvider._();
 /// The seed user mock sources treat as signed in (Ama Mensah: hosts a
 /// wedding, attends several events, owns a vendor).
 ///
-/// Mock-only: with the real API the server knows who's calling. Replaced by
-/// the auth session's `me` once auth lands.
+/// Mock-only: with the real API the server knows who's calling. Signing in
+/// with the mock auth source always signs in as this user, so the session's
+/// `me` and the other mock sources agree.
 
 final class MockViewerIdProvider
     extends $FunctionalProvider<String, String, String>
@@ -29,8 +31,9 @@ final class MockViewerIdProvider
   /// The seed user mock sources treat as signed in (Ama Mensah: hosts a
   /// wedding, attends several events, owns a vendor).
   ///
-  /// Mock-only: with the real API the server knows who's calling. Replaced by
-  /// the auth session's `me` once auth lands.
+  /// Mock-only: with the real API the server knows who's calling. Signing in
+  /// with the mock auth source always signs in as this user, so the session's
+  /// `me` and the other mock sources agree.
   MockViewerIdProvider._()
     : super(
         from: null,

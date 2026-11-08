@@ -13,6 +13,13 @@ abstract class Me with _$Me {
     /// Empty for accounts created by a first sign-in.
     @Default('') String displayName,
     String? avatarUrl,
+    String? bio,
+    String? city,
+
+    /// Only approved followers see their posts.
+    @Default(false) bool isPrivate,
+    @Default(MeCounts()) MeCounts counts,
+    @Default(NotifySettings()) NotifySettings notify,
 
     /// True until the user has set a display name.
     @Default(false) bool needsProfile,
@@ -20,6 +27,43 @@ abstract class Me with _$Me {
     /// Businesses the user can act as in vendor mode.
     @Default(<MeVendor>[]) List<MeVendor> vendors,
   }) = _Me;
+}
+
+@freezed
+abstract class MeCounts with _$MeCounts {
+  const factory MeCounts({
+    @Default(0) int followers,
+    @Default(0) int following,
+    @Default(0) int posts,
+  }) = _MeCounts;
+}
+
+/// Which notifications the user gets. Unset means on, as the server reads
+/// `settings.notify.*`.
+@freezed
+abstract class NotifySettings with _$NotifySettings {
+  const factory NotifySettings({
+    @Default(true) bool push,
+    @Default(true) bool sms,
+
+    /// Vendor suggestions for upcoming events.
+    @Default(true) bool suggestions,
+  }) = _NotifySettings;
+}
+
+/// An edit to the signed-in user's profile. Only the fields that are set
+/// are sent; an empty string clears a text field.
+@freezed
+abstract class ProfileChanges with _$ProfileChanges {
+  const factory ProfileChanges({
+    String? displayName,
+    String? handle,
+    String? bio,
+    String? city,
+    String? avatarUrl,
+    bool? isPrivate,
+    NotifySettings? notify,
+  }) = _ProfileChanges;
 }
 
 @freezed

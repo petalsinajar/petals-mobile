@@ -73,6 +73,52 @@ void main() {
       await tokens.write(_signedIn);
       expect((await repo.restore())?.id, _ama);
     });
+
+    test('any other number is a new account that needs a name', () async {
+      final me = await repo.verify(phone: '+233241234567', code: '123456');
+
+      expect(me.needsProfile, isTrue);
+      expect(me.displayName, isEmpty);
+      expect(me.handle, 'user4567');
+      expect(me.vendors, isEmpty);
+    });
+
+    test('saving a name and handle completes the profile', () async {
+      await repo.verify(phone: '+233241234567', code: '123456');
+
+      final me = await repo.updateProfile(
+        displayName: 'Kwame Boateng',
+        handle: 'kwame.b',
+      );
+
+      expect(me.needsProfile, isFalse);
+      expect(me.displayName, 'Kwame Boateng');
+      expect(me.handle, 'kwame.b');
+      expect((await repo.restore())?.displayName, 'Kwame Boateng');
+    });
+
+    test('a taken handle is a validation error on `handle`', () async {
+      await repo.verify(phone: '+233241234567', code: '123456');
+
+      await expectLater(
+        repo.updateProfile(displayName: 'Kwame', handle: 'amamensah'),
+        throwsA(
+          isA<ApiException>().having(
+            (e) => e.fieldError('handle'),
+            'handle',
+            'That handle is already taken.',
+          ),
+        ),
+      );
+    });
+
+    test('handle availability', () async {
+      await repo.verify(phone: '+233241234567', code: '123456');
+
+      expect(await repo.isHandleAvailable('kwame.b'), isTrue);
+      expect(await repo.isHandleAvailable('@AmaMensah'), isFalse);
+      expect(await repo.isHandleAvailable('admin'), isFalse);
+    });
   });
 
   group('failure paths', () {

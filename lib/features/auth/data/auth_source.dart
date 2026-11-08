@@ -17,6 +17,20 @@ abstract interface class AuthSource {
   /// `GET /v1/me` → me.
   Future<Json> me();
 
+  /// `PATCH /v1/me` with only the fields to change → me. A taken or invalid
+  /// `handle` is a 422 on `handle`.
+  Future<Json> updateMe(Json fields);
+
+  /// `POST /v1/uploads` multipart `file` → `{ url, width, height }`.
+  Future<Json> uploadImage(String path);
+
+  /// `PUT /v1/me/dashboard-credentials` `{ email, password }` → `{ message }`.
+  Future<Json> setDashboardCredentials(String email, String password);
+
+  /// `GET /v1/handles/{handle}/available` → `{ handle, available }`. The
+  /// caller's own handle counts as taken.
+  Future<Json> handleAvailable(String handle);
+
   /// `POST /v1/auth/logout` — revokes this device's tokens.
   Future<void> logout();
 }

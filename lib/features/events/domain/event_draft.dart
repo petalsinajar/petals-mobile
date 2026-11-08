@@ -27,6 +27,9 @@ abstract class EventDraft with _$EventDraft {
 
   const EventDraft._();
 
+  /// How long an event runs when the host keeps the suggested end.
+  static const defaultLength = Duration(hours: 5);
+
   static const minTitleLength = 3;
   static const maxTitleLength = 80;
   static const maxGuests = 5000;
@@ -46,4 +49,8 @@ abstract class EventDraft with _$EventDraft {
   };
 
   bool get isComplete => EventDraftStep.values.every(isStepValid);
+
+  /// The end the server needs: the picked one, or [defaultLength] after the
+  /// start. Only meaningful once [startsAt] is set.
+  DateTime get effectiveEndsAt => endsAt ?? startsAt!.add(defaultLength);
 }

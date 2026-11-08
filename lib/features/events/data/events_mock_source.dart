@@ -7,9 +7,10 @@ import 'package:petalsinajar/core/network/api_exception.dart';
 import 'package:petalsinajar/features/events/data/events_source.dart';
 import 'package:uuid/uuid.dart';
 
-/// Builds the API's JSON from the seed files, joining users and vendors into
-/// the embedded `host`, `guests`, `author` and `vendor` objects. Creates and
-/// RSVPs live in memory until restart.
+/// Answers with the backend's JSON (`EventResource`, member rows,
+/// `PostPresenter`, `BookingResource`) built from the seed files, so the
+/// same DTOs parse mock and live responses. Creates and RSVPs live in memory
+/// until restart.
 class EventsMockSource implements EventsSource {
   EventsMockSource({
     required SeedLoader seed,
@@ -26,6 +27,7 @@ class EventsMockSource implements EventsSource {
   final String _viewerId;
   final DateTime Function() _clock;
 
+  /// Seed-shaped rows: `host_id`, `co_host_ids`, `guests`, `rsvp_counts`.
   List<Json>? _events;
   late Map<String, Json> _users;
   late Map<String, Json> _vendors;
@@ -55,157 +57,287 @@ class EventsMockSource implements EventsSource {
     );
   }
 
+  /// `ActorResource` for a user.
+  Json _actor(String id) {
+    final u = _users[id];
+    return {
+      'type': 'user',
+      'id': id,
+      'handle': u?['handle'],
+      'name': u?['name'] ?? 'Guest',
+      'avatar_url': (u?['avatar'] as Json?)?['url'],
+      'is_verified': false,
+    };
+  }
+
+  /// `ActorResource` for a vendor.
+  Json _vendorActor(String id) {
+    final v = _vendors[id];
+    return {
+      'type': 'vendor',
+      'id': id,
+      'handle': v?['handle'],
+      'name': v?['name'] ?? 'Vendor',
+      'avatar_url': (v?['logo'] as Json?)?['url'],
+      'is_verified': v?['verified'] ?? false,
+    };
+  }
+
+  /// `UserResource`, as embedded in member rows.
   Json _user(String id) {
     final u = _users[id];
-    if (u == null) return {'id': id, 'name': 'Guest', 'is_vendor': false};
     return {
+      'type': 'user',
       'id': id,
-      'name': u['name'],
-      'handle': u['handle'],
-      'avatar': u['avatar'],
-      'is_vendor': false,
+      'handle': u?['handle'],
+      'display_name': u?['name'] ?? '',
+      'avatar_url': (u?['avatar'] as Json?)?['url'],
     };
   }
 
-  Json _vendor(String id) {
-    final v = _vendors[id];
-    if (v == null) return {'id': id, 'name': 'Vendor', 'is_vendor': true};
-    return {
-      'id': id,
-      'name': v['name'],
-      'handle': v['handle'],
-      'avatar': v['logo'],
-      'is_vendor': true,
-    };
-  }
+  bool _hosts(Json e) =>
+      e['host_id'] == _viewerId ||
+      (e['co_host_ids'] as List).contains(_viewerId);
 
-  /// The event resource as the API returns it, with viewer fields.
-  Json _resource(Json e) {
+  /// How the viewer answered, as `my_rsvp`. Hosts are going.
+  String? _myRsvp(Json e) {
+    if (_hosts(e)) return 'going';
     final guests = (e['guests'] as List).cast<Json>();
-    final mine = guests.where((g) => g['user_id'] == _viewerId).firstOrNull;
-    final role = e['host_id'] == _viewerId
-        ? 'host'
-        : (e['co_host_ids'] as List).contains(_viewerId)
-        ? 'co_host'
-        : mine != null
-        ? 'guest'
-        : 'none';
+    return guests.where((g) => g['user_id'] == _viewerId).firstOrNull?['status']
+        as String?;
+  }
+
+  /// `EventResource`.
+  Json _resource(Json e) {
+    final counts = (e['rsvp_counts'] as Map? ?? const {}).cast<String, int>();
+    final venue = (e['venue'] as Map).cast<String, dynamic>();
     return {
-      for (final MapEntry(:key, :value) in e.entries)
-        if (key != 'guests') key: value,
-      'viewer_role': role,
-      'viewer_rsvp': mine?['status'],
+      'id': e['id'],
+      'type': e['type'],
+      'title': e['title'],
+      'description': e['description'],
+      'cover_url': (e['cover'] as Json?)?['url'],
+      'starts_at': e['starts_at'],
+      'ends_at': e['ends_at'] ?? _defaultEnd(e['starts_at'] as String),
+      'timezone': 'Africa/Accra',
+      'venue': {
+        'name': venue['name'],
+        'address': venue['address'],
+        'city': venue['city'],
+        'lat': null,
+        'lng': null,
+      },
+      'guest_count': e['guest_count'],
+      'currency': 'GHS',
+      'visibility': e['visibility'],
+      'status': 'planning',
+      'host': _actor(e['host_id'] as String),
+      'counts': {
+        'going': counts['going'] ?? 0,
+        'maybe': counts['maybe'] ?? 0,
+        'declined': counts['declined'] ?? 0,
+        'posts': 0,
+        'bookings': 0,
+      },
+      'my_rsvp': ?_myRsvp(e),
+      'is_host': _hosts(e),
     };
   }
 
-  Json _detail(Json e) => {
-    ..._resource(e),
-    'host': _user(e['host_id'] as String),
-    'co_hosts': [
-      for (final id in (e['co_host_ids'] as List).cast<String>()) _user(id),
-    ],
-    'guests': [
-      for (final g in (e['guests'] as List).cast<Json>())
-        {'user': _user(g['user_id'] as String), 'status': g['status']},
-    ],
-  };
+  static String _defaultEnd(String startsAt) => DateTime.parse(
+    startsAt,
+  ).add(const Duration(hours: 6)).toUtc().toIso8601String();
+
+  Json _page(List<Json> rows, String? cursor) {
+    final page = paginateList(rows, cursor: cursor);
+    return {'data': page.items, 'next_cursor': page.nextCursor};
+  }
 
   @override
-  Future<List<Json>> myEvents() async {
+  Future<Json> myEvents({required String scope, String? cursor}) async {
     final events = await _loadEvents();
     await _delay();
-    return [
-      for (final e in events)
-        if (_resource(e)['viewer_role'] != 'none') _resource(e),
-    ];
+    final now = _clock();
+    final past = scope == 'past';
+    final mine =
+        [
+          for (final e in events)
+            if (_myRsvp(e) != null &&
+                DateTime.parse(
+                      _resource(e)['ends_at'] as String,
+                    ).isBefore(now) ==
+                    past)
+              _resource(e),
+        ]..sort((a, b) {
+          final order = '${a['starts_at']}'.compareTo('${b['starts_at']}');
+          return past ? -order : order;
+        });
+    return _page(mine, cursor);
   }
 
   @override
   Future<Json> detail(String eventId) async {
     final e = await _find(eventId);
     await _delay();
-    return _detail(e);
+    return _resource(e);
+  }
+
+  @override
+  Future<Json> members(String eventId, {String? cursor}) async {
+    final e = await _find(eventId);
+    await _delay();
+    return _page([
+      {'role': 'host', 'rsvp': 'going', 'user': _user(e['host_id'] as String)},
+      for (final id in (e['co_host_ids'] as List).cast<String>())
+        {'role': 'cohost', 'rsvp': 'going', 'user': _user(id)},
+      for (final g in (e['guests'] as List).cast<Json>())
+        {
+          'role': 'guest',
+          'rsvp': g['status'],
+          'user': _user(g['user_id'] as String),
+        },
+    ], cursor);
   }
 
   @override
   Future<Json> feed(String eventId, {String? cursor}) async {
-    await _find(eventId);
+    final e = await _find(eventId);
     final posts = await _seed.load('posts');
     final mine = [
       for (final p in posts)
         if (p['event_id'] == eventId) p,
     ]..sort((a, b) => '${b['created_at']}'.compareTo('${a['created_at']}'));
-    final page = paginateList(mine, cursor: cursor);
     await _delay();
-    return {
-      'data': [
-        for (final p in page.items)
+    return _page([
+      for (final p in mine)
+        {
+          'id': p['id'],
+          'author': switch (p['author']) {
+            {'type': 'vendor', 'id': final String id} => _vendorActor(id),
+            {'id': final String id} => _actor(id),
+            _ => null,
+          },
+          'event': {'id': e['id'], 'title': e['title'], 'type': e['type']},
+          'caption': p['caption'],
+          'media': [
+            for (final m in (p['media'] as List).cast<Json>())
+              {
+                'url': m['url'],
+                'type': 'image',
+                'w': m['width'],
+                'h': m['height'],
+                'blurhash': m['blurhash'],
+              },
+          ],
+          'counts': {
+            'likes': p['like_count'] ?? 0,
+            'comments': p['comment_count'] ?? 0,
+            'saves': p['save_count'] ?? 0,
+          },
+          'my_reaction': (p['viewer_has_liked'] ?? false) == true
+              ? 'like'
+              : null,
+          'created_at': p['created_at'],
+        },
+    ], cursor);
+  }
+
+  @override
+  Future<Json> bookings(String eventId, {String? cursor}) async {
+    await _find(eventId);
+    final rows = await _seed.load('bookings');
+    await _delay();
+    return _page([
+      for (final b in rows)
+        if (b['event_id'] == eventId)
           {
-            ...p,
-            'author': switch (p['author']) {
-              {'type': 'vendor', 'id': final String id} => _vendor(id),
-              {'id': final String id} => _user(id),
-              _ => _user(''),
+            'id': b['id'],
+            'event_id': b['event_id'],
+            'vendor_id': b['vendor_id'],
+            'vendor': {
+              'id': b['vendor_id'],
+              'handle': _vendors[b['vendor_id']]?['handle'],
+              'name': _vendors[b['vendor_id']]?['name'],
+              'logo_url': (_vendors[b['vendor_id']]?['logo'] as Json?)?['url'],
+            },
+            'status': b['status'],
+            'lines': [
+              for (final l in (b['lines'] as List).cast<Json>())
+                {
+                  'item_id': l['item_id'],
+                  'title': l['title'],
+                  'qty': l['quantity'],
+                  'line_total_minor': l['line_total_minor'],
+                },
+            ],
+            'window': {
+              'start': '${b['starts_on']}T00:00:00Z',
+              'end': '${b['ends_on']}T23:59:59Z',
+            },
+            'totals': {
+              'total_minor': b['total_minor'],
+              'currency': b['currency'],
             },
           },
-      ],
-      'next_cursor': page.nextCursor,
-    };
+    ], cursor);
   }
 
   @override
-  Future<Json> plan(String eventId) async {
-    await _find(eventId);
-    final bookings = await _seed.load('bookings');
+  Future<Json> uploadImage(String path) async {
     await _delay();
-    return {
-      'bookings': [
-        for (final b in bookings)
-          if (b['event_id'] == eventId)
-            {...b, 'vendor': _vendor(b['vendor_id'] as String)},
-      ],
-      // The cart arrives with Phase 6; until then every event's cart is empty.
-      'cart': {'lines': <Json>[], 'currency': 'GHS'},
-    };
+    // No server: point at the picked file, as the app shows it right away.
+    return {'url': Uri.file(path).toString(), 'width': null, 'height': null};
   }
 
   @override
-  Future<Json> create(Json fields, {String? coverPath}) async {
+  Future<Json> create(Json fields) async {
     final events = await _loadEvents();
     await _delay();
-    final now = _clock().toUtc().toIso8601String();
     final event = <String, dynamic>{
-      ...fields,
       'id': const Uuid().v4(),
+      'type': fields['type'],
+      'title': fields['title'],
+      'description': fields['description'],
+      'starts_at': fields['starts_at'],
+      'ends_at': fields['ends_at'],
+      'venue': {
+        'name': fields['venue_name'],
+        'city': fields['venue_city'],
+        'address': fields['venue_address'],
+      },
+      'guest_count': fields['guest_count'],
+      'visibility': fields['visibility'] ?? 'public',
+      'cover': fields['cover_url'] == null
+          ? null
+          : {'url': fields['cover_url']},
       'host_id': _viewerId,
       'co_host_ids': <String>[],
       'guests': <Json>[],
-      'rsvp_counts': {'going': 0, 'maybe': 0, 'declined': 0, 'invited': 0},
-      'cover': coverPath == null
-          ? null
-          : {'url': Uri.file(coverPath).toString()},
-      'created_at': now,
+      'rsvp_counts': {'going': 1, 'maybe': 0, 'declined': 0},
+      'created_at': _clock().toUtc().toIso8601String(),
     };
     events.add(event);
     return _resource(event);
   }
 
   @override
-  Future<Json> rsvp(String eventId, String status) async {
+  Future<Json> rsvp(String eventId, String rsvp) async {
     final e = await _find(eventId);
     await _delay();
     final guests = (e['guests'] as List).cast<Json>();
     final counts = (e['rsvp_counts'] as Map).cast<String, int>();
     final existing = guests.where((g) => g['user_id'] == _viewerId).firstOrNull;
+    final was = existing?['status'] as String?;
     if (existing != null) {
-      final from = existing['status'] as String;
-      counts[from] = (counts[from] ?? 1) - 1;
-      existing['status'] = status;
+      existing['status'] = rsvp;
     } else {
-      guests.add({'user_id': _viewerId, 'status': status});
+      guests.add({'user_id': _viewerId, 'status': rsvp});
     }
-    counts[status] = (counts[status] ?? 0) + 1;
+    if (was != rsvp) {
+      if (was != null) counts[was] = (counts[was] ?? 1) - 1;
+      counts[rsvp] = (counts[rsvp] ?? 0) + 1;
+    }
     e['rsvp_counts'] = counts;
-    return _detail(e);
+    return {'rsvp': rsvp};
   }
 }

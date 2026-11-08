@@ -82,6 +82,35 @@ class AuthRepositoryImpl implements AuthRepository {
   });
 
   @override
+  Future<Me> updateProfile({required String displayName, String? handle}) =>
+      updateMe(ProfileChanges(displayName: displayName, handle: handle));
+
+  @override
+  Future<Me> updateMe(ProfileChanges changes) => _parse(() async {
+    final body = await _source.updateMe(profileChangesJson(changes));
+    return MeDto.fromJson(body).toDomain();
+  });
+
+  @override
+  Future<String> uploadPhoto(String path) => _parse(
+    () async => (await _source.uploadImage(path))['url'] as String,
+  );
+
+  @override
+  Future<void> setDashboardSignIn({
+    required String email,
+    required String password,
+  }) => _parse(
+    () => _source.setDashboardCredentials(email.trim(), password),
+  );
+
+  @override
+  Future<bool> isHandleAvailable(String handle) => _parse(() async {
+    final body = await _source.handleAvailable(handle);
+    return body['available'] == true;
+  });
+
+  @override
   Future<void> signOut() async {
     try {
       await _source.logout();

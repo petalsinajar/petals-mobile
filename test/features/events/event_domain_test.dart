@@ -66,21 +66,85 @@ void main() {
     });
   });
 
-  test('snake_case enums round-trip', () {
-    expect(enumToSnake(ViewerRole.coHost), 'co_host');
-    final dto = EventDto.fromJson({
+  group("parses the backend's EventResource", () {
+    Map<String, dynamic> resource({
+      bool isHost = false,
+      String? myRsvp,
+      String? coverUrl,
+    }) => {
       'id': 'e1',
       'type': 'corporate',
       'title': 'Launch',
-      'starts_at': '2030-01-01T10:00:00Z',
-      'venue': {'name': 'Kempinski', 'city': 'Accra'},
-      'guest_count': 100,
+      'slug': 'launch-x1y2z3',
+      'description': null,
+      'cover_url': coverUrl,
+      'starts_at': '2030-01-01T10:00:00+00:00',
+      'ends_at': '2030-01-01T15:00:00+00:00',
+      'timezone': 'Africa/Accra',
+      'venue': {
+        'name': 'Kempinski',
+        'address': null,
+        'city': 'Accra',
+        'lat': null,
+        'lng': null,
+      },
+      'guest_count': null,
+      'currency': 'GHS',
       'visibility': 'public',
-      'host_id': 'u1',
-      'created_at': '2029-12-01T10:00:00Z',
-      'viewer_role': 'co_host',
+      'theme': <String, dynamic>{},
+      'status': 'planning',
+      'host': {
+        'type': 'user',
+        'id': 'u1',
+        'handle': 'user4567',
+        'name': '',
+        'avatar_url': null,
+        'is_verified': false,
+      },
+      'counts': {
+        'going': 3,
+        'maybe': 2,
+        'declined': 1,
+        'posts': 0,
+        'bookings': 0,
+      },
+      'my_rsvp': ?myRsvp,
+      'is_host': isHost,
+    };
+
+    test('fields, counts and defaults for nulls', () {
+      final e = EventDto.fromJson(resource()).toDomain();
+
+      expect(e.venue, const EventVenue(name: 'Kempinski', city: 'Accra'));
+      expect(e.rsvpCounts, const RsvpCounts(going: 3, maybe: 2, declined: 1));
+      expect(e.hostId, 'u1');
+      expect(e.description, isEmpty);
+      expect(e.guestCount, 0);
+      expect(e.cover, isNull);
+      expect(e.endsAt!.isAtSameMomentAs(DateTime.utc(2030, 1, 1, 15)), isTrue);
+      expect(e.endsAt!.isUtc, isFalse, reason: 'shown in local time');
     });
-    expect(dto.toDomain().viewerRole, ViewerRole.coHost);
+
+    test('the viewer role comes from is_host and my_rsvp', () {
+      ViewerRole role(Map<String, dynamic> json) =>
+          EventDto.fromJson(json).toDomain().viewerRole;
+
+      expect(role(resource(isHost: true, myRsvp: 'going')), ViewerRole.host);
+      expect(role(resource(myRsvp: 'maybe')), ViewerRole.guest);
+      expect(role(resource()), ViewerRole.none);
+    });
+
+    test('a host without a name yet shows as their @handle', () {
+      final dto = EventDto.fromJson(resource());
+      expect(dto.host.toDomain().name, '@user4567');
+    });
+
+    test('cover_url becomes the cover image', () {
+      final e = EventDto.fromJson(
+        resource(coverUrl: 'https://petalsinajar.com/storage/uploads/a.jpg'),
+      ).toDomain();
+      expect(e.cover?.url, 'https://petalsinajar.com/storage/uploads/a.jpg');
+    });
   });
 
   group('CountdownState', () {
@@ -94,7 +158,6 @@ void main() {
       guestCount: 10,
       visibility: EventVisibility.guests,
       hostId: 'u1',
-      createdAt: DateTime.utc(2029),
     );
 
     test('ticks down in days, hours, minutes, seconds', () {

@@ -25,8 +25,13 @@ void main() {
       expect(config.apiV1Url, 'http://10.0.2.2:8000/v1');
     });
 
-    test('fromEnvironment defaults to mocks when no defines are passed', () {
-      expect(AppConfig.fromEnvironment().useMocks, isTrue);
+    test('with no defines, a build talks to the live API', () {
+      // A plain `flutter run`, or reopening an app built without an .env
+      // file, must not silently fall back to demo data.
+      final config = AppConfig.fromEnvironment();
+      expect(config.useMocks, isFalse);
+      expect(config.apiBaseUrl, AppConfig.liveApiBaseUrl);
+      expect(config.apiV1Url, 'https://petalsinajar.com/v1');
     });
   });
 }

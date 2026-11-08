@@ -160,19 +160,24 @@ class DateTimeStep extends ConsumerWidget {
       time.hour,
       time.minute,
     );
+    // A new start resets the end to the default length; the host can adjust.
     ref
         .read(eventDraftControllerProvider.notifier)
-        .update((d) => d.copyWith(startsAt: start, endsAt: null));
+        .update(
+          (d) => d.copyWith(
+            startsAt: start,
+            endsAt: start.add(EventDraft.defaultLength),
+          ),
+        );
   }
 
   Future<void> _pickEnd(BuildContext context, WidgetRef ref) async {
-    final start = ref.read(eventDraftControllerProvider).startsAt;
+    final draft = ref.read(eventDraftControllerProvider);
+    final start = draft.startsAt;
     if (start == null) return;
     final time = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.fromDateTime(
-        start.add(const Duration(hours: 6)),
-      ),
+      initialTime: TimeOfDay.fromDateTime(draft.effectiveEndsAt),
     );
     if (time == null) return;
     var end = DateTime(
@@ -193,7 +198,7 @@ class DateTimeStep extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final draft = ref.watch(eventDraftControllerProvider);
     final start = draft.startsAt;
-    final end = draft.endsAt;
+    final end = start == null ? null : draft.effectiveEndsAt;
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.screen),
       children: [
@@ -208,9 +213,9 @@ class DateTimeStep extends ConsumerWidget {
         const SizedBox(height: AppSpacing.md),
         _PickerTile(
           icon: Icons.schedule_rounded,
-          label: 'Ends (optional)',
+          label: 'Ends',
           value: end == null
-              ? 'Add an end time'
+              ? 'Pick the start first'
               : DateFormat('EEE d MMM · h:mm a').format(end),
           onTap: start == null ? null : () => _pickEnd(context, ref),
         ),

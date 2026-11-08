@@ -1,14 +1,20 @@
 import 'package:go_router/go_router.dart';
 import 'package:petalsinajar/app/router/routes.dart';
+import 'package:petalsinajar/features/auth/presentation/complete_profile_screen.dart';
 import 'package:petalsinajar/features/auth/presentation/sign_in_screen.dart';
 import 'package:petalsinajar/features/auth/presentation/verify_code_screen.dart';
 import 'package:petalsinajar/features/events/domain/event.dart';
 import 'package:petalsinajar/features/events/presentation/create/create_event_screen.dart';
 import 'package:petalsinajar/features/events/presentation/event_screen.dart';
+import 'package:petalsinajar/features/vendor/presentation/start_business_screen.dart';
 
 /// Full-screen routes reachable from either shell. They sit above the
 /// bottom navigation, and every shareable one is deep-linkable.
 final List<RouteBase> sharedRoutes = [
+  GoRoute(
+    path: Routes.startBusiness,
+    builder: (_, _) => const StartBusinessScreen(),
+  ),
   GoRoute(
     path: Routes.signIn,
     builder: (_, state) =>
@@ -18,6 +24,10 @@ final List<RouteBase> sharedRoutes = [
     path: Routes.verifyCode,
     builder: (_, state) =>
         VerifyCodeScreen(phone: state.uri.queryParameters['phone'] ?? ''),
+  ),
+  GoRoute(
+    path: Routes.completeProfile,
+    builder: (_, _) => const CompleteProfileScreen(),
   ),
   // Before [Routes.eventPattern], so `new` isn't matched as an id.
   GoRoute(

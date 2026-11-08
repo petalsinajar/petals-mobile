@@ -17,46 +17,46 @@ class EventsRemoteSource implements EventsSource {
     }
   }
 
+  Future<Json> _page(String path, {String? cursor, Json query = const {}}) =>
+      _call(
+        () => _dio.get<Json>(
+          path,
+          queryParameters: {...query, 'cursor': ?cursor},
+        ),
+      );
+
   @override
-  Future<List<Json>> myEvents() async {
-    final body = await _call(() => _dio.get<Json>('/me/events'));
-    return (body['data'] as List? ?? const []).cast<Json>();
-  }
+  Future<Json> myEvents({required String scope, String? cursor}) =>
+      _page('/me/events', cursor: cursor, query: {'scope': scope});
 
   @override
   Future<Json> detail(String eventId) =>
       _call(() => _dio.get<Json>('/events/$eventId'));
 
   @override
-  Future<Json> feed(String eventId, {String? cursor}) => _call(
-    () => _dio.get<Json>(
-      '/events/$eventId/posts',
-      queryParameters: {'cursor': ?cursor},
-    ),
+  Future<Json> members(String eventId, {String? cursor}) =>
+      _page('/events/$eventId/members', cursor: cursor);
+
+  @override
+  Future<Json> feed(String eventId, {String? cursor}) =>
+      _page('/events/$eventId/posts', cursor: cursor);
+
+  @override
+  Future<Json> bookings(String eventId, {String? cursor}) =>
+      _page('/events/$eventId/bookings', cursor: cursor);
+
+  @override
+  Future<Json> uploadImage(String path) async {
+    final form = FormData.fromMap({'file': await MultipartFile.fromFile(path)});
+    return _call(() => _dio.post<Json>('/uploads', data: form));
+  }
+
+  @override
+  Future<Json> create(Json fields) =>
+      _call(() => _dio.post<Json>('/events', data: fields));
+
+  @override
+  Future<Json> rsvp(String eventId, String rsvp) => _call(
+    () => _dio.put<Json>('/events/$eventId/rsvp', data: {'rsvp': rsvp}),
   );
-
-  @override
-  Future<Json> plan(String eventId) =>
-      _call(() => _dio.get<Json>('/events/$eventId/plan'));
-
-  @override
-  Future<Json> create(Json fields, {String? coverPath}) async {
-    final data = coverPath == null
-        ? fields as Object
-        : FormData.fromMap({
-            ...fields,
-            'cover': await MultipartFile.fromFile(coverPath),
-          });
-    final body = await _call(() => _dio.post<Json>('/events', data: data));
-    // Laravel resources wrap single objects in `data`.
-    return body['data'] as Json? ?? body;
-  }
-
-  @override
-  Future<Json> rsvp(String eventId, String status) async {
-    final body = await _call(
-      () => _dio.put<Json>('/events/$eventId/rsvp', data: {'status': status}),
-    );
-    return body['data'] as Json? ?? body;
-  }
 }

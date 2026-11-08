@@ -37,5 +37,28 @@ class AuthRemoteSource implements AuthSource {
   Future<Json> me() => _call(() => _dio.get<Json>('/me'));
 
   @override
+  Future<Json> updateMe(Json fields) =>
+      _call(() => _dio.patch<Json>('/me', data: fields));
+
+  @override
+  Future<Json> uploadImage(String path) async {
+    final form = FormData.fromMap({'file': await MultipartFile.fromFile(path)});
+    return _call(() => _dio.post<Json>('/uploads', data: form));
+  }
+
+  @override
+  Future<Json> setDashboardCredentials(String email, String password) => _call(
+    () => _dio.put<Json>(
+      '/me/dashboard-credentials',
+      data: {'email': email, 'password': password},
+    ),
+  );
+
+  @override
+  Future<Json> handleAvailable(String handle) => _call(
+    () => _dio.get<Json>('/handles/${Uri.encodeComponent(handle)}/available'),
+  );
+
+  @override
   Future<void> logout() => _call(() => _dio.post<Json>('/auth/logout'));
 }

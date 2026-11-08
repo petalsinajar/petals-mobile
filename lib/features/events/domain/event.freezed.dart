@@ -809,7 +809,7 @@ as int,
 /// @nodoc
 mixin _$Event {
 
- String get id; EventType get type; String get title; DateTime get startsAt; EventVenue get venue; int get guestCount; EventVisibility get visibility; String get hostId; DateTime get createdAt; String get description; DateTime? get endsAt; EventImage? get cover; List<String> get coHostIds; RsvpCounts get rsvpCounts; ViewerRole get viewerRole; RsvpStatus? get viewerRsvp;
+ String get id; EventType get type; String get title; DateTime get startsAt; EventVenue get venue; int get guestCount; EventVisibility get visibility; String get hostId; String get description; DateTime? get endsAt; EventImage? get cover; List<String> get coHostIds; RsvpCounts get rsvpCounts; ViewerRole get viewerRole; RsvpStatus? get viewerRsvp;
 /// Create a copy of Event
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -820,16 +820,16 @@ $EventCopyWith<Event> get copyWith => _$EventCopyWithImpl<Event>(this as Event, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Event&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.venue, venue) || other.venue == venue)&&(identical(other.guestCount, guestCount) || other.guestCount == guestCount)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&(identical(other.hostId, hostId) || other.hostId == hostId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.description, description) || other.description == description)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.cover, cover) || other.cover == cover)&&const DeepCollectionEquality().equals(other.coHostIds, coHostIds)&&(identical(other.rsvpCounts, rsvpCounts) || other.rsvpCounts == rsvpCounts)&&(identical(other.viewerRole, viewerRole) || other.viewerRole == viewerRole)&&(identical(other.viewerRsvp, viewerRsvp) || other.viewerRsvp == viewerRsvp));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Event&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.venue, venue) || other.venue == venue)&&(identical(other.guestCount, guestCount) || other.guestCount == guestCount)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&(identical(other.hostId, hostId) || other.hostId == hostId)&&(identical(other.description, description) || other.description == description)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.cover, cover) || other.cover == cover)&&const DeepCollectionEquality().equals(other.coHostIds, coHostIds)&&(identical(other.rsvpCounts, rsvpCounts) || other.rsvpCounts == rsvpCounts)&&(identical(other.viewerRole, viewerRole) || other.viewerRole == viewerRole)&&(identical(other.viewerRsvp, viewerRsvp) || other.viewerRsvp == viewerRsvp));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,type,title,startsAt,venue,guestCount,visibility,hostId,createdAt,description,endsAt,cover,const DeepCollectionEquality().hash(coHostIds),rsvpCounts,viewerRole,viewerRsvp);
+int get hashCode => Object.hash(runtimeType,id,type,title,startsAt,venue,guestCount,visibility,hostId,description,endsAt,cover,const DeepCollectionEquality().hash(coHostIds),rsvpCounts,viewerRole,viewerRsvp);
 
 @override
 String toString() {
-  return 'Event(id: $id, type: $type, title: $title, startsAt: $startsAt, venue: $venue, guestCount: $guestCount, visibility: $visibility, hostId: $hostId, createdAt: $createdAt, description: $description, endsAt: $endsAt, cover: $cover, coHostIds: $coHostIds, rsvpCounts: $rsvpCounts, viewerRole: $viewerRole, viewerRsvp: $viewerRsvp)';
+  return 'Event(id: $id, type: $type, title: $title, startsAt: $startsAt, venue: $venue, guestCount: $guestCount, visibility: $visibility, hostId: $hostId, description: $description, endsAt: $endsAt, cover: $cover, coHostIds: $coHostIds, rsvpCounts: $rsvpCounts, viewerRole: $viewerRole, viewerRsvp: $viewerRsvp)';
 }
 
 
@@ -840,7 +840,7 @@ abstract mixin class $EventCopyWith<$Res>  {
   factory $EventCopyWith(Event value, $Res Function(Event) _then) = _$EventCopyWithImpl;
 @useResult
 $Res call({
- String id, EventType type, String title, DateTime startsAt, EventVenue venue, int guestCount, EventVisibility visibility, String hostId, DateTime createdAt, String description, DateTime? endsAt, EventImage? cover, List<String> coHostIds, RsvpCounts rsvpCounts, ViewerRole viewerRole, RsvpStatus? viewerRsvp
+ String id, EventType type, String title, DateTime startsAt, EventVenue venue, int guestCount, EventVisibility visibility, String hostId, String description, DateTime? endsAt, EventImage? cover, List<String> coHostIds, RsvpCounts rsvpCounts, ViewerRole viewerRole, RsvpStatus? viewerRsvp
 });
 
 
@@ -857,7 +857,7 @@ class _$EventCopyWithImpl<$Res>
 
 /// Create a copy of Event
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? title = null,Object? startsAt = null,Object? venue = null,Object? guestCount = null,Object? visibility = null,Object? hostId = null,Object? createdAt = null,Object? description = null,Object? endsAt = freezed,Object? cover = freezed,Object? coHostIds = null,Object? rsvpCounts = null,Object? viewerRole = null,Object? viewerRsvp = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? title = null,Object? startsAt = null,Object? venue = null,Object? guestCount = null,Object? visibility = null,Object? hostId = null,Object? description = null,Object? endsAt = freezed,Object? cover = freezed,Object? coHostIds = null,Object? rsvpCounts = null,Object? viewerRole = null,Object? viewerRsvp = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
@@ -867,8 +867,7 @@ as DateTime,venue: null == venue ? _self.venue : venue // ignore: cast_nullable_
 as EventVenue,guestCount: null == guestCount ? _self.guestCount : guestCount // ignore: cast_nullable_to_non_nullable
 as int,visibility: null == visibility ? _self.visibility : visibility // ignore: cast_nullable_to_non_nullable
 as EventVisibility,hostId: null == hostId ? _self.hostId : hostId // ignore: cast_nullable_to_non_nullable
-as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,endsAt: freezed == endsAt ? _self.endsAt : endsAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,cover: freezed == cover ? _self.cover : cover // ignore: cast_nullable_to_non_nullable
 as EventImage?,coHostIds: null == coHostIds ? _self.coHostIds : coHostIds // ignore: cast_nullable_to_non_nullable
@@ -990,10 +989,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  EventType type,  String title,  DateTime startsAt,  EventVenue venue,  int guestCount,  EventVisibility visibility,  String hostId,  DateTime createdAt,  String description,  DateTime? endsAt,  EventImage? cover,  List<String> coHostIds,  RsvpCounts rsvpCounts,  ViewerRole viewerRole,  RsvpStatus? viewerRsvp)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  EventType type,  String title,  DateTime startsAt,  EventVenue venue,  int guestCount,  EventVisibility visibility,  String hostId,  String description,  DateTime? endsAt,  EventImage? cover,  List<String> coHostIds,  RsvpCounts rsvpCounts,  ViewerRole viewerRole,  RsvpStatus? viewerRsvp)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Event() when $default != null:
-return $default(_that.id,_that.type,_that.title,_that.startsAt,_that.venue,_that.guestCount,_that.visibility,_that.hostId,_that.createdAt,_that.description,_that.endsAt,_that.cover,_that.coHostIds,_that.rsvpCounts,_that.viewerRole,_that.viewerRsvp);case _:
+return $default(_that.id,_that.type,_that.title,_that.startsAt,_that.venue,_that.guestCount,_that.visibility,_that.hostId,_that.description,_that.endsAt,_that.cover,_that.coHostIds,_that.rsvpCounts,_that.viewerRole,_that.viewerRsvp);case _:
   return orElse();
 
 }
@@ -1011,10 +1010,10 @@ return $default(_that.id,_that.type,_that.title,_that.startsAt,_that.venue,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  EventType type,  String title,  DateTime startsAt,  EventVenue venue,  int guestCount,  EventVisibility visibility,  String hostId,  DateTime createdAt,  String description,  DateTime? endsAt,  EventImage? cover,  List<String> coHostIds,  RsvpCounts rsvpCounts,  ViewerRole viewerRole,  RsvpStatus? viewerRsvp)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  EventType type,  String title,  DateTime startsAt,  EventVenue venue,  int guestCount,  EventVisibility visibility,  String hostId,  String description,  DateTime? endsAt,  EventImage? cover,  List<String> coHostIds,  RsvpCounts rsvpCounts,  ViewerRole viewerRole,  RsvpStatus? viewerRsvp)  $default,) {final _that = this;
 switch (_that) {
 case _Event():
-return $default(_that.id,_that.type,_that.title,_that.startsAt,_that.venue,_that.guestCount,_that.visibility,_that.hostId,_that.createdAt,_that.description,_that.endsAt,_that.cover,_that.coHostIds,_that.rsvpCounts,_that.viewerRole,_that.viewerRsvp);case _:
+return $default(_that.id,_that.type,_that.title,_that.startsAt,_that.venue,_that.guestCount,_that.visibility,_that.hostId,_that.description,_that.endsAt,_that.cover,_that.coHostIds,_that.rsvpCounts,_that.viewerRole,_that.viewerRsvp);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1031,10 +1030,10 @@ return $default(_that.id,_that.type,_that.title,_that.startsAt,_that.venue,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  EventType type,  String title,  DateTime startsAt,  EventVenue venue,  int guestCount,  EventVisibility visibility,  String hostId,  DateTime createdAt,  String description,  DateTime? endsAt,  EventImage? cover,  List<String> coHostIds,  RsvpCounts rsvpCounts,  ViewerRole viewerRole,  RsvpStatus? viewerRsvp)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  EventType type,  String title,  DateTime startsAt,  EventVenue venue,  int guestCount,  EventVisibility visibility,  String hostId,  String description,  DateTime? endsAt,  EventImage? cover,  List<String> coHostIds,  RsvpCounts rsvpCounts,  ViewerRole viewerRole,  RsvpStatus? viewerRsvp)?  $default,) {final _that = this;
 switch (_that) {
 case _Event() when $default != null:
-return $default(_that.id,_that.type,_that.title,_that.startsAt,_that.venue,_that.guestCount,_that.visibility,_that.hostId,_that.createdAt,_that.description,_that.endsAt,_that.cover,_that.coHostIds,_that.rsvpCounts,_that.viewerRole,_that.viewerRsvp);case _:
+return $default(_that.id,_that.type,_that.title,_that.startsAt,_that.venue,_that.guestCount,_that.visibility,_that.hostId,_that.description,_that.endsAt,_that.cover,_that.coHostIds,_that.rsvpCounts,_that.viewerRole,_that.viewerRsvp);case _:
   return null;
 
 }
@@ -1046,7 +1045,7 @@ return $default(_that.id,_that.type,_that.title,_that.startsAt,_that.venue,_that
 
 
 class _Event extends Event {
-  const _Event({required this.id, required this.type, required this.title, required this.startsAt, required this.venue, required this.guestCount, required this.visibility, required this.hostId, required this.createdAt, this.description = '', this.endsAt, this.cover, final  List<String> coHostIds = const <String>[], this.rsvpCounts = const RsvpCounts(), this.viewerRole = ViewerRole.none, this.viewerRsvp}): _coHostIds = coHostIds,super._();
+  const _Event({required this.id, required this.type, required this.title, required this.startsAt, required this.venue, required this.guestCount, required this.visibility, required this.hostId, this.description = '', this.endsAt, this.cover, final  List<String> coHostIds = const <String>[], this.rsvpCounts = const RsvpCounts(), this.viewerRole = ViewerRole.none, this.viewerRsvp}): _coHostIds = coHostIds,super._();
   
 
 @override final  String id;
@@ -1057,7 +1056,6 @@ class _Event extends Event {
 @override final  int guestCount;
 @override final  EventVisibility visibility;
 @override final  String hostId;
-@override final  DateTime createdAt;
 @override@JsonKey() final  String description;
 @override final  DateTime? endsAt;
 @override final  EventImage? cover;
@@ -1082,16 +1080,16 @@ _$EventCopyWith<_Event> get copyWith => __$EventCopyWithImpl<_Event>(this, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Event&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.venue, venue) || other.venue == venue)&&(identical(other.guestCount, guestCount) || other.guestCount == guestCount)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&(identical(other.hostId, hostId) || other.hostId == hostId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.description, description) || other.description == description)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.cover, cover) || other.cover == cover)&&const DeepCollectionEquality().equals(other._coHostIds, _coHostIds)&&(identical(other.rsvpCounts, rsvpCounts) || other.rsvpCounts == rsvpCounts)&&(identical(other.viewerRole, viewerRole) || other.viewerRole == viewerRole)&&(identical(other.viewerRsvp, viewerRsvp) || other.viewerRsvp == viewerRsvp));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Event&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.venue, venue) || other.venue == venue)&&(identical(other.guestCount, guestCount) || other.guestCount == guestCount)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&(identical(other.hostId, hostId) || other.hostId == hostId)&&(identical(other.description, description) || other.description == description)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.cover, cover) || other.cover == cover)&&const DeepCollectionEquality().equals(other._coHostIds, _coHostIds)&&(identical(other.rsvpCounts, rsvpCounts) || other.rsvpCounts == rsvpCounts)&&(identical(other.viewerRole, viewerRole) || other.viewerRole == viewerRole)&&(identical(other.viewerRsvp, viewerRsvp) || other.viewerRsvp == viewerRsvp));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,type,title,startsAt,venue,guestCount,visibility,hostId,createdAt,description,endsAt,cover,const DeepCollectionEquality().hash(_coHostIds),rsvpCounts,viewerRole,viewerRsvp);
+int get hashCode => Object.hash(runtimeType,id,type,title,startsAt,venue,guestCount,visibility,hostId,description,endsAt,cover,const DeepCollectionEquality().hash(_coHostIds),rsvpCounts,viewerRole,viewerRsvp);
 
 @override
 String toString() {
-  return 'Event(id: $id, type: $type, title: $title, startsAt: $startsAt, venue: $venue, guestCount: $guestCount, visibility: $visibility, hostId: $hostId, createdAt: $createdAt, description: $description, endsAt: $endsAt, cover: $cover, coHostIds: $coHostIds, rsvpCounts: $rsvpCounts, viewerRole: $viewerRole, viewerRsvp: $viewerRsvp)';
+  return 'Event(id: $id, type: $type, title: $title, startsAt: $startsAt, venue: $venue, guestCount: $guestCount, visibility: $visibility, hostId: $hostId, description: $description, endsAt: $endsAt, cover: $cover, coHostIds: $coHostIds, rsvpCounts: $rsvpCounts, viewerRole: $viewerRole, viewerRsvp: $viewerRsvp)';
 }
 
 
@@ -1102,7 +1100,7 @@ abstract mixin class _$EventCopyWith<$Res> implements $EventCopyWith<$Res> {
   factory _$EventCopyWith(_Event value, $Res Function(_Event) _then) = __$EventCopyWithImpl;
 @override @useResult
 $Res call({
- String id, EventType type, String title, DateTime startsAt, EventVenue venue, int guestCount, EventVisibility visibility, String hostId, DateTime createdAt, String description, DateTime? endsAt, EventImage? cover, List<String> coHostIds, RsvpCounts rsvpCounts, ViewerRole viewerRole, RsvpStatus? viewerRsvp
+ String id, EventType type, String title, DateTime startsAt, EventVenue venue, int guestCount, EventVisibility visibility, String hostId, String description, DateTime? endsAt, EventImage? cover, List<String> coHostIds, RsvpCounts rsvpCounts, ViewerRole viewerRole, RsvpStatus? viewerRsvp
 });
 
 
@@ -1119,7 +1117,7 @@ class __$EventCopyWithImpl<$Res>
 
 /// Create a copy of Event
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? type = null,Object? title = null,Object? startsAt = null,Object? venue = null,Object? guestCount = null,Object? visibility = null,Object? hostId = null,Object? createdAt = null,Object? description = null,Object? endsAt = freezed,Object? cover = freezed,Object? coHostIds = null,Object? rsvpCounts = null,Object? viewerRole = null,Object? viewerRsvp = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? type = null,Object? title = null,Object? startsAt = null,Object? venue = null,Object? guestCount = null,Object? visibility = null,Object? hostId = null,Object? description = null,Object? endsAt = freezed,Object? cover = freezed,Object? coHostIds = null,Object? rsvpCounts = null,Object? viewerRole = null,Object? viewerRsvp = freezed,}) {
   return _then(_Event(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
@@ -1129,8 +1127,7 @@ as DateTime,venue: null == venue ? _self.venue : venue // ignore: cast_nullable_
 as EventVenue,guestCount: null == guestCount ? _self.guestCount : guestCount // ignore: cast_nullable_to_non_nullable
 as int,visibility: null == visibility ? _self.visibility : visibility // ignore: cast_nullable_to_non_nullable
 as EventVisibility,hostId: null == hostId ? _self.hostId : hostId // ignore: cast_nullable_to_non_nullable
-as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,endsAt: freezed == endsAt ? _self.endsAt : endsAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,cover: freezed == cover ? _self.cover : cover // ignore: cast_nullable_to_non_nullable
 as EventImage?,coHostIds: null == coHostIds ? _self._coHostIds : coHostIds // ignore: cast_nullable_to_non_nullable
