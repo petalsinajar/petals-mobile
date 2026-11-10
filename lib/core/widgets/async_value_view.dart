@@ -16,6 +16,7 @@ class AsyncValueView<T> extends StatelessWidget {
     this.onRetry,
     this.isEmpty,
     this.empty,
+    this.error,
     super.key,
   });
 
@@ -26,12 +27,15 @@ class AsyncValueView<T> extends StatelessWidget {
   final bool Function(T data)? isEmpty;
   final Widget? empty;
 
+  /// Replaces the standard [ErrorState] when the screen needs more than retry.
+  final Widget? error;
+
   @override
   Widget build(BuildContext context) {
     return value.when(
       data: (d) =>
           empty != null && (isEmpty?.call(d) ?? false) ? empty! : data(d),
-      error: (error, _) => ErrorState(error: error, onRetry: onRetry),
+      error: (e, _) => error ?? ErrorState(error: e, onRetry: onRetry),
       loading: () => loading ?? const SkeletonList(),
     );
   }

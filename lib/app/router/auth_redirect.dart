@@ -20,6 +20,7 @@ const List<String> _accountPaths = [
   Routes.createEvent,
   Routes.completeProfile,
   Routes.startBusiness,
+  Routes.myBookings,
 ];
 
 bool _needsAccount(String location) =>

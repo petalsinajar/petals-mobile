@@ -21,6 +21,26 @@ abstract interface class VendorRepository {
   /// Owners and managers only.
   Future<VendorBooking> accept(String bookingId);
 
+  Future<BusinessProfile> business(String vendorId);
+
+  /// Saves [changes] (API field names, only what changed). Owners and
+  /// managers only; returns the saved profile.
+  Future<BusinessProfile> updateBusiness(
+    String vendorId,
+    Map<String, Object?> changes,
+  );
+
+  /// Every item the business has, by title (archived ones included).
+  Future<List<VendorItem>> items(String vendorId);
+
+  /// Replaces only the item's photos, as uploaded media ids in display
+  /// order (the first is the cover). Owners and managers only.
+  Future<VendorItem> setItemPhotos(
+    String vendorId,
+    String itemId,
+    List<String> mediaIds,
+  );
+
   /// Owners and managers only. [reason] is shown to the customer.
   Future<VendorBooking> decline(String bookingId, {String? reason});
 }

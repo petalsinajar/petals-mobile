@@ -197,6 +197,8 @@ void main() {
       final container = await pump(tester, _kwame);
       expect(find.text('Same as phone'), findsOneWidget);
 
+      await tester.ensureVisible(find.text('Appearance'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Appearance'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Dark'));

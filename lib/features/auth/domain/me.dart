@@ -60,7 +60,9 @@ abstract class ProfileChanges with _$ProfileChanges {
     String? handle,
     String? bio,
     String? city,
-    String? avatarUrl,
+
+    /// A new photo: a ready upload from the shared media uploader.
+    String? avatarMediaId,
     bool? isPrivate,
     NotifySettings? notify,
   }) = _ProfileChanges;

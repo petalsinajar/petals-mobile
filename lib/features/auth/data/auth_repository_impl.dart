@@ -92,11 +92,6 @@ class AuthRepositoryImpl implements AuthRepository {
   });
 
   @override
-  Future<String> uploadPhoto(String path) => _parse(
-    () async => (await _source.uploadImage(path))['url'] as String,
-  );
-
-  @override
   Future<void> setDashboardSignIn({
     required String email,
     required String password,

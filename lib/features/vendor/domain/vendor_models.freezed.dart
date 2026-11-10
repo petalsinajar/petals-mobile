@@ -1384,4 +1384,1475 @@ as String?,
 
 }
 
+/// @nodoc
+mixin _$VendorItemVariant {
+
+ String get id; String get name; int get quantity; bool get active;
+/// Create a copy of VendorItemVariant
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$VendorItemVariantCopyWith<VendorItemVariant> get copyWith => _$VendorItemVariantCopyWithImpl<VendorItemVariant>(this as VendorItemVariant, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VendorItemVariant&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.active, active) || other.active == active));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id,name,quantity,active);
+
+@override
+String toString() {
+  return 'VendorItemVariant(id: $id, name: $name, quantity: $quantity, active: $active)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $VendorItemVariantCopyWith<$Res>  {
+  factory $VendorItemVariantCopyWith(VendorItemVariant value, $Res Function(VendorItemVariant) _then) = _$VendorItemVariantCopyWithImpl;
+@useResult
+$Res call({
+ String id, String name, int quantity, bool active
+});
+
+
+
+
+}
+/// @nodoc
+class _$VendorItemVariantCopyWithImpl<$Res>
+    implements $VendorItemVariantCopyWith<$Res> {
+  _$VendorItemVariantCopyWithImpl(this._self, this._then);
+
+  final VendorItemVariant _self;
+  final $Res Function(VendorItemVariant) _then;
+
+/// Create a copy of VendorItemVariant
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? quantity = null,Object? active = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
+as int,active: null == active ? _self.active : active // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [VendorItemVariant].
+extension VendorItemVariantPatterns on VendorItemVariant {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _VendorItemVariant value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _VendorItemVariant() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _VendorItemVariant value)  $default,){
+final _that = this;
+switch (_that) {
+case _VendorItemVariant():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _VendorItemVariant value)?  $default,){
+final _that = this;
+switch (_that) {
+case _VendorItemVariant() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  int quantity,  bool active)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _VendorItemVariant() when $default != null:
+return $default(_that.id,_that.name,_that.quantity,_that.active);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  int quantity,  bool active)  $default,) {final _that = this;
+switch (_that) {
+case _VendorItemVariant():
+return $default(_that.id,_that.name,_that.quantity,_that.active);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  int quantity,  bool active)?  $default,) {final _that = this;
+switch (_that) {
+case _VendorItemVariant() when $default != null:
+return $default(_that.id,_that.name,_that.quantity,_that.active);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _VendorItemVariant implements VendorItemVariant {
+  const _VendorItemVariant({required this.id, required this.name, required this.quantity, this.active = true});
+  
+
+@override final  String id;
+@override final  String name;
+@override final  int quantity;
+@override@JsonKey() final  bool active;
+
+/// Create a copy of VendorItemVariant
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$VendorItemVariantCopyWith<_VendorItemVariant> get copyWith => __$VendorItemVariantCopyWithImpl<_VendorItemVariant>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VendorItemVariant&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.active, active) || other.active == active));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id,name,quantity,active);
+
+@override
+String toString() {
+  return 'VendorItemVariant(id: $id, name: $name, quantity: $quantity, active: $active)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$VendorItemVariantCopyWith<$Res> implements $VendorItemVariantCopyWith<$Res> {
+  factory _$VendorItemVariantCopyWith(_VendorItemVariant value, $Res Function(_VendorItemVariant) _then) = __$VendorItemVariantCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String name, int quantity, bool active
+});
+
+
+
+
+}
+/// @nodoc
+class __$VendorItemVariantCopyWithImpl<$Res>
+    implements _$VendorItemVariantCopyWith<$Res> {
+  __$VendorItemVariantCopyWithImpl(this._self, this._then);
+
+  final _VendorItemVariant _self;
+  final $Res Function(_VendorItemVariant) _then;
+
+/// Create a copy of VendorItemVariant
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? quantity = null,Object? active = null,}) {
+  return _then(_VendorItemVariant(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
+as int,active: null == active ? _self.active : active // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
+
+/// @nodoc
+mixin _$ItemMedia {
+
+ String get url; bool get isVideo; int? get width; int? get height; String? get blurhash;
+/// Create a copy of ItemMedia
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ItemMediaCopyWith<ItemMedia> get copyWith => _$ItemMediaCopyWithImpl<ItemMedia>(this as ItemMedia, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ItemMedia&&(identical(other.url, url) || other.url == url)&&(identical(other.isVideo, isVideo) || other.isVideo == isVideo)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.blurhash, blurhash) || other.blurhash == blurhash));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,url,isVideo,width,height,blurhash);
+
+@override
+String toString() {
+  return 'ItemMedia(url: $url, isVideo: $isVideo, width: $width, height: $height, blurhash: $blurhash)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ItemMediaCopyWith<$Res>  {
+  factory $ItemMediaCopyWith(ItemMedia value, $Res Function(ItemMedia) _then) = _$ItemMediaCopyWithImpl;
+@useResult
+$Res call({
+ String url, bool isVideo, int? width, int? height, String? blurhash
+});
+
+
+
+
+}
+/// @nodoc
+class _$ItemMediaCopyWithImpl<$Res>
+    implements $ItemMediaCopyWith<$Res> {
+  _$ItemMediaCopyWithImpl(this._self, this._then);
+
+  final ItemMedia _self;
+  final $Res Function(ItemMedia) _then;
+
+/// Create a copy of ItemMedia
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? url = null,Object? isVideo = null,Object? width = freezed,Object? height = freezed,Object? blurhash = freezed,}) {
+  return _then(_self.copyWith(
+url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as String,isVideo: null == isVideo ? _self.isVideo : isVideo // ignore: cast_nullable_to_non_nullable
+as bool,width: freezed == width ? _self.width : width // ignore: cast_nullable_to_non_nullable
+as int?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
+as int?,blurhash: freezed == blurhash ? _self.blurhash : blurhash // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ItemMedia].
+extension ItemMediaPatterns on ItemMedia {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ItemMedia value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ItemMedia() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ItemMedia value)  $default,){
+final _that = this;
+switch (_that) {
+case _ItemMedia():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ItemMedia value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ItemMedia() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String url,  bool isVideo,  int? width,  int? height,  String? blurhash)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ItemMedia() when $default != null:
+return $default(_that.url,_that.isVideo,_that.width,_that.height,_that.blurhash);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String url,  bool isVideo,  int? width,  int? height,  String? blurhash)  $default,) {final _that = this;
+switch (_that) {
+case _ItemMedia():
+return $default(_that.url,_that.isVideo,_that.width,_that.height,_that.blurhash);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String url,  bool isVideo,  int? width,  int? height,  String? blurhash)?  $default,) {final _that = this;
+switch (_that) {
+case _ItemMedia() when $default != null:
+return $default(_that.url,_that.isVideo,_that.width,_that.height,_that.blurhash);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _ItemMedia implements ItemMedia {
+  const _ItemMedia({required this.url, this.isVideo = false, this.width, this.height, this.blurhash});
+  
+
+@override final  String url;
+@override@JsonKey() final  bool isVideo;
+@override final  int? width;
+@override final  int? height;
+@override final  String? blurhash;
+
+/// Create a copy of ItemMedia
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ItemMediaCopyWith<_ItemMedia> get copyWith => __$ItemMediaCopyWithImpl<_ItemMedia>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ItemMedia&&(identical(other.url, url) || other.url == url)&&(identical(other.isVideo, isVideo) || other.isVideo == isVideo)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.blurhash, blurhash) || other.blurhash == blurhash));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,url,isVideo,width,height,blurhash);
+
+@override
+String toString() {
+  return 'ItemMedia(url: $url, isVideo: $isVideo, width: $width, height: $height, blurhash: $blurhash)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ItemMediaCopyWith<$Res> implements $ItemMediaCopyWith<$Res> {
+  factory _$ItemMediaCopyWith(_ItemMedia value, $Res Function(_ItemMedia) _then) = __$ItemMediaCopyWithImpl;
+@override @useResult
+$Res call({
+ String url, bool isVideo, int? width, int? height, String? blurhash
+});
+
+
+
+
+}
+/// @nodoc
+class __$ItemMediaCopyWithImpl<$Res>
+    implements _$ItemMediaCopyWith<$Res> {
+  __$ItemMediaCopyWithImpl(this._self, this._then);
+
+  final _ItemMedia _self;
+  final $Res Function(_ItemMedia) _then;
+
+/// Create a copy of ItemMedia
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? url = null,Object? isVideo = null,Object? width = freezed,Object? height = freezed,Object? blurhash = freezed,}) {
+  return _then(_ItemMedia(
+url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as String,isVideo: null == isVideo ? _self.isVideo : isVideo // ignore: cast_nullable_to_non_nullable
+as bool,width: freezed == width ? _self.width : width // ignore: cast_nullable_to_non_nullable
+as int?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
+as int?,blurhash: freezed == blurhash ? _self.blurhash : blurhash // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+/// @nodoc
+mixin _$VendorItem {
+
+ String get id; String get title; VendorItemStatus get status; int get fromPriceMinor; String get currency;/// `per_event`, `per_day` or `per_hour`.
+ String get unit; String? get categoryId; String? get photoUrl; String? get blurhash; int get minQty; bool get instantBook; List<VendorItemVariant> get variants;/// In order; the first photo is the cover customers see.
+ List<ItemMedia> get media;
+/// Create a copy of VendorItem
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$VendorItemCopyWith<VendorItem> get copyWith => _$VendorItemCopyWithImpl<VendorItem>(this as VendorItem, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VendorItem&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.status, status) || other.status == status)&&(identical(other.fromPriceMinor, fromPriceMinor) || other.fromPriceMinor == fromPriceMinor)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl)&&(identical(other.blurhash, blurhash) || other.blurhash == blurhash)&&(identical(other.minQty, minQty) || other.minQty == minQty)&&(identical(other.instantBook, instantBook) || other.instantBook == instantBook)&&const DeepCollectionEquality().equals(other.variants, variants)&&const DeepCollectionEquality().equals(other.media, media));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id,title,status,fromPriceMinor,currency,unit,categoryId,photoUrl,blurhash,minQty,instantBook,const DeepCollectionEquality().hash(variants),const DeepCollectionEquality().hash(media));
+
+@override
+String toString() {
+  return 'VendorItem(id: $id, title: $title, status: $status, fromPriceMinor: $fromPriceMinor, currency: $currency, unit: $unit, categoryId: $categoryId, photoUrl: $photoUrl, blurhash: $blurhash, minQty: $minQty, instantBook: $instantBook, variants: $variants, media: $media)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $VendorItemCopyWith<$Res>  {
+  factory $VendorItemCopyWith(VendorItem value, $Res Function(VendorItem) _then) = _$VendorItemCopyWithImpl;
+@useResult
+$Res call({
+ String id, String title, VendorItemStatus status, int fromPriceMinor, String currency, String unit, String? categoryId, String? photoUrl, String? blurhash, int minQty, bool instantBook, List<VendorItemVariant> variants, List<ItemMedia> media
+});
+
+
+
+
+}
+/// @nodoc
+class _$VendorItemCopyWithImpl<$Res>
+    implements $VendorItemCopyWith<$Res> {
+  _$VendorItemCopyWithImpl(this._self, this._then);
+
+  final VendorItem _self;
+  final $Res Function(VendorItem) _then;
+
+/// Create a copy of VendorItem
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? status = null,Object? fromPriceMinor = null,Object? currency = null,Object? unit = null,Object? categoryId = freezed,Object? photoUrl = freezed,Object? blurhash = freezed,Object? minQty = null,Object? instantBook = null,Object? variants = null,Object? media = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as VendorItemStatus,fromPriceMinor: null == fromPriceMinor ? _self.fromPriceMinor : fromPriceMinor // ignore: cast_nullable_to_non_nullable
+as int,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as String,unit: null == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
+as String,categoryId: freezed == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
+as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
+as String?,blurhash: freezed == blurhash ? _self.blurhash : blurhash // ignore: cast_nullable_to_non_nullable
+as String?,minQty: null == minQty ? _self.minQty : minQty // ignore: cast_nullable_to_non_nullable
+as int,instantBook: null == instantBook ? _self.instantBook : instantBook // ignore: cast_nullable_to_non_nullable
+as bool,variants: null == variants ? _self.variants : variants // ignore: cast_nullable_to_non_nullable
+as List<VendorItemVariant>,media: null == media ? _self.media : media // ignore: cast_nullable_to_non_nullable
+as List<ItemMedia>,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [VendorItem].
+extension VendorItemPatterns on VendorItem {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _VendorItem value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _VendorItem() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _VendorItem value)  $default,){
+final _that = this;
+switch (_that) {
+case _VendorItem():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _VendorItem value)?  $default,){
+final _that = this;
+switch (_that) {
+case _VendorItem() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  VendorItemStatus status,  int fromPriceMinor,  String currency,  String unit,  String? categoryId,  String? photoUrl,  String? blurhash,  int minQty,  bool instantBook,  List<VendorItemVariant> variants,  List<ItemMedia> media)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _VendorItem() when $default != null:
+return $default(_that.id,_that.title,_that.status,_that.fromPriceMinor,_that.currency,_that.unit,_that.categoryId,_that.photoUrl,_that.blurhash,_that.minQty,_that.instantBook,_that.variants,_that.media);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  VendorItemStatus status,  int fromPriceMinor,  String currency,  String unit,  String? categoryId,  String? photoUrl,  String? blurhash,  int minQty,  bool instantBook,  List<VendorItemVariant> variants,  List<ItemMedia> media)  $default,) {final _that = this;
+switch (_that) {
+case _VendorItem():
+return $default(_that.id,_that.title,_that.status,_that.fromPriceMinor,_that.currency,_that.unit,_that.categoryId,_that.photoUrl,_that.blurhash,_that.minQty,_that.instantBook,_that.variants,_that.media);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  VendorItemStatus status,  int fromPriceMinor,  String currency,  String unit,  String? categoryId,  String? photoUrl,  String? blurhash,  int minQty,  bool instantBook,  List<VendorItemVariant> variants,  List<ItemMedia> media)?  $default,) {final _that = this;
+switch (_that) {
+case _VendorItem() when $default != null:
+return $default(_that.id,_that.title,_that.status,_that.fromPriceMinor,_that.currency,_that.unit,_that.categoryId,_that.photoUrl,_that.blurhash,_that.minQty,_that.instantBook,_that.variants,_that.media);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _VendorItem extends VendorItem {
+  const _VendorItem({required this.id, required this.title, required this.status, required this.fromPriceMinor, required this.currency, this.unit = 'per_event', this.categoryId, this.photoUrl, this.blurhash, this.minQty = 1, this.instantBook = false, final  List<VendorItemVariant> variants = const <VendorItemVariant>[], final  List<ItemMedia> media = const <ItemMedia>[]}): _variants = variants,_media = media,super._();
+  
+
+@override final  String id;
+@override final  String title;
+@override final  VendorItemStatus status;
+@override final  int fromPriceMinor;
+@override final  String currency;
+/// `per_event`, `per_day` or `per_hour`.
+@override@JsonKey() final  String unit;
+@override final  String? categoryId;
+@override final  String? photoUrl;
+@override final  String? blurhash;
+@override@JsonKey() final  int minQty;
+@override@JsonKey() final  bool instantBook;
+ final  List<VendorItemVariant> _variants;
+@override@JsonKey() List<VendorItemVariant> get variants {
+  if (_variants is EqualUnmodifiableListView) return _variants;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_variants);
+}
+
+/// In order; the first photo is the cover customers see.
+ final  List<ItemMedia> _media;
+/// In order; the first photo is the cover customers see.
+@override@JsonKey() List<ItemMedia> get media {
+  if (_media is EqualUnmodifiableListView) return _media;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_media);
+}
+
+
+/// Create a copy of VendorItem
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$VendorItemCopyWith<_VendorItem> get copyWith => __$VendorItemCopyWithImpl<_VendorItem>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VendorItem&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.status, status) || other.status == status)&&(identical(other.fromPriceMinor, fromPriceMinor) || other.fromPriceMinor == fromPriceMinor)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl)&&(identical(other.blurhash, blurhash) || other.blurhash == blurhash)&&(identical(other.minQty, minQty) || other.minQty == minQty)&&(identical(other.instantBook, instantBook) || other.instantBook == instantBook)&&const DeepCollectionEquality().equals(other._variants, _variants)&&const DeepCollectionEquality().equals(other._media, _media));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id,title,status,fromPriceMinor,currency,unit,categoryId,photoUrl,blurhash,minQty,instantBook,const DeepCollectionEquality().hash(_variants),const DeepCollectionEquality().hash(_media));
+
+@override
+String toString() {
+  return 'VendorItem(id: $id, title: $title, status: $status, fromPriceMinor: $fromPriceMinor, currency: $currency, unit: $unit, categoryId: $categoryId, photoUrl: $photoUrl, blurhash: $blurhash, minQty: $minQty, instantBook: $instantBook, variants: $variants, media: $media)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$VendorItemCopyWith<$Res> implements $VendorItemCopyWith<$Res> {
+  factory _$VendorItemCopyWith(_VendorItem value, $Res Function(_VendorItem) _then) = __$VendorItemCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String title, VendorItemStatus status, int fromPriceMinor, String currency, String unit, String? categoryId, String? photoUrl, String? blurhash, int minQty, bool instantBook, List<VendorItemVariant> variants, List<ItemMedia> media
+});
+
+
+
+
+}
+/// @nodoc
+class __$VendorItemCopyWithImpl<$Res>
+    implements _$VendorItemCopyWith<$Res> {
+  __$VendorItemCopyWithImpl(this._self, this._then);
+
+  final _VendorItem _self;
+  final $Res Function(_VendorItem) _then;
+
+/// Create a copy of VendorItem
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? status = null,Object? fromPriceMinor = null,Object? currency = null,Object? unit = null,Object? categoryId = freezed,Object? photoUrl = freezed,Object? blurhash = freezed,Object? minQty = null,Object? instantBook = null,Object? variants = null,Object? media = null,}) {
+  return _then(_VendorItem(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as VendorItemStatus,fromPriceMinor: null == fromPriceMinor ? _self.fromPriceMinor : fromPriceMinor // ignore: cast_nullable_to_non_nullable
+as int,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as String,unit: null == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
+as String,categoryId: freezed == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
+as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
+as String?,blurhash: freezed == blurhash ? _self.blurhash : blurhash // ignore: cast_nullable_to_non_nullable
+as String?,minQty: null == minQty ? _self.minQty : minQty // ignore: cast_nullable_to_non_nullable
+as int,instantBook: null == instantBook ? _self.instantBook : instantBook // ignore: cast_nullable_to_non_nullable
+as bool,variants: null == variants ? _self._variants : variants // ignore: cast_nullable_to_non_nullable
+as List<VendorItemVariant>,media: null == media ? _self._media : media // ignore: cast_nullable_to_non_nullable
+as List<ItemMedia>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+mixin _$BusinessDelivery {
+
+ bool get offered; int get baseFeeMinor; bool get setupOffered; int get setupFeeMinor;/// Set on the web; kept as-is when the app saves delivery.
+ int get perKmMinor;
+/// Create a copy of BusinessDelivery
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$BusinessDeliveryCopyWith<BusinessDelivery> get copyWith => _$BusinessDeliveryCopyWithImpl<BusinessDelivery>(this as BusinessDelivery, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BusinessDelivery&&(identical(other.offered, offered) || other.offered == offered)&&(identical(other.baseFeeMinor, baseFeeMinor) || other.baseFeeMinor == baseFeeMinor)&&(identical(other.setupOffered, setupOffered) || other.setupOffered == setupOffered)&&(identical(other.setupFeeMinor, setupFeeMinor) || other.setupFeeMinor == setupFeeMinor)&&(identical(other.perKmMinor, perKmMinor) || other.perKmMinor == perKmMinor));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,offered,baseFeeMinor,setupOffered,setupFeeMinor,perKmMinor);
+
+@override
+String toString() {
+  return 'BusinessDelivery(offered: $offered, baseFeeMinor: $baseFeeMinor, setupOffered: $setupOffered, setupFeeMinor: $setupFeeMinor, perKmMinor: $perKmMinor)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $BusinessDeliveryCopyWith<$Res>  {
+  factory $BusinessDeliveryCopyWith(BusinessDelivery value, $Res Function(BusinessDelivery) _then) = _$BusinessDeliveryCopyWithImpl;
+@useResult
+$Res call({
+ bool offered, int baseFeeMinor, bool setupOffered, int setupFeeMinor, int perKmMinor
+});
+
+
+
+
+}
+/// @nodoc
+class _$BusinessDeliveryCopyWithImpl<$Res>
+    implements $BusinessDeliveryCopyWith<$Res> {
+  _$BusinessDeliveryCopyWithImpl(this._self, this._then);
+
+  final BusinessDelivery _self;
+  final $Res Function(BusinessDelivery) _then;
+
+/// Create a copy of BusinessDelivery
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? offered = null,Object? baseFeeMinor = null,Object? setupOffered = null,Object? setupFeeMinor = null,Object? perKmMinor = null,}) {
+  return _then(_self.copyWith(
+offered: null == offered ? _self.offered : offered // ignore: cast_nullable_to_non_nullable
+as bool,baseFeeMinor: null == baseFeeMinor ? _self.baseFeeMinor : baseFeeMinor // ignore: cast_nullable_to_non_nullable
+as int,setupOffered: null == setupOffered ? _self.setupOffered : setupOffered // ignore: cast_nullable_to_non_nullable
+as bool,setupFeeMinor: null == setupFeeMinor ? _self.setupFeeMinor : setupFeeMinor // ignore: cast_nullable_to_non_nullable
+as int,perKmMinor: null == perKmMinor ? _self.perKmMinor : perKmMinor // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [BusinessDelivery].
+extension BusinessDeliveryPatterns on BusinessDelivery {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _BusinessDelivery value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _BusinessDelivery() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _BusinessDelivery value)  $default,){
+final _that = this;
+switch (_that) {
+case _BusinessDelivery():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _BusinessDelivery value)?  $default,){
+final _that = this;
+switch (_that) {
+case _BusinessDelivery() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool offered,  int baseFeeMinor,  bool setupOffered,  int setupFeeMinor,  int perKmMinor)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _BusinessDelivery() when $default != null:
+return $default(_that.offered,_that.baseFeeMinor,_that.setupOffered,_that.setupFeeMinor,_that.perKmMinor);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool offered,  int baseFeeMinor,  bool setupOffered,  int setupFeeMinor,  int perKmMinor)  $default,) {final _that = this;
+switch (_that) {
+case _BusinessDelivery():
+return $default(_that.offered,_that.baseFeeMinor,_that.setupOffered,_that.setupFeeMinor,_that.perKmMinor);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool offered,  int baseFeeMinor,  bool setupOffered,  int setupFeeMinor,  int perKmMinor)?  $default,) {final _that = this;
+switch (_that) {
+case _BusinessDelivery() when $default != null:
+return $default(_that.offered,_that.baseFeeMinor,_that.setupOffered,_that.setupFeeMinor,_that.perKmMinor);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _BusinessDelivery implements BusinessDelivery {
+  const _BusinessDelivery({this.offered = true, this.baseFeeMinor = 0, this.setupOffered = false, this.setupFeeMinor = 0, this.perKmMinor = 0});
+  
+
+@override@JsonKey() final  bool offered;
+@override@JsonKey() final  int baseFeeMinor;
+@override@JsonKey() final  bool setupOffered;
+@override@JsonKey() final  int setupFeeMinor;
+/// Set on the web; kept as-is when the app saves delivery.
+@override@JsonKey() final  int perKmMinor;
+
+/// Create a copy of BusinessDelivery
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$BusinessDeliveryCopyWith<_BusinessDelivery> get copyWith => __$BusinessDeliveryCopyWithImpl<_BusinessDelivery>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BusinessDelivery&&(identical(other.offered, offered) || other.offered == offered)&&(identical(other.baseFeeMinor, baseFeeMinor) || other.baseFeeMinor == baseFeeMinor)&&(identical(other.setupOffered, setupOffered) || other.setupOffered == setupOffered)&&(identical(other.setupFeeMinor, setupFeeMinor) || other.setupFeeMinor == setupFeeMinor)&&(identical(other.perKmMinor, perKmMinor) || other.perKmMinor == perKmMinor));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,offered,baseFeeMinor,setupOffered,setupFeeMinor,perKmMinor);
+
+@override
+String toString() {
+  return 'BusinessDelivery(offered: $offered, baseFeeMinor: $baseFeeMinor, setupOffered: $setupOffered, setupFeeMinor: $setupFeeMinor, perKmMinor: $perKmMinor)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$BusinessDeliveryCopyWith<$Res> implements $BusinessDeliveryCopyWith<$Res> {
+  factory _$BusinessDeliveryCopyWith(_BusinessDelivery value, $Res Function(_BusinessDelivery) _then) = __$BusinessDeliveryCopyWithImpl;
+@override @useResult
+$Res call({
+ bool offered, int baseFeeMinor, bool setupOffered, int setupFeeMinor, int perKmMinor
+});
+
+
+
+
+}
+/// @nodoc
+class __$BusinessDeliveryCopyWithImpl<$Res>
+    implements _$BusinessDeliveryCopyWith<$Res> {
+  __$BusinessDeliveryCopyWithImpl(this._self, this._then);
+
+  final _BusinessDelivery _self;
+  final $Res Function(_BusinessDelivery) _then;
+
+/// Create a copy of BusinessDelivery
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? offered = null,Object? baseFeeMinor = null,Object? setupOffered = null,Object? setupFeeMinor = null,Object? perKmMinor = null,}) {
+  return _then(_BusinessDelivery(
+offered: null == offered ? _self.offered : offered // ignore: cast_nullable_to_non_nullable
+as bool,baseFeeMinor: null == baseFeeMinor ? _self.baseFeeMinor : baseFeeMinor // ignore: cast_nullable_to_non_nullable
+as int,setupOffered: null == setupOffered ? _self.setupOffered : setupOffered // ignore: cast_nullable_to_non_nullable
+as bool,setupFeeMinor: null == setupFeeMinor ? _self.setupFeeMinor : setupFeeMinor // ignore: cast_nullable_to_non_nullable
+as int,perKmMinor: null == perKmMinor ? _self.perKmMinor : perKmMinor // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
+mixin _$BusinessProfile {
+
+ String get id; String get handle; String get name; String? get bio; String? get logoUrl; String? get coverUrl; String? get city; List<String> get categories; List<String> get eventTypes; String? get phone; String? get whatsapp; String? get email; bool get isVerified; double? get ratingAverage; int get ratingCount; int get followers; int get posts; int get completedBookings; int? get serviceRadiusKm; BusinessDelivery get delivery; int? get depositPercent; int? get leadTimeHours;/// `owner`, `manager` or `staff`; null if not on the team.
+ String? get myRole;
+/// Create a copy of BusinessProfile
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$BusinessProfileCopyWith<BusinessProfile> get copyWith => _$BusinessProfileCopyWithImpl<BusinessProfile>(this as BusinessProfile, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BusinessProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.name, name) || other.name == name)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.coverUrl, coverUrl) || other.coverUrl == coverUrl)&&(identical(other.city, city) || other.city == city)&&const DeepCollectionEquality().equals(other.categories, categories)&&const DeepCollectionEquality().equals(other.eventTypes, eventTypes)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.whatsapp, whatsapp) || other.whatsapp == whatsapp)&&(identical(other.email, email) || other.email == email)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.ratingAverage, ratingAverage) || other.ratingAverage == ratingAverage)&&(identical(other.ratingCount, ratingCount) || other.ratingCount == ratingCount)&&(identical(other.followers, followers) || other.followers == followers)&&(identical(other.posts, posts) || other.posts == posts)&&(identical(other.completedBookings, completedBookings) || other.completedBookings == completedBookings)&&(identical(other.serviceRadiusKm, serviceRadiusKm) || other.serviceRadiusKm == serviceRadiusKm)&&(identical(other.delivery, delivery) || other.delivery == delivery)&&(identical(other.depositPercent, depositPercent) || other.depositPercent == depositPercent)&&(identical(other.leadTimeHours, leadTimeHours) || other.leadTimeHours == leadTimeHours)&&(identical(other.myRole, myRole) || other.myRole == myRole));
+}
+
+
+@override
+int get hashCode => Object.hashAll([runtimeType,id,handle,name,bio,logoUrl,coverUrl,city,const DeepCollectionEquality().hash(categories),const DeepCollectionEquality().hash(eventTypes),phone,whatsapp,email,isVerified,ratingAverage,ratingCount,followers,posts,completedBookings,serviceRadiusKm,delivery,depositPercent,leadTimeHours,myRole]);
+
+@override
+String toString() {
+  return 'BusinessProfile(id: $id, handle: $handle, name: $name, bio: $bio, logoUrl: $logoUrl, coverUrl: $coverUrl, city: $city, categories: $categories, eventTypes: $eventTypes, phone: $phone, whatsapp: $whatsapp, email: $email, isVerified: $isVerified, ratingAverage: $ratingAverage, ratingCount: $ratingCount, followers: $followers, posts: $posts, completedBookings: $completedBookings, serviceRadiusKm: $serviceRadiusKm, delivery: $delivery, depositPercent: $depositPercent, leadTimeHours: $leadTimeHours, myRole: $myRole)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $BusinessProfileCopyWith<$Res>  {
+  factory $BusinessProfileCopyWith(BusinessProfile value, $Res Function(BusinessProfile) _then) = _$BusinessProfileCopyWithImpl;
+@useResult
+$Res call({
+ String id, String handle, String name, String? bio, String? logoUrl, String? coverUrl, String? city, List<String> categories, List<String> eventTypes, String? phone, String? whatsapp, String? email, bool isVerified, double? ratingAverage, int ratingCount, int followers, int posts, int completedBookings, int? serviceRadiusKm, BusinessDelivery delivery, int? depositPercent, int? leadTimeHours, String? myRole
+});
+
+
+$BusinessDeliveryCopyWith<$Res> get delivery;
+
+}
+/// @nodoc
+class _$BusinessProfileCopyWithImpl<$Res>
+    implements $BusinessProfileCopyWith<$Res> {
+  _$BusinessProfileCopyWithImpl(this._self, this._then);
+
+  final BusinessProfile _self;
+  final $Res Function(BusinessProfile) _then;
+
+/// Create a copy of BusinessProfile
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? handle = null,Object? name = null,Object? bio = freezed,Object? logoUrl = freezed,Object? coverUrl = freezed,Object? city = freezed,Object? categories = null,Object? eventTypes = null,Object? phone = freezed,Object? whatsapp = freezed,Object? email = freezed,Object? isVerified = null,Object? ratingAverage = freezed,Object? ratingCount = null,Object? followers = null,Object? posts = null,Object? completedBookings = null,Object? serviceRadiusKm = freezed,Object? delivery = null,Object? depositPercent = freezed,Object? leadTimeHours = freezed,Object? myRole = freezed,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,handle: null == handle ? _self.handle : handle // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
+as String?,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
+as String?,coverUrl: freezed == coverUrl ? _self.coverUrl : coverUrl // ignore: cast_nullable_to_non_nullable
+as String?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
+as String?,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
+as List<String>,eventTypes: null == eventTypes ? _self.eventTypes : eventTypes // ignore: cast_nullable_to_non_nullable
+as List<String>,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String?,whatsapp: freezed == whatsapp ? _self.whatsapp : whatsapp // ignore: cast_nullable_to_non_nullable
+as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,isVerified: null == isVerified ? _self.isVerified : isVerified // ignore: cast_nullable_to_non_nullable
+as bool,ratingAverage: freezed == ratingAverage ? _self.ratingAverage : ratingAverage // ignore: cast_nullable_to_non_nullable
+as double?,ratingCount: null == ratingCount ? _self.ratingCount : ratingCount // ignore: cast_nullable_to_non_nullable
+as int,followers: null == followers ? _self.followers : followers // ignore: cast_nullable_to_non_nullable
+as int,posts: null == posts ? _self.posts : posts // ignore: cast_nullable_to_non_nullable
+as int,completedBookings: null == completedBookings ? _self.completedBookings : completedBookings // ignore: cast_nullable_to_non_nullable
+as int,serviceRadiusKm: freezed == serviceRadiusKm ? _self.serviceRadiusKm : serviceRadiusKm // ignore: cast_nullable_to_non_nullable
+as int?,delivery: null == delivery ? _self.delivery : delivery // ignore: cast_nullable_to_non_nullable
+as BusinessDelivery,depositPercent: freezed == depositPercent ? _self.depositPercent : depositPercent // ignore: cast_nullable_to_non_nullable
+as int?,leadTimeHours: freezed == leadTimeHours ? _self.leadTimeHours : leadTimeHours // ignore: cast_nullable_to_non_nullable
+as int?,myRole: freezed == myRole ? _self.myRole : myRole // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+/// Create a copy of BusinessProfile
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$BusinessDeliveryCopyWith<$Res> get delivery {
+  
+  return $BusinessDeliveryCopyWith<$Res>(_self.delivery, (value) {
+    return _then(_self.copyWith(delivery: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [BusinessProfile].
+extension BusinessProfilePatterns on BusinessProfile {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _BusinessProfile value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _BusinessProfile() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _BusinessProfile value)  $default,){
+final _that = this;
+switch (_that) {
+case _BusinessProfile():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _BusinessProfile value)?  $default,){
+final _that = this;
+switch (_that) {
+case _BusinessProfile() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String handle,  String name,  String? bio,  String? logoUrl,  String? coverUrl,  String? city,  List<String> categories,  List<String> eventTypes,  String? phone,  String? whatsapp,  String? email,  bool isVerified,  double? ratingAverage,  int ratingCount,  int followers,  int posts,  int completedBookings,  int? serviceRadiusKm,  BusinessDelivery delivery,  int? depositPercent,  int? leadTimeHours,  String? myRole)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _BusinessProfile() when $default != null:
+return $default(_that.id,_that.handle,_that.name,_that.bio,_that.logoUrl,_that.coverUrl,_that.city,_that.categories,_that.eventTypes,_that.phone,_that.whatsapp,_that.email,_that.isVerified,_that.ratingAverage,_that.ratingCount,_that.followers,_that.posts,_that.completedBookings,_that.serviceRadiusKm,_that.delivery,_that.depositPercent,_that.leadTimeHours,_that.myRole);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String handle,  String name,  String? bio,  String? logoUrl,  String? coverUrl,  String? city,  List<String> categories,  List<String> eventTypes,  String? phone,  String? whatsapp,  String? email,  bool isVerified,  double? ratingAverage,  int ratingCount,  int followers,  int posts,  int completedBookings,  int? serviceRadiusKm,  BusinessDelivery delivery,  int? depositPercent,  int? leadTimeHours,  String? myRole)  $default,) {final _that = this;
+switch (_that) {
+case _BusinessProfile():
+return $default(_that.id,_that.handle,_that.name,_that.bio,_that.logoUrl,_that.coverUrl,_that.city,_that.categories,_that.eventTypes,_that.phone,_that.whatsapp,_that.email,_that.isVerified,_that.ratingAverage,_that.ratingCount,_that.followers,_that.posts,_that.completedBookings,_that.serviceRadiusKm,_that.delivery,_that.depositPercent,_that.leadTimeHours,_that.myRole);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String handle,  String name,  String? bio,  String? logoUrl,  String? coverUrl,  String? city,  List<String> categories,  List<String> eventTypes,  String? phone,  String? whatsapp,  String? email,  bool isVerified,  double? ratingAverage,  int ratingCount,  int followers,  int posts,  int completedBookings,  int? serviceRadiusKm,  BusinessDelivery delivery,  int? depositPercent,  int? leadTimeHours,  String? myRole)?  $default,) {final _that = this;
+switch (_that) {
+case _BusinessProfile() when $default != null:
+return $default(_that.id,_that.handle,_that.name,_that.bio,_that.logoUrl,_that.coverUrl,_that.city,_that.categories,_that.eventTypes,_that.phone,_that.whatsapp,_that.email,_that.isVerified,_that.ratingAverage,_that.ratingCount,_that.followers,_that.posts,_that.completedBookings,_that.serviceRadiusKm,_that.delivery,_that.depositPercent,_that.leadTimeHours,_that.myRole);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _BusinessProfile extends BusinessProfile {
+  const _BusinessProfile({required this.id, required this.handle, required this.name, this.bio, this.logoUrl, this.coverUrl, this.city, final  List<String> categories = const <String>[], final  List<String> eventTypes = const <String>[], this.phone, this.whatsapp, this.email, this.isVerified = false, this.ratingAverage, this.ratingCount = 0, this.followers = 0, this.posts = 0, this.completedBookings = 0, this.serviceRadiusKm, this.delivery = const BusinessDelivery(), this.depositPercent, this.leadTimeHours, this.myRole}): _categories = categories,_eventTypes = eventTypes,super._();
+  
+
+@override final  String id;
+@override final  String handle;
+@override final  String name;
+@override final  String? bio;
+@override final  String? logoUrl;
+@override final  String? coverUrl;
+@override final  String? city;
+ final  List<String> _categories;
+@override@JsonKey() List<String> get categories {
+  if (_categories is EqualUnmodifiableListView) return _categories;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_categories);
+}
+
+ final  List<String> _eventTypes;
+@override@JsonKey() List<String> get eventTypes {
+  if (_eventTypes is EqualUnmodifiableListView) return _eventTypes;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_eventTypes);
+}
+
+@override final  String? phone;
+@override final  String? whatsapp;
+@override final  String? email;
+@override@JsonKey() final  bool isVerified;
+@override final  double? ratingAverage;
+@override@JsonKey() final  int ratingCount;
+@override@JsonKey() final  int followers;
+@override@JsonKey() final  int posts;
+@override@JsonKey() final  int completedBookings;
+@override final  int? serviceRadiusKm;
+@override@JsonKey() final  BusinessDelivery delivery;
+@override final  int? depositPercent;
+@override final  int? leadTimeHours;
+/// `owner`, `manager` or `staff`; null if not on the team.
+@override final  String? myRole;
+
+/// Create a copy of BusinessProfile
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$BusinessProfileCopyWith<_BusinessProfile> get copyWith => __$BusinessProfileCopyWithImpl<_BusinessProfile>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BusinessProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.name, name) || other.name == name)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.coverUrl, coverUrl) || other.coverUrl == coverUrl)&&(identical(other.city, city) || other.city == city)&&const DeepCollectionEquality().equals(other._categories, _categories)&&const DeepCollectionEquality().equals(other._eventTypes, _eventTypes)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.whatsapp, whatsapp) || other.whatsapp == whatsapp)&&(identical(other.email, email) || other.email == email)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.ratingAverage, ratingAverage) || other.ratingAverage == ratingAverage)&&(identical(other.ratingCount, ratingCount) || other.ratingCount == ratingCount)&&(identical(other.followers, followers) || other.followers == followers)&&(identical(other.posts, posts) || other.posts == posts)&&(identical(other.completedBookings, completedBookings) || other.completedBookings == completedBookings)&&(identical(other.serviceRadiusKm, serviceRadiusKm) || other.serviceRadiusKm == serviceRadiusKm)&&(identical(other.delivery, delivery) || other.delivery == delivery)&&(identical(other.depositPercent, depositPercent) || other.depositPercent == depositPercent)&&(identical(other.leadTimeHours, leadTimeHours) || other.leadTimeHours == leadTimeHours)&&(identical(other.myRole, myRole) || other.myRole == myRole));
+}
+
+
+@override
+int get hashCode => Object.hashAll([runtimeType,id,handle,name,bio,logoUrl,coverUrl,city,const DeepCollectionEquality().hash(_categories),const DeepCollectionEquality().hash(_eventTypes),phone,whatsapp,email,isVerified,ratingAverage,ratingCount,followers,posts,completedBookings,serviceRadiusKm,delivery,depositPercent,leadTimeHours,myRole]);
+
+@override
+String toString() {
+  return 'BusinessProfile(id: $id, handle: $handle, name: $name, bio: $bio, logoUrl: $logoUrl, coverUrl: $coverUrl, city: $city, categories: $categories, eventTypes: $eventTypes, phone: $phone, whatsapp: $whatsapp, email: $email, isVerified: $isVerified, ratingAverage: $ratingAverage, ratingCount: $ratingCount, followers: $followers, posts: $posts, completedBookings: $completedBookings, serviceRadiusKm: $serviceRadiusKm, delivery: $delivery, depositPercent: $depositPercent, leadTimeHours: $leadTimeHours, myRole: $myRole)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$BusinessProfileCopyWith<$Res> implements $BusinessProfileCopyWith<$Res> {
+  factory _$BusinessProfileCopyWith(_BusinessProfile value, $Res Function(_BusinessProfile) _then) = __$BusinessProfileCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String handle, String name, String? bio, String? logoUrl, String? coverUrl, String? city, List<String> categories, List<String> eventTypes, String? phone, String? whatsapp, String? email, bool isVerified, double? ratingAverage, int ratingCount, int followers, int posts, int completedBookings, int? serviceRadiusKm, BusinessDelivery delivery, int? depositPercent, int? leadTimeHours, String? myRole
+});
+
+
+@override $BusinessDeliveryCopyWith<$Res> get delivery;
+
+}
+/// @nodoc
+class __$BusinessProfileCopyWithImpl<$Res>
+    implements _$BusinessProfileCopyWith<$Res> {
+  __$BusinessProfileCopyWithImpl(this._self, this._then);
+
+  final _BusinessProfile _self;
+  final $Res Function(_BusinessProfile) _then;
+
+/// Create a copy of BusinessProfile
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? handle = null,Object? name = null,Object? bio = freezed,Object? logoUrl = freezed,Object? coverUrl = freezed,Object? city = freezed,Object? categories = null,Object? eventTypes = null,Object? phone = freezed,Object? whatsapp = freezed,Object? email = freezed,Object? isVerified = null,Object? ratingAverage = freezed,Object? ratingCount = null,Object? followers = null,Object? posts = null,Object? completedBookings = null,Object? serviceRadiusKm = freezed,Object? delivery = null,Object? depositPercent = freezed,Object? leadTimeHours = freezed,Object? myRole = freezed,}) {
+  return _then(_BusinessProfile(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,handle: null == handle ? _self.handle : handle // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
+as String?,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
+as String?,coverUrl: freezed == coverUrl ? _self.coverUrl : coverUrl // ignore: cast_nullable_to_non_nullable
+as String?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
+as String?,categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
+as List<String>,eventTypes: null == eventTypes ? _self._eventTypes : eventTypes // ignore: cast_nullable_to_non_nullable
+as List<String>,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String?,whatsapp: freezed == whatsapp ? _self.whatsapp : whatsapp // ignore: cast_nullable_to_non_nullable
+as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,isVerified: null == isVerified ? _self.isVerified : isVerified // ignore: cast_nullable_to_non_nullable
+as bool,ratingAverage: freezed == ratingAverage ? _self.ratingAverage : ratingAverage // ignore: cast_nullable_to_non_nullable
+as double?,ratingCount: null == ratingCount ? _self.ratingCount : ratingCount // ignore: cast_nullable_to_non_nullable
+as int,followers: null == followers ? _self.followers : followers // ignore: cast_nullable_to_non_nullable
+as int,posts: null == posts ? _self.posts : posts // ignore: cast_nullable_to_non_nullable
+as int,completedBookings: null == completedBookings ? _self.completedBookings : completedBookings // ignore: cast_nullable_to_non_nullable
+as int,serviceRadiusKm: freezed == serviceRadiusKm ? _self.serviceRadiusKm : serviceRadiusKm // ignore: cast_nullable_to_non_nullable
+as int?,delivery: null == delivery ? _self.delivery : delivery // ignore: cast_nullable_to_non_nullable
+as BusinessDelivery,depositPercent: freezed == depositPercent ? _self.depositPercent : depositPercent // ignore: cast_nullable_to_non_nullable
+as int?,leadTimeHours: freezed == leadTimeHours ? _self.leadTimeHours : leadTimeHours // ignore: cast_nullable_to_non_nullable
+as int?,myRole: freezed == myRole ? _self.myRole : myRole // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+/// Create a copy of BusinessProfile
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$BusinessDeliveryCopyWith<$Res> get delivery {
+  
+  return $BusinessDeliveryCopyWith<$Res>(_self.delivery, (value) {
+    return _then(_self.copyWith(delivery: value));
+  });
+}
+}
+
 // dart format on

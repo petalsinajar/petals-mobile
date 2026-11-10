@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:petalsinajar/app/router/app_shell.dart';
 import 'package:petalsinajar/app/router/routes.dart';
-import 'package:petalsinajar/features/catalog/presentation/discover_screen.dart';
+import 'package:petalsinajar/features/discover/presentation/discover_screen.dart';
 import 'package:petalsinajar/features/events/presentation/my_events_screen.dart';
 import 'package:petalsinajar/features/feed/presentation/feed_screen.dart';
 import 'package:petalsinajar/features/posts/presentation/create_screen.dart';
@@ -11,6 +11,7 @@ import 'package:petalsinajar/features/profile/presentation/edit_profile_screen.d
 import 'package:petalsinajar/features/profile/presentation/profile_screen.dart';
 import 'package:petalsinajar/features/profile/presentation/profile_settings_screen.dart';
 import 'package:petalsinajar/features/vendor/presentation/calendar_screen.dart';
+import 'package:petalsinajar/features/vendor/presentation/edit_business_screen.dart';
 import 'package:petalsinajar/features/vendor/presentation/inventory_screen.dart';
 import 'package:petalsinajar/features/vendor/presentation/requests_screen.dart';
 import 'package:petalsinajar/features/vendor/presentation/today_screen.dart';
@@ -125,6 +126,10 @@ final vendorShellRoute = StatefulShellRoute.indexedStack(
     _branch(Routes.vendorRequests, const VendorRequestsScreen()),
     _branch(Routes.vendorCalendar, const VendorCalendarScreen()),
     _branch(Routes.vendorInventory, const VendorInventoryScreen()),
-    _branch(Routes.vendorProfile, const VendorProfileScreen()),
+    _branch(
+      Routes.vendorProfile,
+      const VendorProfileScreen(),
+      children: {Routes.vendorProfileEdit: const EditBusinessScreen()},
+    ),
   ],
 );

@@ -12,6 +12,19 @@ abstract final class Routes {
   static const profileSettings = '/profile/settings';
   static const dashboardSignIn = '/profile/dashboard-sign-in';
 
+  /// Full screen: Discover's search, optionally within a category.
+  static const search = '/search';
+
+  static String searchCategory(String categoryId, String name) => Uri(
+    path: search,
+    queryParameters: {'category': categoryId, 'name': name},
+  ).toString();
+
+  /// Full screen: the viewer's bookings, and one booking (push target).
+  static const myBookings = '/bookings';
+  static const bookingPattern = '/bookings/:id';
+  static String booking(String id) => '/bookings/$id';
+
   /// Full screen: "Start a business".
   static const startBusiness = '/business/new';
 
@@ -30,6 +43,7 @@ abstract final class Routes {
   static const vendorCalendar = '/vendor/calendar';
   static const vendorInventory = '/vendor/inventory';
   static const vendorProfile = '/vendor/profile';
+  static const vendorProfileEdit = '/vendor/profile/edit';
 
   // Sign in, then (new accounts) a name. All carry `?from=` — where to go
   // once done.

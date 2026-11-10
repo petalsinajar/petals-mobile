@@ -75,7 +75,7 @@ Map<String, dynamic> profileChangesJson(ProfileChanges c) {
     if (c.handle case final v?) 'handle': v.trim(),
     if (c.bio case final v?) 'bio': text(v),
     if (c.city case final v?) 'city': text(v),
-    if (c.avatarUrl case final v?) 'avatar_url': text(v),
+    'avatar_media_id': ?c.avatarMediaId,
     'is_private': ?c.isPrivate,
     if (c.notify case final n?)
       'settings': {

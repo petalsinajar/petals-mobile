@@ -224,6 +224,13 @@ class _Menu extends ConsumerWidget {
           clipBehavior: Clip.antiAlias,
           child: Column(
             children: [
+              ListTile(
+                leading: const Icon(Icons.receipt_long_rounded),
+                title: const Text('My bookings'),
+                subtitle: const Text('Rentals you’ve requested'),
+                trailing: chevron,
+                onTap: () => context.push(Routes.myBookings),
+              ),
               if (vendors.isEmpty)
                 ListTile(
                   leading: const Icon(Icons.add_business_outlined),

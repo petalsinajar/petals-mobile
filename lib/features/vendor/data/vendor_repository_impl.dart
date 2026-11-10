@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:petalsinajar/core/media/media.dart';
 import 'package:petalsinajar/core/mock/seed_loader.dart';
 import 'package:petalsinajar/core/network/api_exception.dart';
 import 'package:petalsinajar/core/network/dio_client.dart';
@@ -51,8 +52,97 @@ VendorBooking _booking(Json j) {
       final String at => DateTime.parse(at).toLocal(),
       _ => null,
     },
-    fulfilment: j['fulfilment'] as String?,
+    // `{ type: delivery|pickup, address, deliver_at, … }`.
+    fulfilment: (j['fulfilment'] as Json?)?['type'] as String?,
     customerNote: notes?['customer'] as String?,
+  );
+}
+
+/// `ItemResource`. The "from" price falls back to the cheapest tier for
+/// servers that don't send `from_price_minor` yet.
+VendorItem _item(Json j) {
+  final pricing = j['pricing'] as Json? ?? const {};
+  final tiers = (pricing['tiers'] as List? ?? const []).cast<Json>();
+  final media = [
+    for (final m in (j['media'] as List? ?? const []).cast<Json>())
+      Media.fromApi(m),
+  ];
+  final photo = media.where((m) => !m.isVideo && m.isReady).firstOrNull;
+  return VendorItem(
+    id: j['id'] as String,
+    title: j['title'] as String? ?? 'Untitled',
+    status: VendorItemStatus.values.firstWhere(
+      (s) => s.name == j['status'],
+      orElse: () => VendorItemStatus.draft,
+    ),
+    fromPriceMinor:
+        j['from_price_minor'] as int? ??
+        tiers
+            .map((t) => t['price_minor'] as int? ?? 0)
+            .fold<int?>(null, (min, p) => min == null || p < min ? p : min) ??
+        0,
+    currency: pricing['currency'] as String? ?? 'GHS',
+    unit: pricing['unit'] as String? ?? 'per_event',
+    categoryId: j['category_id'] as String?,
+    photoUrl: photo?.stillUrl,
+    blurhash: photo?.blurhash,
+    media: media,
+    minQty: j['min_qty'] as int? ?? 1,
+    instantBook: j['instant_book'] as bool? ?? false,
+    variants: [
+      for (final v in (j['variants'] as List? ?? const []).cast<Json>())
+        VendorItemVariant(
+          id: v['id'] as String,
+          name: v['name'] as String? ?? 'Standard',
+          quantity: v['quantity'] as int? ?? 0,
+          active: v['active'] as bool? ?? true,
+        ),
+    ],
+  );
+}
+
+/// `VendorResource`, with `my_role`.
+BusinessProfile _business(Json j) {
+  final contact = j['contact'] is Map
+      ? j['contact'] as Json
+      : const <String, dynamic>{};
+  final delivery = j['delivery'] is Map
+      ? j['delivery'] as Json
+      : const <String, dynamic>{};
+  final area = j['service_area'] as Json? ?? const {};
+  final rating = j['rating'] as Json? ?? const {};
+  final counts = j['counts'] as Json? ?? const {};
+  final policies = j['policies'] as Json? ?? const {};
+  return BusinessProfile(
+    id: j['id'] as String,
+    handle: j['handle'] as String,
+    name: j['name'] as String,
+    bio: j['bio'] as String?,
+    logoUrl: j['logo_url'] as String?,
+    coverUrl: j['cover_url'] as String?,
+    city: j['city'] as String?,
+    categories: (j['categories'] as List? ?? const []).cast<String>(),
+    eventTypes: (j['event_types'] as List? ?? const []).cast<String>(),
+    phone: contact['phone'] as String?,
+    whatsapp: contact['whatsapp'] as String?,
+    email: contact['email'] as String?,
+    isVerified: j['is_verified'] as bool? ?? false,
+    ratingAverage: (rating['avg'] as num?)?.toDouble(),
+    ratingCount: rating['count'] as int? ?? 0,
+    followers: counts['followers'] as int? ?? 0,
+    posts: counts['posts'] as int? ?? 0,
+    completedBookings: counts['completed_bookings'] as int? ?? 0,
+    serviceRadiusKm: area['radius_km'] as int?,
+    delivery: BusinessDelivery(
+      offered: delivery['offered'] as bool? ?? true,
+      baseFeeMinor: delivery['base_fee_minor'] as int? ?? 0,
+      setupOffered: delivery['setup_offered'] as bool? ?? false,
+      setupFeeMinor: delivery['setup_fee_minor'] as int? ?? 0,
+      perKmMinor: delivery['per_km_minor'] as int? ?? 0,
+    ),
+    depositPercent: policies['deposit_percent'] as int?,
+    leadTimeHours: policies['lead_time_hours'] as int?,
+    myRole: j['my_role'] as String?,
   );
 }
 
@@ -145,6 +235,41 @@ class VendorRepositoryImpl implements VendorRepository {
       if (cursor == null) break;
     }
     return rows;
+  }
+
+  @override
+  Future<VendorItem> setItemPhotos(
+    String vendorId,
+    String itemId,
+    List<String> mediaIds,
+  ) async => _item(
+    await _call(
+      () => _dio.patch<Json>(
+        '/vendors/$vendorId/items/$itemId',
+        data: {'media': mediaIds},
+      ),
+    ),
+  );
+
+  @override
+  Future<BusinessProfile> business(String vendorId) async =>
+      _business(await _call(() => _dio.get<Json>('/vendors/$vendorId')));
+
+  @override
+  Future<BusinessProfile> updateBusiness(
+    String vendorId,
+    Map<String, Object?> changes,
+  ) async => _business(
+    await _call(() => _dio.patch<Json>('/vendors/$vendorId', data: changes)),
+  );
+
+  @override
+  Future<List<VendorItem>> items(String vendorId) async {
+    final body = await _call(() => _dio.get<Json>('/vendors/$vendorId/items'));
+    return [
+      for (final j in (body['data'] as List? ?? const []).cast<Json>())
+        _item(j),
+    ];
   }
 
   @override

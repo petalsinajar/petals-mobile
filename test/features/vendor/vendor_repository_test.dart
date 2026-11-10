@@ -33,7 +33,17 @@ void main() {
       'start': '2026-12-12T08:00:00+00:00',
       'end': '2026-12-13T10:00:00+00:00',
     },
-    'fulfilment': 'delivery',
+    // As BookingResource sends it: an object, not just the type.
+    'fulfilment': {
+      'type': 'delivery',
+      'address': 'Villa Monticello, East Legon',
+      'lat': 5.635,
+      'lng': -0.157,
+      'setup': false,
+      'deliver_at': '2026-12-12T08:00:00+00:00',
+      'collect_at': '2026-12-13T10:00:00+00:00',
+      'contact_phone': null,
+    },
     'totals': {'total_minor': 480000, 'currency': 'GHS'},
     'vendor_respond_by': '2026-11-10T08:00:00+00:00',
     'notes': {'customer': 'Gate code 1234', 'vendor_internal': null},
@@ -43,6 +53,56 @@ void main() {
   setUp(() {
     api = FakeHttpAdapter((o) async {
       return switch ((o.method, o.path)) {
+        ('PATCH', '/vendors/v1/items/i1') => jsonBody(200, {
+          'id': 'i1',
+          'title': 'Chiavari chair',
+          'media': (o.data as Map<String, dynamic>)['media'],
+          'pricing': {
+            'unit': 'per_event',
+            'currency': 'GHS',
+            'tiers': <Object>[],
+          },
+          'from_price_minor': 1200,
+          'variants': <Object>[],
+          'status': 'active',
+          'warnings': <Object>[],
+        }),
+        // ItemResource, as the server sends it.
+        ('GET', '/vendors/v1/items') => jsonBody(200, {
+          'data': [
+            {
+              'id': 'i1',
+              'vendor_id': 'v1',
+              'category_id': 'chairs',
+              'title': 'Chiavari chair',
+              'media': [
+                {'url': 'https://cdn.test/c.jpg', 'type': 'image'},
+              ],
+              'pricing': {
+                'unit': 'per_event',
+                'currency': 'GHS',
+                'tiers': [
+                  {'min_qty': 1, 'price_minor': 1500},
+                  {'min_qty': 100, 'price_minor': 1200},
+                ],
+              },
+              'min_qty': 10,
+              'instant_book': false,
+              'variants': [
+                {
+                  'id': 'g',
+                  'name': 'Gold',
+                  'sku': null,
+                  'quantity': 120,
+                  'price_delta_minor': 0,
+                  'active': true,
+                },
+              ],
+              'status': 'paused',
+            },
+          ],
+          'next_cursor': null,
+        }),
         ('GET', '/categories') => jsonBody(200, {
           'data': [
             {'id': 'chairs', 'name': 'Chairs', 'parent_id': null},
@@ -93,6 +153,39 @@ void main() {
       ..httpClientAdapter = api;
     repo = VendorRepositoryImpl(dio);
   });
+
+  test('setting photos sends only the media, videos kept as videos', () async {
+    final saved = await repo.setItemPhotos('v1', 'i1', const [
+      ItemMedia(url: 'https://cdn.test/a.jpg', width: 1600, height: 1200),
+      ItemMedia(url: 'https://cdn.test/v.mp4', isVideo: true),
+    ]);
+
+    expect(api.requests.last.data, {
+      'media': [
+        {
+          'url': 'https://cdn.test/a.jpg',
+          'type': 'image',
+          'w': 1600,
+          'h': 1200,
+        },
+        {'url': 'https://cdn.test/v.mp4', 'type': 'video'},
+      ],
+    });
+    expect(saved.photoUrl, 'https://cdn.test/a.jpg');
+    expect(saved.media, hasLength(2));
+  });
+
+  test(
+    'inventory parses ItemResource, from-price from the cheapest tier',
+    () async {
+      final item = (await repo.items('v1')).single;
+      expect(item.status, VendorItemStatus.paused);
+      expect(item.fromPriceMinor, 1200);
+      expect(item.stock, 120);
+      expect(item.minQty, 10);
+      expect(item.photoUrl, 'https://cdn.test/c.jpg');
+    },
+  );
 
   test('categories', () async {
     expect(await repo.categories(), const [

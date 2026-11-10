@@ -26,6 +26,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Petalsinajar uses your location to show rental vendors that deliver to your area.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Take photos of your events to post.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Choose photos for event covers and posts.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

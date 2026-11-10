@@ -4,6 +4,7 @@ import 'package:petalsinajar/app/theme/theme_context.dart';
 import 'package:petalsinajar/core/utils/time_ago.dart';
 import 'package:petalsinajar/core/widgets/avatar.dart';
 import 'package:petalsinajar/core/widgets/media_image.dart';
+import 'package:petalsinajar/core/widgets/media_video.dart';
 import 'package:petalsinajar/features/feed/domain/post.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -168,8 +169,7 @@ class _MediaCarouselState extends State<_MediaCarousel> {
     // The first photo sets the frame; later ones are cropped to fit.
     final ratio = media.first.aspectRatio;
     if (media.length == 1) {
-      final m = media.single;
-      return MediaImage(url: m.url, blurhash: m.blurhash, aspectRatio: ratio);
+      return AspectRatio(aspectRatio: ratio, child: _Slide(media.single));
     }
     return Column(
       children: [
@@ -178,8 +178,7 @@ class _MediaCarouselState extends State<_MediaCarousel> {
           child: PageView(
             controller: _pages,
             children: [
-              for (final m in media)
-                MediaImage(url: m.url, blurhash: m.blurhash),
+              for (final m in media) _Slide(m),
             ],
           ),
         ),
@@ -236,5 +235,21 @@ class _Actions extends StatelessWidget {
         Text('${post.commentCount}', style: label),
       ],
     );
+  }
+}
+
+/// One photo or video in a post. Videos autoplay muted in the feed.
+class _Slide extends StatelessWidget {
+  const _Slide(this.m);
+
+  final PostMedia m;
+
+  @override
+  Widget build(BuildContext context) {
+    final media = m.media;
+    if (m.isVideo && media != null) {
+      return MediaVideo(media: media, autoplay: true, aspectRatio: m.aspectRatio);
+    }
+    return MediaImage(url: m.url, media: media, blurhash: m.blurhash);
   }
 }

@@ -19,10 +19,6 @@ abstract interface class AuthRepository {
   /// invalid handle is an `ApiException` with a `handle` field error.
   Future<Me> updateMe(ProfileChanges changes);
 
-  /// Uploads a new profile photo and returns its URL, to save with
-  /// [updateMe] as `avatarUrl`.
-  Future<String> uploadPhoto(String path);
-
   /// Email and password for the vendors' web dashboard
   /// (petalsinajar.com/vendor). The app itself signs in by phone. An email
   /// already in use is an `ApiException` with an `email` field error.

@@ -18,6 +18,8 @@ extension PumpApp on WidgetTester {
     return pumpWidget(
       ProviderScope(
         overrides: overrides,
+        // As in bootstrap(): failures show at once, with a retry button.
+        retry: (_, _) => null,
         child: MaterialApp(
           theme: testThemes.light,
           darkTheme: testThemes.dark,

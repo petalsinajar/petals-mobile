@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:petalsinajar/core/media/media.dart';
 
 part 'post.freezed.dart';
 
@@ -23,6 +24,9 @@ abstract class PostMedia with _$PostMedia {
     int? height,
     String? blurhash,
     @Default(false) bool isVideo,
+
+    /// Every size (and the stream, for videos), when the API sent them.
+    Media? media,
   }) = _PostMedia;
 
   const PostMedia._();

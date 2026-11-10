@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:petalsinajar/core/media/media.dart';
 import 'package:petalsinajar/features/feed/domain/post.dart';
 
 part 'feed_dtos.g.dart';
@@ -41,25 +42,22 @@ class AuthorDto {
   static const deleted = PostAuthor(id: '', name: 'Deleted account');
 }
 
-@JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
+/// A post's photo or video: `Media::toPayload` (or the older `{ url }`).
 class MediaDto {
-  MediaDto({required this.url, this.type, this.w, this.h, this.blurhash});
+  MediaDto(this.media);
 
   factory MediaDto.fromJson(Map<String, dynamic> json) =>
-      _$MediaDtoFromJson(json);
+      MediaDto(Media.fromApi(json));
 
-  final String url;
-  final String? type;
-  final int? w;
-  final int? h;
-  final String? blurhash;
+  final Media media;
 
   PostMedia toDomain() => PostMedia(
-    url: url,
-    width: w,
-    height: h,
-    blurhash: blurhash,
-    isVideo: type == 'video',
+    url: media.stillUrl ?? '',
+    width: media.width,
+    height: media.height,
+    blurhash: media.blurhash,
+    isVideo: media.isVideo,
+    media: media,
   );
 }
 

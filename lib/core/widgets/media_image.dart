@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:petalsinajar/app/theme/motion.dart';
 import 'package:petalsinajar/app/theme/theme_context.dart';
+import 'package:petalsinajar/core/media/media.dart';
 
 /// Network image that never shows a blank box: the blurhash (or a skeleton
 /// tint) is painted immediately, then the photo fades in over it.
+///
+/// Give it a [media] and it picks the smallest size (thumb / feed / full)
+/// that's sharp at its width on this screen; or a plain [url].
 class MediaImage extends StatelessWidget {
   const MediaImage({
-    required this.url,
+    this.url,
+    this.media,
     this.blurhash,
     this.width,
     this.height,
@@ -19,7 +24,8 @@ class MediaImage extends StatelessWidget {
     super.key,
   });
 
-  final String url;
+  final String? url;
+  final Media? media;
   final String? blurhash;
   final double? width;
   final double? height;
@@ -40,8 +46,18 @@ class MediaImage extends StatelessWidget {
         final cacheWidth = targetWidth.isFinite
             ? (targetWidth * dpr).round()
             : null;
+        final hash = blurhash ?? media?.blurhash;
+        final source =
+            media?.imageUrlFor(
+              targetWidth.isFinite ? targetWidth * dpr : 1080,
+            ) ??
+            url;
+        if (source == null) {
+          // Still processing on the server: hold the place.
+          return _Placeholder(blurhash: hash);
+        }
         return CachedNetworkImage(
-          imageUrl: url,
+          imageUrl: source,
           width: width,
           height: height,
           fit: fit,
@@ -49,11 +65,11 @@ class MediaImage extends StatelessWidget {
           fadeInDuration: context.reduceMotion ? Duration.zero : AppMotion.slow,
           fadeInCurve: AppMotion.standard,
           fadeOutDuration: AppMotion.fast,
-          placeholder: (context, _) => _Placeholder(blurhash: blurhash),
+          placeholder: (context, _) => _Placeholder(blurhash: hash),
           errorWidget: (context, _, _) => Stack(
             fit: StackFit.expand,
             children: [
-              _Placeholder(blurhash: blurhash),
+              _Placeholder(blurhash: hash),
               Icon(
                 Icons.broken_image_outlined,
                 color: context.colors.onSurfaceVariant,

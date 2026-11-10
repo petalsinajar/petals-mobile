@@ -2,6 +2,8 @@ import 'package:petalsinajar/core/network/dio_client.dart';
 import 'package:petalsinajar/core/session/active_actor.dart';
 import 'package:petalsinajar/features/auth/data/auth_repository_impl.dart';
 import 'package:petalsinajar/features/auth/domain/me.dart';
+import 'package:petalsinajar/core/media/media_repository.dart';
+import 'package:petalsinajar/core/media/media_uploader.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_session.g.dart';
@@ -48,11 +50,13 @@ class AuthSession extends _$AuthSession {
     String? photoPath,
   }) async {
     final repo = ref.read(authRepositoryProvider);
-    final avatarUrl = photoPath == null
+    final avatar = photoPath == null
         ? null
-        : await repo.uploadPhoto(photoPath);
+        : await ref
+              .read(mediaUploaderProvider)
+              .upload(photoPath, purpose: MediaPurpose.avatar);
     final me = await repo.updateMe(
-      avatarUrl == null ? changes : changes.copyWith(avatarUrl: avatarUrl),
+      avatar == null ? changes : changes.copyWith(avatarMediaId: avatar.id),
     );
     state = AsyncData(me);
   }
