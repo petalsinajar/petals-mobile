@@ -136,7 +136,7 @@ class _Results extends ConsumerWidget {
                                 child: t.imageUrl == null
                                     ? const Icon(Icons.chair_rounded)
                                     : MediaImage(
-                                        url: t.imageUrl!,
+                                        url: t.imageUrl,
                                         borderRadius: AppRadii.smAll,
                                       ),
                               ),

@@ -2,18 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:petalsinajar/app/session/viewer.dart';
+import 'package:petalsinajar/core/media/upload_queue.dart';
 import 'package:petalsinajar/core/network/api_exception.dart';
 import 'package:petalsinajar/core/network/paginated.dart';
+import 'package:petalsinajar/core/storage/preferences.dart';
 import 'package:petalsinajar/features/feed/data/feed_repository_impl.dart';
 import 'package:petalsinajar/features/feed/domain/feed_repository.dart';
 import 'package:petalsinajar/features/feed/domain/post.dart';
 import 'package:petalsinajar/features/feed/presentation/feed_controllers.dart';
 import 'package:petalsinajar/features/feed/presentation/feed_screen.dart';
+import 'package:petalsinajar/features/posts/data/posts_repository_impl.dart';
+import 'package:petalsinajar/features/posts/domain/posts_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helpers/pump_app.dart';
 
 /// In-memory feed. Posts have no photos: images need a cache directory
 /// that doesn't exist under test.
+class _Posts implements PostsRepository {
+  final deleted = <String>[];
+
+  @override
+  Future<void> delete(String postId) async => deleted.add(postId);
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
 class _FakeFeed implements FeedRepository {
   _FakeFeed(this.posts);
 
@@ -147,11 +162,16 @@ void main() {
       List<FeedPost>? posts,
     }) async {
       final repo = _FakeFeed(posts ?? [_post('p1'), _post('p2')]);
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
       await tester.pumpApp(
         const FeedScreen(),
         overrides: [
           feedRepositoryProvider.overrideWithValue(repo),
           viewerIdProvider.overrideWithValue(viewer),
+          // The upload queue behind "posting…" cards: nothing queued.
+          sharedPreferencesProvider.overrideWithValue(prefs),
+          onlineProvider.overrideWith((ref) => Stream.value(true)),
         ],
       );
       await tester.pumpAndSettle();
@@ -235,6 +255,42 @@ void main() {
       );
 
       expect(find.text('at Ama & Kojo'), findsOneWidget);
+    });
+
+    testWidgets('your own post can be deleted; others have no menu', (
+      tester,
+    ) async {
+      final posts = _Posts();
+      final repo = _FakeFeed([
+        _post('p1').copyWith(canDelete: true),
+        _post('p2'),
+      ]);
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      await tester.pumpApp(
+        const FeedScreen(),
+        overrides: [
+          feedRepositoryProvider.overrideWithValue(repo),
+          postsRepositoryProvider.overrideWithValue(posts),
+          viewerIdProvider.overrideWithValue('me'),
+          sharedPreferencesProvider.overrideWithValue(prefs),
+          onlineProvider.overrideWith((ref) => Stream.value(true)),
+        ],
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byTooltip('Post options'), findsOneWidget);
+      await tester.tap(find.byTooltip('Post options'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete post'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(TextButton, 'Delete'));
+      await tester.pumpAndSettle();
+
+      expect(posts.deleted, ['p1']);
+      expect(find.textContaining('Caption for p1'), findsNothing);
+      expect(find.textContaining('Caption for p2'), findsOneWidget);
+      expect(find.text('Post deleted'), findsOneWidget);
     });
 
     testWidgets('an empty feed says so', (tester) async {

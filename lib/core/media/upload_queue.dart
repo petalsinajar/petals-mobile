@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dio/dio.dart' show CancelToken;
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:petalsinajar/core/media/media.dart';
@@ -150,6 +151,10 @@ Stream<bool> online(Ref ref) async* {
   yield* connectivity.onConnectivityChanged.map(isOnline);
 }
 
+/// How long to wait before retry number `attempt`; replaceable in tests.
+@Riverpod(keepAlive: true)
+Duration Function(int attempt) uploadBackoff(Ref ref) => UploadQueue.backoff;
+
 /// Uploads that carry on in the background, survive restarts, pause while
 /// offline and retry network failures with growing waits. One at a time,
 /// oldest first, so a slow phone isn't swamped.
@@ -254,6 +259,9 @@ class UploadQueue extends _$UploadQueue {
   /// Forgets [group]'s jobs and deletes their files.
   Future<void> removeGroup(String group) async {
     final gone = jobsIn(group);
+    for (final j in gone) {
+      _cancels.remove(j.id)?.cancel('Discarded');
+    }
     state = [
       for (final j in state)
         if (j.group != group) j,
@@ -316,10 +324,17 @@ class UploadQueue extends _$UploadQueue {
   static Duration backoff(int attempt) =>
       Duration(seconds: math.min(300, 2 * math.pow(2, attempt - 1).toInt()));
 
+  /// Stops a job's file mid-send when its group is removed.
+  final _cancels = <String, CancelToken>{};
+
+  /// False once the job was removed (its post discarded): stop working on it.
+  bool _alive(UploadJob job) => ref.mounted && state.any((j) => j.id == job.id);
+
   Future<void> _run(UploadJob start) async {
     final uploader = ref.read(mediaUploaderProvider);
     final repo = ref.read(mediaRepositoryProvider);
     var job = start.copyWith(clearRetry: true);
+    final cancel = _cancels[job.id] = CancelToken();
     try {
       if (job.mediaId == null) {
         _put(job = job.copyWith(phase: UploadPhase.preparing, progress: 0));
@@ -327,11 +342,13 @@ class UploadQueue extends _$UploadQueue {
             job.prepared ?? await uploader.prepare(job.path, job.kind);
         _put(job = job.copyWith(prepared: prepared));
 
+        if (!_alive(job)) return;
         final ticket = await repo.request(
           prepared,
           purpose: job.purpose,
           vendorId: job.vendorId,
         );
+        if (!_alive(job)) return;
         _put(job = job.copyWith(phase: UploadPhase.sending));
         var shown = 0.0;
         final parts = await repo.transfer(
@@ -345,7 +362,9 @@ class UploadQueue extends _$UploadQueue {
               _put(job = job.copyWith(progress: p), persist: false);
             }
           },
+          cancel: cancel,
         );
+        if (!_alive(job)) return;
         await repo.complete(ticket.mediaId, parts: parts);
         _put(
           job = job.copyWith(
@@ -355,15 +374,18 @@ class UploadQueue extends _$UploadQueue {
           ),
         );
       }
+      if (!_alive(job)) return;
       final ready = await uploader.waitUntilReady(await repo.get(job.mediaId!));
       _put(job.copyWith(phase: UploadPhase.ready, mediaId: ready.id));
     } on MediaUploadException catch (e) {
-      if (!ref.mounted) return;
+      if (!_alive(job)) return;
       _fail(job, e.message, retryable: e.retryable);
     } on Object catch (e) {
-      if (!ref.mounted) return;
+      if (!_alive(job)) return;
       // Socket errors and the like: assume the network.
       _fail(job, 'Upload interrupted.', retryable: e is IOException);
+    } finally {
+      _cancels.remove(job.id);
     }
   }
 
@@ -377,7 +399,9 @@ class UploadQueue extends _$UploadQueue {
               ? UploadPhase.queued
               : UploadPhase.processing,
           attempts: attempts,
-          retryAt: DateTime.now().add(backoff(attempts)),
+          retryAt: DateTime.now().add(
+            ref.read(uploadBackoffProvider)(attempts),
+          ),
         ),
       );
       return;

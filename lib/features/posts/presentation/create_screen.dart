@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,11 +11,10 @@ import 'package:petalsinajar/core/network/api_exception.dart';
 import 'package:petalsinajar/core/utils/haptics.dart';
 import 'package:petalsinajar/core/widgets/app_button.dart';
 import 'package:petalsinajar/core/widgets/avatar.dart';
-import 'package:petalsinajar/features/feed/domain/feed_repository.dart';
-import 'package:petalsinajar/features/feed/presentation/feed_controllers.dart';
 import 'package:petalsinajar/features/posts/domain/post_draft.dart';
 import 'package:petalsinajar/features/posts/presentation/create_post_controller.dart';
 import 'package:petalsinajar/features/posts/presentation/photo_source.dart';
+import 'package:petalsinajar/features/posts/presentation/widgets/draft_preview.dart';
 import 'package:petalsinajar/features/posts/presentation/widgets/photo_tagger.dart';
 
 /// The Create tab: pick photos, tag what you rented, write a caption,
@@ -34,13 +32,16 @@ class CreateScreen extends ConsumerWidget {
 Future<void> _addFromGallery(WidgetRef ref) async {
   final room =
       CreatePost.maxPhotos - ref.read(createPostProvider).photos.length;
-  final paths = await ref.read(photoSourceProvider).gallery(limit: room);
-  if (paths.isNotEmpty) ref.read(createPostProvider.notifier).addPhotos(paths);
+  final picked = await ref.read(photoSourceProvider).gallery(limit: room);
+  if (picked.isNotEmpty) {
+    ref.read(createPostProvider.notifier).addPhotos(picked);
+  }
 }
 
-Future<void> _addFromCamera(WidgetRef ref) async {
-  final path = await ref.read(photoSourceProvider).camera();
-  if (path != null) ref.read(createPostProvider.notifier).addPhotos([path]);
+Future<void> _addFromCamera(WidgetRef ref, {bool video = false}) async {
+  final source = ref.read(photoSourceProvider);
+  final picked = video ? await source.recordVideo() : await source.camera();
+  if (picked != null) ref.read(createPostProvider.notifier).addPhotos([picked]);
 }
 
 class _PickPhotos extends ConsumerWidget {
@@ -93,6 +94,14 @@ class _PickPhotos extends ConsumerWidget {
                   expand: true,
                   onPressed: () => _addFromCamera(ref),
                 ),
+                const SizedBox(height: AppSpacing.sm),
+                AppButton(
+                  label: 'Record a video',
+                  icon: Icons.videocam_rounded,
+                  variant: AppButtonVariant.ghost,
+                  expand: true,
+                  onPressed: () => _addFromCamera(ref, video: true),
+                ),
               ],
             ),
           ),
@@ -127,15 +136,15 @@ class _EditorState extends ConsumerState<_Editor> {
     // to what's needed afterwards.
     final messenger = ScaffoldMessenger.of(context);
     final router = GoRouter.of(context);
-    final container = ProviderScope.containerOf(context);
     try {
+      // Returns as soon as the files are queued; they upload in the
+      // background and the post appears when they're ready.
       await _notifier.share();
       unawaited(Haptics.success());
-      container
-        ..invalidate(feedPostsProvider(FeedKind.forYou))
-        ..invalidate(feedPostsProvider(FeedKind.following));
       router.go(Routes.feed);
-      messenger.showSnackBar(const SnackBar(content: Text('Posted')));
+      messenger.showSnackBar(
+        const SnackBar(content: Text('Posting… it’s uploading in the feed')),
+      );
     } on ApiException catch (e) {
       unawaited(Haptics.warning());
       messenger.showSnackBar(
@@ -231,13 +240,7 @@ class _EditorState extends ConsumerState<_Editor> {
                 _Options(draft: draft),
                 const SizedBox(height: AppSpacing.xl),
                 AppButton(
-                  label: switch (draft.phase) {
-                    DraftPhase.uploading =>
-                      'Uploading ${draft.uploaded + 1} of '
-                          '${draft.photos.length}…',
-                    DraftPhase.posting => 'Posting…',
-                    DraftPhase.editing => 'Share',
-                  },
+                  label: 'Share',
                   icon: Icons.send_rounded,
                   expand: true,
                   isLoading: busy,
@@ -284,17 +287,9 @@ class _Thumbnails extends ConsumerWidget {
                 children: [
                   ClipRRect(
                     borderRadius: AppRadii.smAll,
-                    child: Image.file(
-                      File(photo.path),
-                      width: _size,
-                      height: _size,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) => SizedBox.square(
-                        dimension: _size,
-                        child: ColoredBox(
-                          color: context.colors.surfaceContainerHighest,
-                        ),
-                      ),
+                    child: SizedBox.square(
+                      dimension: _size,
+                      child: DraftPreview(photo: photo),
                     ),
                   ),
                   if (!draft.isBusy)

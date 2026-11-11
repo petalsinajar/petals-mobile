@@ -13,6 +13,7 @@ import 'package:petalsinajar/features/profile/presentation/profile_settings_scre
 import 'package:petalsinajar/features/vendor/presentation/calendar_screen.dart';
 import 'package:petalsinajar/features/vendor/presentation/edit_business_screen.dart';
 import 'package:petalsinajar/features/vendor/presentation/inventory_screen.dart';
+import 'package:petalsinajar/features/vendor/presentation/record_booking_screen.dart';
 import 'package:petalsinajar/features/vendor/presentation/requests_screen.dart';
 import 'package:petalsinajar/features/vendor/presentation/today_screen.dart';
 import 'package:petalsinajar/features/vendor/presentation/vendor_profile_screen.dart';
@@ -123,7 +124,11 @@ final vendorShellRoute = StatefulShellRoute.indexedStack(
   ),
   branches: [
     _branch(Routes.vendorToday, const VendorTodayScreen()),
-    _branch(Routes.vendorRequests, const VendorRequestsScreen()),
+    _branch(
+      Routes.vendorRequests,
+      const VendorRequestsScreen(),
+      children: {Routes.vendorRecordBooking: const RecordBookingScreen()},
+    ),
     _branch(Routes.vendorCalendar, const VendorCalendarScreen()),
     _branch(Routes.vendorInventory, const VendorInventoryScreen()),
     _branch(

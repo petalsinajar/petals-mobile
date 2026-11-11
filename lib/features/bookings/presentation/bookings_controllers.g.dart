@@ -235,17 +235,22 @@ abstract class _$BookingRequester extends $Notifier<void> {
   }
 }
 
-/// How many of a variant are free on [day].
+/// How many of a variant are free on [day], and whether it's closed.
 
 @ProviderFor(variantAvailability)
 final variantAvailabilityProvider = VariantAvailabilityFamily._();
 
-/// How many of a variant are free on [day].
+/// How many of a variant are free on [day], and whether it's closed.
 
 final class VariantAvailabilityProvider
-    extends $FunctionalProvider<AsyncValue<int>, int, FutureOr<int>>
-    with $FutureModifier<int>, $FutureProvider<int> {
-  /// How many of a variant are free on [day].
+    extends
+        $FunctionalProvider<
+          AsyncValue<Availability>,
+          Availability,
+          FutureOr<Availability>
+        >
+    with $FutureModifier<Availability>, $FutureProvider<Availability> {
+  /// How many of a variant are free on [day], and whether it's closed.
   VariantAvailabilityProvider._({
     required VariantAvailabilityFamily super.from,
     required (String, String, DateTime) super.argument,
@@ -269,11 +274,12 @@ final class VariantAvailabilityProvider
 
   @$internal
   @override
-  $FutureProviderElement<int> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
+  $FutureProviderElement<Availability> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<int> create(Ref ref) {
+  FutureOr<Availability> create(Ref ref) {
     final argument = this.argument as (String, String, DateTime);
     return variantAvailability(ref, argument.$1, argument.$2, argument.$3);
   }
@@ -290,12 +296,16 @@ final class VariantAvailabilityProvider
 }
 
 String _$variantAvailabilityHash() =>
-    r'07fd2576c2fb472ab115b86ceebc185626b39aaf';
+    r'9a4d8379c29b254197ab2aa38798b500ad068614';
 
-/// How many of a variant are free on [day].
+/// How many of a variant are free on [day], and whether it's closed.
 
 final class VariantAvailabilityFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<int>, (String, String, DateTime)> {
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<Availability>,
+          (String, String, DateTime)
+        > {
   VariantAvailabilityFamily._()
     : super(
         retry: null,
@@ -305,7 +315,7 @@ final class VariantAvailabilityFamily extends $Family
         isAutoDispose: true,
       );
 
-  /// How many of a variant are free on [day].
+  /// How many of a variant are free on [day], and whether it's closed.
 
   VariantAvailabilityProvider call(
     String itemId,

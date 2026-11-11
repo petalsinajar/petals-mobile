@@ -96,7 +96,7 @@ final class VendorRequestsProvider
   }
 }
 
-String _$vendorRequestsHash() => r'c1f36592ad2ad646fd99ef06d639c0fdae43a913';
+String _$vendorRequestsHash() => r'cf39d2510bae1ccb3f494531f37f05b60251f215';
 
 final class VendorRequestsFamily extends $Family
     with
@@ -142,6 +142,186 @@ abstract class _$VendorRequests extends $AsyncNotifier<VendorRequestsView> {
               Object?
             >;
     element.handleCreate(ref, () => build(_$args));
+  }
+}
+
+@ProviderFor(VendorToday)
+final vendorTodayProvider = VendorTodayFamily._();
+
+final class VendorTodayProvider
+    extends $AsyncNotifierProvider<VendorToday, TodayView> {
+  VendorTodayProvider._({
+    required VendorTodayFamily super.from,
+    required (String, DateTime) super.argument,
+  }) : super(
+         retry: null,
+         name: r'vendorTodayProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$vendorTodayHash();
+
+  @override
+  String toString() {
+    return r'vendorTodayProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  VendorToday create() => VendorToday();
+
+  @override
+  bool operator ==(Object other) {
+    return other is VendorTodayProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$vendorTodayHash() => r'03a1f86fc1ed327e89b562204f1a68c59d5fed29';
+
+final class VendorTodayFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          VendorToday,
+          AsyncValue<TodayView>,
+          TodayView,
+          FutureOr<TodayView>,
+          (String, DateTime)
+        > {
+  VendorTodayFamily._()
+    : super(
+        retry: null,
+        name: r'vendorTodayProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  VendorTodayProvider call(String vendorId, DateTime day) =>
+      VendorTodayProvider._(argument: (vendorId, day), from: this);
+
+  @override
+  String toString() => r'vendorTodayProvider';
+}
+
+abstract class _$VendorToday extends $AsyncNotifier<TodayView> {
+  late final _$args = ref.$arg as (String, DateTime);
+  String get vendorId => _$args.$1;
+  DateTime get day => _$args.$2;
+
+  FutureOr<TodayView> build(String vendorId, DateTime day);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<TodayView>, TodayView>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<TodayView>, TodayView>,
+              AsyncValue<TodayView>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, () => build(_$args.$1, _$args.$2));
+  }
+}
+
+@ProviderFor(VendorCalendar)
+final vendorCalendarProvider = VendorCalendarFamily._();
+
+final class VendorCalendarProvider
+    extends $AsyncNotifierProvider<VendorCalendar, CalendarMonth> {
+  VendorCalendarProvider._({
+    required VendorCalendarFamily super.from,
+    required (String, DateTime) super.argument,
+  }) : super(
+         retry: null,
+         name: r'vendorCalendarProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$vendorCalendarHash();
+
+  @override
+  String toString() {
+    return r'vendorCalendarProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  VendorCalendar create() => VendorCalendar();
+
+  @override
+  bool operator ==(Object other) {
+    return other is VendorCalendarProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$vendorCalendarHash() => r'a53e6d76f5f4a51f91293eaf4565ae0683d0a92e';
+
+final class VendorCalendarFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          VendorCalendar,
+          AsyncValue<CalendarMonth>,
+          CalendarMonth,
+          FutureOr<CalendarMonth>,
+          (String, DateTime)
+        > {
+  VendorCalendarFamily._()
+    : super(
+        retry: null,
+        name: r'vendorCalendarProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  VendorCalendarProvider call(String vendorId, DateTime month) =>
+      VendorCalendarProvider._(argument: (vendorId, month), from: this);
+
+  @override
+  String toString() => r'vendorCalendarProvider';
+}
+
+abstract class _$VendorCalendar extends $AsyncNotifier<CalendarMonth> {
+  late final _$args = ref.$arg as (String, DateTime);
+  String get vendorId => _$args.$1;
+  DateTime get month => _$args.$2;
+
+  FutureOr<CalendarMonth> build(String vendorId, DateTime month);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<CalendarMonth>, CalendarMonth>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<CalendarMonth>, CalendarMonth>,
+              AsyncValue<CalendarMonth>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, () => build(_$args.$1, _$args.$2));
   }
 }
 
@@ -193,7 +373,7 @@ final class VendorInventoryProvider
   }
 }
 
-String _$vendorInventoryHash() => r'0ff8f3efdc72a7f9b1adc5af204e47a2b08b6086';
+String _$vendorInventoryHash() => r'5cb25c2fa141392a300ec363b60a5cb7f5dd281a';
 
 /// The Inventory tab's list. Only photos are changed here; everything else
 /// is edited on the web dashboard.
@@ -296,7 +476,7 @@ final class BusinessProvider
   }
 }
 
-String _$businessHash() => r'582de31fc66a59ef308e52d946d7d22c67c2844e';
+String _$businessHash() => r'3a853b48582da41c504a264fb9c08e11f81a50f4';
 
 /// The Business tab: the profile, with saving and a quick logo change.
 

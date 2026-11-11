@@ -89,6 +89,60 @@ final class OnlineProvider
 
 String _$onlineHash() => r'e940a9ddf8d0deee621e0f0b3752b66db133220b';
 
+/// How long to wait before retry number `attempt`; replaceable in tests.
+
+@ProviderFor(uploadBackoff)
+final uploadBackoffProvider = UploadBackoffProvider._();
+
+/// How long to wait before retry number `attempt`; replaceable in tests.
+
+final class UploadBackoffProvider
+    extends
+        $FunctionalProvider<
+          Duration Function(int attempt),
+          Duration Function(int attempt),
+          Duration Function(int attempt)
+        >
+    with $Provider<Duration Function(int attempt)> {
+  /// How long to wait before retry number `attempt`; replaceable in tests.
+  UploadBackoffProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'uploadBackoffProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$uploadBackoffHash();
+
+  @$internal
+  @override
+  $ProviderElement<Duration Function(int attempt)> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  Duration Function(int attempt) create(Ref ref) {
+    return uploadBackoff(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Duration Function(int attempt) value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Duration Function(int attempt)>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$uploadBackoffHash() => r'60d0c2b8150be9b6d114e06d6871f8d0ff92ce06';
+
 /// Uploads that carry on in the background, survive restarts, pause while
 /// offline and retry network failures with growing waits. One at a time,
 /// oldest first, so a slow phone isn't swamped.
@@ -131,7 +185,7 @@ final class UploadQueueProvider
   }
 }
 
-String _$uploadQueueHash() => r'f8e81caff3f88d0cc3c0f4da7cf990f1c48fed39';
+String _$uploadQueueHash() => r'ee32959c79c24c5a02a208dd60e60db6991ee9c4';
 
 /// Uploads that carry on in the background, survive restarts, pause while
 /// offline and retry network failures with growing waits. One at a time,

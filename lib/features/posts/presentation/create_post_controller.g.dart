@@ -44,7 +44,7 @@ final class CreatePostProvider
   }
 }
 
-String _$createPostHash() => r'45d504436571eefb554061b8d5aeabd6ae01dd67';
+String _$createPostHash() => r'b0ec3736c9b207e64030f4b93d9a7bcbb3f02946';
 
 /// The post being written. Kept alive so switching tabs doesn't lose it.
 

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart' show CancelToken;
 import 'package:petalsinajar/core/media/media.dart';
 import 'package:petalsinajar/core/media/media_limits.dart';
 
@@ -74,13 +75,15 @@ abstract interface class MediaRepository {
   });
 
   /// Sends the file as [plan] says. For multipart, returns each part's ETag;
-  /// parts already in [done] are skipped (resuming).
+  /// parts already in [done] are skipped (resuming). [cancel] stops it
+  /// mid-way (the post was discarded).
   Future<List<CompletedPart>> transfer(
     PreparedFile file,
     UploadPlan plan, {
     UploadProgress? onProgress,
     List<CompletedPart> done = const [],
     void Function(CompletedPart part)? onPartDone,
+    CancelToken? cancel,
   });
 
   /// `POST /v1/uploads/{id}/complete`.

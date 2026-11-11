@@ -20,9 +20,6 @@ abstract interface class EventsSource {
   /// `GET /v1/events/{id}/bookings?cursor=` → bookings. Hosts only.
   Future<Json> bookings(String eventId, {String? cursor});
 
-  /// `POST /v1/uploads` multipart `file` → `{ url, width, height }`.
-  Future<Json> uploadImage(String path);
-
   /// `POST /v1/events` → event.
   Future<Json> create(Json fields);
 

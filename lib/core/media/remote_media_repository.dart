@@ -123,15 +123,23 @@ class RemoteMediaRepository implements MediaRepository {
     UploadProgress? onProgress,
     List<CompletedPart> done = const [],
     void Function(CompletedPart part)? onPartDone,
+    CancelToken? cancel,
   }) async {
     try {
       if (plan.isMultipart) {
-        return await _multipart(file, plan, onProgress, done, onPartDone);
+        return await _multipart(
+          file,
+          plan,
+          onProgress,
+          done,
+          onPartDone,
+          cancel,
+        );
       }
       await _retrying(
         () => plan.isForm
-            ? _form(file, plan, onProgress)
-            : _single(file, plan, onProgress),
+            ? _form(file, plan, onProgress, cancel)
+            : _single(file, plan, onProgress, cancel),
       );
       return const [];
     } on DioException catch (e) {
@@ -148,6 +156,7 @@ class RemoteMediaRepository implements MediaRepository {
     PreparedFile file,
     UploadPlan plan,
     UploadProgress? onProgress,
+    CancelToken? cancel,
   ) => _storage.put<void>(
     plan.url!,
     // A fresh stream per attempt: a stream can only be read once.
@@ -156,12 +165,14 @@ class RemoteMediaRepository implements MediaRepository {
       headers: {...plan.headers, Headers.contentLengthHeader: file.bytes},
     ),
     onSendProgress: onProgress,
+    cancelToken: cancel,
   );
 
   Future<void> _form(
     PreparedFile file,
     UploadPlan plan,
     UploadProgress? onProgress,
+    CancelToken? cancel,
   ) async => _storage.post<void>(
     plan.url!,
     data: FormData.fromMap({
@@ -172,6 +183,7 @@ class RemoteMediaRepository implements MediaRepository {
     }),
     options: Options(headers: plan.headers),
     onSendProgress: onProgress,
+    cancelToken: cancel,
   );
 
   /// Sends each part not yet in [done]; a failed part is retried on its own,
@@ -182,6 +194,7 @@ class RemoteMediaRepository implements MediaRepository {
     UploadProgress? onProgress,
     List<CompletedPart> done,
     void Function(CompletedPart part)? onPartDone,
+    CancelToken? cancel,
   ) async {
     final finished = {for (final p in done) p.number: p};
     final total = plan.parts.fold(0, (sum, p) => sum + p.bytes);
@@ -205,6 +218,7 @@ class RemoteMediaRepository implements MediaRepository {
           ),
           onSendProgress: (sent, _) =>
               onProgress?.call(math.min(base + sent, total), total),
+          cancelToken: cancel,
         ),
       );
       final etag = response.headers.value('etag');

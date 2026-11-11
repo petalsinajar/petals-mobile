@@ -317,7 +317,7 @@ class _ItemTile extends StatelessWidget {
                     child: const Icon(Icons.chair_rounded),
                   )
                 : MediaImage(
-                    url: item.photoUrl!,
+                    url: item.photoUrl,
                     blurhash: item.blurhash,
                     borderRadius: AppRadii.smAll,
                   ),

@@ -8,6 +8,8 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:petalsinajar/app/theme/theme_mode.dart';
+import 'package:petalsinajar/core/media/media_repository.dart';
+import 'package:petalsinajar/core/media/media_uploader.dart';
 import 'package:petalsinajar/core/network/api_exception.dart';
 import 'package:petalsinajar/core/session/active_actor.dart';
 import 'package:petalsinajar/core/storage/preferences.dart';
@@ -19,6 +21,7 @@ import 'package:petalsinajar/features/profile/presentation/profile_screen.dart';
 import 'package:petalsinajar/features/profile/presentation/profile_settings_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../helpers/fake_media.dart';
 import '../../helpers/pump_app.dart';
 
 const _kwame = Me(
@@ -37,7 +40,6 @@ class _FakeAuth implements AuthRepository {
 
   Me me;
   final List<ProfileChanges> saved = [];
-  final List<String> uploaded = [];
   ApiException? rejectWith;
 
   @override
@@ -52,16 +54,9 @@ class _FakeAuth implements AuthRepository {
       handle: changes.handle ?? me.handle,
       bio: changes.bio ?? me.bio,
       city: changes.city ?? me.city,
-      avatarUrl: changes.avatarUrl ?? me.avatarUrl,
       isPrivate: changes.isPrivate ?? me.isPrivate,
       notify: changes.notify ?? me.notify,
     );
-  }
-
-  @override
-  Future<String> uploadPhoto(String path) async {
-    uploaded.add(path);
-    return 'https://petalsinajar.com/storage/uploads/me.png';
   }
 
   @override
@@ -80,12 +75,16 @@ File _photo() {
   return file;
 }
 
+final _uploader = FakeMediaUploader();
+
 Future<List<Override>> _overrides(_FakeAuth auth) async {
   SharedPreferences.setMockInitialValues(<String, Object>{});
   final prefs = await SharedPreferences.getInstance();
+  _uploader.uploads.clear();
   return [
     authRepositoryProvider.overrideWithValue(auth),
     sharedPreferencesProvider.overrideWithValue(prefs),
+    mediaUploaderProvider.overrideWithValue(_uploader),
   ];
 }
 
@@ -231,12 +230,14 @@ void main() {
       await tester.tap(find.text('Save'));
       await tester.pumpAndSettle();
 
-      expect(auth.uploaded, [photo.path]);
+      expect(_uploader.uploads.single.path, photo.path);
+      expect(_uploader.uploads.single.purpose, MediaPurpose.avatar);
+      final name = photo.path.split('/').last;
       expect(
         auth.saved.single,
-        const ProfileChanges(
+        ProfileChanges(
           bio: 'Event planner in Accra',
-          avatarUrl: 'https://petalsinajar.com/storage/uploads/me.png',
+          avatarMediaId: 'media-$name',
         ),
       );
       expect(find.text('profile tab'), findsOneWidget, reason: 'went back');

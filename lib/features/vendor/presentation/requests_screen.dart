@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:petalsinajar/app/router/routes.dart';
 import 'package:petalsinajar/app/theme/app_spacing.dart';
 import 'package:petalsinajar/app/theme/theme_context.dart';
 import 'package:petalsinajar/core/network/api_exception.dart';
@@ -36,6 +38,14 @@ class VendorRequestsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Requests')),
+      // Bookings agreed by phone or in person, so the calendar stays right.
+      floatingActionButton: canAnswer
+          ? FloatingActionButton.extended(
+              onPressed: () => context.push(Routes.vendorRecordBooking),
+              icon: const Icon(Icons.edit_note_rounded),
+              label: const Text('Record a booking'),
+            )
+          : null,
       body: AsyncValueView(
         value: ref.watch(provider),
         onRetry: () => ref.invalidate(provider),
@@ -44,7 +54,8 @@ class VendorRequestsScreen extends ConsumerWidget {
           title: 'No booking requests yet',
           message:
               "When a customer books your items, you'll get a notification "
-              'and can accept or decline here.',
+              'and can accept or decline here. Booked by phone or in '
+              'person? Record it so your calendar stays right.',
           icon: Icons.inbox_rounded,
           actionLabel: 'Refresh',
           onAction: () => ref.invalidate(provider),
@@ -53,7 +64,13 @@ class VendorRequestsScreen extends ConsumerWidget {
           onRefresh: ref.read(provider.notifier).refresh,
           child: ListView(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(AppSpacing.screen),
+            // Room at the bottom so the button never covers the last card.
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.screen,
+              AppSpacing.screen,
+              AppSpacing.screen,
+              AppSpacing.screen + AppSizes.buttonLg + AppSpacing.lg,
+            ),
             children: [
               if (!canAnswer)
                 const Card(
@@ -289,7 +306,14 @@ class _BookingCardState extends ConsumerState<_BookingCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(b.customerName, style: text.titleSmall),
-                      Text('#${b.number}', style: muted),
+                      Text(
+                        [
+                          '#${b.number}',
+                          if (b.recorded) 'Recorded by you',
+                          ?b.customerPhone,
+                        ].join(' · '),
+                        style: muted,
+                      ),
                     ],
                   ),
                 ),

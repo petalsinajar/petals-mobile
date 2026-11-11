@@ -53,7 +53,7 @@ final class FeedPostsProvider
   }
 }
 
-String _$feedPostsHash() => r'fd7e489a003ba67c9a0116548a2e7537e41ea0e5';
+String _$feedPostsHash() => r'f6242b1948ae6ed2c55563d799e87fb332a71921';
 
 /// One of the home feeds, with infinite scroll, refresh and optimistic likes.
 

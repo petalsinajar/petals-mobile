@@ -32,17 +32,8 @@ class PostsRepositoryImpl implements PostsRepository {
       (body['data'] as List? ?? const []).cast<Json>();
 
   @override
-  Future<UploadedImage> upload(String path) => _call(
-    () async => _dio.post<Json>(
-      '/uploads',
-      data: FormData.fromMap({'file': await MultipartFile.fromFile(path)}),
-    ),
-    (j) => UploadedImage(
-      url: j['url'] as String,
-      width: j['width'] as int?,
-      height: j['height'] as int?,
-    ),
-  );
+  Future<void> delete(String postId) =>
+      _call(() => _dio.delete<Json>('/posts/$postId'), (_) {});
 
   @override
   Future<String> create(NewPost post) => _call(
@@ -57,10 +48,7 @@ class PostsRepositoryImpl implements PostsRepository {
           PostVisibility.followers => 'followers',
           PostVisibility.eventMembers => 'event_members',
         },
-        'media': [
-          for (final m in post.media)
-            {'url': m.url, 'type': 'image', 'w': ?m.width, 'h': ?m.height},
-        ],
+        'media': post.mediaIds,
         'tags': [
           for (final t in post.tags)
             {

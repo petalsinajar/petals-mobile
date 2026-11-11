@@ -41,6 +41,12 @@ class _DashboardSignInScreenState extends ConsumerState<DashboardSignInScreen> {
   String? _savedEmail;
 
   @override
+  void initState() {
+    super.initState();
+    _email.text = ref.read(authSessionProvider).value?.email ?? '';
+  }
+
+  @override
   void dispose() {
     _email.dispose();
     _password.dispose();

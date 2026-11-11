@@ -8,10 +8,13 @@ enum PostVisibility { public, followers, eventMembers }
 /// What a pin points at.
 enum TagTargetType { item, vendor }
 
-/// A photo picked from the phone, not uploaded yet.
+/// A photo or video picked from the phone, not uploaded yet.
 @freezed
 abstract class DraftPhoto with _$DraftPhoto {
-  const factory DraftPhoto({required String path}) = _DraftPhoto;
+  const factory DraftPhoto({
+    required String path,
+    @Default(false) bool isVideo,
+  }) = _DraftPhoto;
 }
 
 /// Something a pin can tag: a rentable item or a vendor.
@@ -61,17 +64,12 @@ abstract class PostingIdentity with _$PostingIdentity {
   }) = _PostingIdentity;
 }
 
-@freezed
-abstract class UploadedImage with _$UploadedImage {
-  const factory UploadedImage({required String url, int? width, int? height}) =
-      _UploadedImage;
-}
-
-/// Everything `POST /v1/posts` needs, with photos already uploaded.
+/// Everything `POST /v1/posts` needs, with its media uploaded and ready.
 @freezed
 abstract class NewPost with _$NewPost {
   const factory NewPost({
-    required List<UploadedImage> media,
+    /// Ready media ids, in order.
+    required List<String> mediaIds,
     @Default('') String caption,
     String? asVendorId,
     String? eventId,

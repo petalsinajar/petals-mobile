@@ -46,12 +46,6 @@ class EventsRemoteSource implements EventsSource {
       _page('/events/$eventId/bookings', cursor: cursor);
 
   @override
-  Future<Json> uploadImage(String path) async {
-    final form = FormData.fromMap({'file': await MultipartFile.fromFile(path)});
-    return _call(() => _dio.post<Json>('/uploads', data: form));
-  }
-
-  @override
   Future<Json> create(Json fields) =>
       _call(() => _dio.post<Json>('/events', data: fields));
 

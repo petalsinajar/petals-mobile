@@ -1,4 +1,6 @@
 import 'package:petalsinajar/app/config/app_config.dart';
+import 'package:petalsinajar/core/media/media_repository.dart';
+import 'package:petalsinajar/core/media/media_uploader.dart';
 import 'package:petalsinajar/core/mock/mock_delay.dart';
 import 'package:petalsinajar/core/mock/mock_session.dart';
 import 'package:petalsinajar/core/mock/seed_loader.dart';
@@ -19,9 +21,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'events_repository_impl.g.dart';
 
 class EventsRepositoryImpl implements EventsRepository {
-  EventsRepositoryImpl(this._source);
+  EventsRepositoryImpl(this._source, {this.uploadCover});
 
   final EventsSource _source;
+
+  /// Uploads a cover photo and returns its media id. Without it (demo data)
+  /// the picked file is shown as-is.
+  final Future<String> Function(String path)? uploadCover;
 
   /// Lists the app shows whole (My Events, guest lists) stop after this many
   /// pages, so a huge list can't stall a screen.
@@ -97,10 +103,14 @@ class EventsRepositoryImpl implements EventsRepository {
 
   @override
   Future<Event> create(EventDraft draft) => _parse(() async {
-    final coverUrl = switch (draft.coverPath) {
-      final path? => (await _source.uploadImage(path))['url'] as String,
-      null => null,
-    };
+    final path = draft.coverPath;
+    final upload = uploadCover;
+    final coverMediaId = path != null && upload != null
+        ? await upload(path)
+        : null;
+    final localCover = path != null && upload == null
+        ? Uri.file(path).toString()
+        : null;
     final startsAt = draft.startsAt!;
     String? optional(String value) =>
         value.trim().isEmpty ? null : value.trim();
@@ -116,7 +126,8 @@ class EventsRepositoryImpl implements EventsRepository {
       'venue_address': ?optional(draft.venueAddress),
       'guest_count': draft.guestCount,
       'visibility': draft.visibility.name,
-      'cover_url': ?coverUrl,
+      'cover_media_id': ?coverMediaId,
+      'cover_url': ?localCover,
     });
     return EventDto.fromJson(json).toDomain();
   });
@@ -139,5 +150,13 @@ EventsRepository eventsRepository(Ref ref) {
           viewerId: ref.watch(mockViewerIdProvider),
         )
       : EventsRemoteSource(ref.watch(dioProvider));
-  return EventsRepositoryImpl(source);
+  if (ref.watch(appConfigProvider).useMocks) {
+    return EventsRepositoryImpl(source);
+  }
+  final uploader = ref.watch(mediaUploaderProvider);
+  return EventsRepositoryImpl(
+    source,
+    uploadCover: (path) async =>
+        (await uploader.upload(path, purpose: MediaPurpose.eventCover)).id,
+  );
 }

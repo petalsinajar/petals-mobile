@@ -62,6 +62,9 @@ abstract class FeedPost with _$FeedPost {
 
     /// Whether the signed-in viewer has liked it. Always false signed out.
     @Default(false) bool likedByMe,
+
+    /// The viewer posted it, or manages the business that did.
+    @Default(false) bool canDelete,
   }) = _FeedPost;
 
   const FeedPost._();

@@ -73,6 +73,7 @@ class PostDto {
     this.media = const [],
     this.counts = const {},
     this.myReaction,
+    this.canDelete = false,
   });
 
   factory PostDto.fromJson(Map<String, dynamic> json) =>
@@ -85,6 +86,7 @@ class PostDto {
   final List<MediaDto> media;
   final Map<String, int?> counts;
   final String? myReaction;
+  final bool canDelete;
   final DateTime createdAt;
 
   FeedPost toDomain() => FeedPost(
@@ -102,6 +104,7 @@ class PostDto {
     likeCount: counts['likes'] ?? 0,
     commentCount: counts['comments'] ?? 0,
     likedByMe: myReaction != null,
+    canDelete: canDelete,
     createdAt: createdAt.toLocal(),
   );
 }

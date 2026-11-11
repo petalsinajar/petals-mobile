@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:petalsinajar/features/auth/presentation/auth_session.dart';
+import 'package:petalsinajar/features/profile/presentation/dashboard_sign_in_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Pages of the web dashboard (Filament, at `/vendor/{handle}`), for what
@@ -23,7 +26,17 @@ abstract final class WebDashboard {
 }
 
 /// Opens [url] in the browser; if none opens, copies it and says so.
+/// Without a web sign-in the dashboard can't be entered, so that's set up
+/// first instead.
 Future<void> openWebDashboard(BuildContext context, Uri url) async {
+  final me = ProviderScope.containerOf(context).read(authSessionProvider).value;
+  if (me != null && !me.hasDashboardSignIn) {
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => const DashboardSignInScreen()),
+    );
+    return;
+  }
+  if (!context.mounted) return;
   final messenger = ScaffoldMessenger.of(context);
   var opened = false;
   try {

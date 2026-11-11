@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:petalsinajar/app/theme/app_spacing.dart';
@@ -7,6 +6,7 @@ import 'package:petalsinajar/app/theme/motion.dart';
 import 'package:petalsinajar/app/theme/theme_context.dart';
 import 'package:petalsinajar/core/utils/haptics.dart';
 import 'package:petalsinajar/features/posts/domain/post_draft.dart';
+import 'package:petalsinajar/features/posts/presentation/widgets/draft_preview.dart';
 import 'package:petalsinajar/features/posts/presentation/widgets/tag_search_sheet.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -69,21 +69,21 @@ class _PhotoTaggerState extends State<PhotoTagger> {
             itemBuilder: (context, i) => LayoutBuilder(
               builder: (context, box) {
                 final size = box.biggest;
+                final video = widget.photos[i].isVideo;
                 return GestureDetector(
-                  onTapUp: (d) => _tagAt(i, d.localPosition, size),
+                  // Rentals are tagged on photos, not videos.
+                  onTapUp: video
+                      ? null
+                      : (d) => _tagAt(i, d.localPosition, size),
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
                       Semantics(
                         image: true,
-                        label: 'Photo ${i + 1} of $count. Tap to tag a rental.',
-                        child: Image.file(
-                          File(widget.photos[i].path),
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, _, _) => ColoredBox(
-                            color: context.colors.surfaceContainerHighest,
-                          ),
-                        ),
+                        label: video
+                            ? 'Video ${i + 1} of $count'
+                            : 'Photo ${i + 1} of $count. Tap to tag a rental.',
+                        child: DraftPreview(photo: widget.photos[i]),
                       ),
                       for (final tag in widget.tags)
                         if (tag.mediaIndex == i)

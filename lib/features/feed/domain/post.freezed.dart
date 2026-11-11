@@ -286,7 +286,8 @@ as bool,
 /// @nodoc
 mixin _$PostMedia {
 
- String get url; int? get width; int? get height; String? get blurhash; bool get isVideo;
+ String get url; int? get width; int? get height; String? get blurhash; bool get isVideo;/// Every size (and the stream, for videos), when the API sent them.
+ Media? get media;
 /// Create a copy of PostMedia
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -297,16 +298,16 @@ $PostMediaCopyWith<PostMedia> get copyWith => _$PostMediaCopyWithImpl<PostMedia>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostMedia&&(identical(other.url, url) || other.url == url)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.blurhash, blurhash) || other.blurhash == blurhash)&&(identical(other.isVideo, isVideo) || other.isVideo == isVideo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostMedia&&(identical(other.url, url) || other.url == url)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.blurhash, blurhash) || other.blurhash == blurhash)&&(identical(other.isVideo, isVideo) || other.isVideo == isVideo)&&(identical(other.media, media) || other.media == media));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,url,width,height,blurhash,isVideo);
+int get hashCode => Object.hash(runtimeType,url,width,height,blurhash,isVideo,media);
 
 @override
 String toString() {
-  return 'PostMedia(url: $url, width: $width, height: $height, blurhash: $blurhash, isVideo: $isVideo)';
+  return 'PostMedia(url: $url, width: $width, height: $height, blurhash: $blurhash, isVideo: $isVideo, media: $media)';
 }
 
 
@@ -317,11 +318,11 @@ abstract mixin class $PostMediaCopyWith<$Res>  {
   factory $PostMediaCopyWith(PostMedia value, $Res Function(PostMedia) _then) = _$PostMediaCopyWithImpl;
 @useResult
 $Res call({
- String url, int? width, int? height, String? blurhash, bool isVideo
+ String url, int? width, int? height, String? blurhash, bool isVideo, Media? media
 });
 
 
-
+$MediaCopyWith<$Res>? get media;
 
 }
 /// @nodoc
@@ -334,17 +335,30 @@ class _$PostMediaCopyWithImpl<$Res>
 
 /// Create a copy of PostMedia
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? url = null,Object? width = freezed,Object? height = freezed,Object? blurhash = freezed,Object? isVideo = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? url = null,Object? width = freezed,Object? height = freezed,Object? blurhash = freezed,Object? isVideo = null,Object? media = freezed,}) {
   return _then(_self.copyWith(
 url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
 as String,width: freezed == width ? _self.width : width // ignore: cast_nullable_to_non_nullable
 as int?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
 as int?,blurhash: freezed == blurhash ? _self.blurhash : blurhash // ignore: cast_nullable_to_non_nullable
 as String?,isVideo: null == isVideo ? _self.isVideo : isVideo // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,media: freezed == media ? _self.media : media // ignore: cast_nullable_to_non_nullable
+as Media?,
   ));
 }
+/// Create a copy of PostMedia
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$MediaCopyWith<$Res>? get media {
+    if (_self.media == null) {
+    return null;
+  }
 
+  return $MediaCopyWith<$Res>(_self.media!, (value) {
+    return _then(_self.copyWith(media: value));
+  });
+}
 }
 
 
@@ -426,10 +440,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String url,  int? width,  int? height,  String? blurhash,  bool isVideo)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String url,  int? width,  int? height,  String? blurhash,  bool isVideo,  Media? media)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PostMedia() when $default != null:
-return $default(_that.url,_that.width,_that.height,_that.blurhash,_that.isVideo);case _:
+return $default(_that.url,_that.width,_that.height,_that.blurhash,_that.isVideo,_that.media);case _:
   return orElse();
 
 }
@@ -447,10 +461,10 @@ return $default(_that.url,_that.width,_that.height,_that.blurhash,_that.isVideo)
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String url,  int? width,  int? height,  String? blurhash,  bool isVideo)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String url,  int? width,  int? height,  String? blurhash,  bool isVideo,  Media? media)  $default,) {final _that = this;
 switch (_that) {
 case _PostMedia():
-return $default(_that.url,_that.width,_that.height,_that.blurhash,_that.isVideo);case _:
+return $default(_that.url,_that.width,_that.height,_that.blurhash,_that.isVideo,_that.media);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -467,10 +481,10 @@ return $default(_that.url,_that.width,_that.height,_that.blurhash,_that.isVideo)
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String url,  int? width,  int? height,  String? blurhash,  bool isVideo)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String url,  int? width,  int? height,  String? blurhash,  bool isVideo,  Media? media)?  $default,) {final _that = this;
 switch (_that) {
 case _PostMedia() when $default != null:
-return $default(_that.url,_that.width,_that.height,_that.blurhash,_that.isVideo);case _:
+return $default(_that.url,_that.width,_that.height,_that.blurhash,_that.isVideo,_that.media);case _:
   return null;
 
 }
@@ -482,7 +496,7 @@ return $default(_that.url,_that.width,_that.height,_that.blurhash,_that.isVideo)
 
 
 class _PostMedia extends PostMedia {
-  const _PostMedia({required this.url, this.width, this.height, this.blurhash, this.isVideo = false}): super._();
+  const _PostMedia({required this.url, this.width, this.height, this.blurhash, this.isVideo = false, this.media}): super._();
   
 
 @override final  String url;
@@ -490,6 +504,8 @@ class _PostMedia extends PostMedia {
 @override final  int? height;
 @override final  String? blurhash;
 @override@JsonKey() final  bool isVideo;
+/// Every size (and the stream, for videos), when the API sent them.
+@override final  Media? media;
 
 /// Create a copy of PostMedia
 /// with the given fields replaced by the non-null parameter values.
@@ -501,16 +517,16 @@ _$PostMediaCopyWith<_PostMedia> get copyWith => __$PostMediaCopyWithImpl<_PostMe
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostMedia&&(identical(other.url, url) || other.url == url)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.blurhash, blurhash) || other.blurhash == blurhash)&&(identical(other.isVideo, isVideo) || other.isVideo == isVideo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostMedia&&(identical(other.url, url) || other.url == url)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.blurhash, blurhash) || other.blurhash == blurhash)&&(identical(other.isVideo, isVideo) || other.isVideo == isVideo)&&(identical(other.media, media) || other.media == media));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,url,width,height,blurhash,isVideo);
+int get hashCode => Object.hash(runtimeType,url,width,height,blurhash,isVideo,media);
 
 @override
 String toString() {
-  return 'PostMedia(url: $url, width: $width, height: $height, blurhash: $blurhash, isVideo: $isVideo)';
+  return 'PostMedia(url: $url, width: $width, height: $height, blurhash: $blurhash, isVideo: $isVideo, media: $media)';
 }
 
 
@@ -521,11 +537,11 @@ abstract mixin class _$PostMediaCopyWith<$Res> implements $PostMediaCopyWith<$Re
   factory _$PostMediaCopyWith(_PostMedia value, $Res Function(_PostMedia) _then) = __$PostMediaCopyWithImpl;
 @override @useResult
 $Res call({
- String url, int? width, int? height, String? blurhash, bool isVideo
+ String url, int? width, int? height, String? blurhash, bool isVideo, Media? media
 });
 
 
-
+@override $MediaCopyWith<$Res>? get media;
 
 }
 /// @nodoc
@@ -538,18 +554,31 @@ class __$PostMediaCopyWithImpl<$Res>
 
 /// Create a copy of PostMedia
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? url = null,Object? width = freezed,Object? height = freezed,Object? blurhash = freezed,Object? isVideo = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? url = null,Object? width = freezed,Object? height = freezed,Object? blurhash = freezed,Object? isVideo = null,Object? media = freezed,}) {
   return _then(_PostMedia(
 url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
 as String,width: freezed == width ? _self.width : width // ignore: cast_nullable_to_non_nullable
 as int?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
 as int?,blurhash: freezed == blurhash ? _self.blurhash : blurhash // ignore: cast_nullable_to_non_nullable
 as String?,isVideo: null == isVideo ? _self.isVideo : isVideo // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,media: freezed == media ? _self.media : media // ignore: cast_nullable_to_non_nullable
+as Media?,
   ));
 }
 
+/// Create a copy of PostMedia
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$MediaCopyWith<$Res>? get media {
+    if (_self.media == null) {
+    return null;
+  }
 
+  return $MediaCopyWith<$Res>(_self.media!, (value) {
+    return _then(_self.copyWith(media: value));
+  });
+}
 }
 
 /// @nodoc
@@ -816,7 +845,8 @@ as String,
 mixin _$FeedPost {
 
  String get id; PostAuthor get author; DateTime get createdAt; String get caption; List<PostMedia> get media; PostEventRef? get event; int get likeCount; int get commentCount;/// Whether the signed-in viewer has liked it. Always false signed out.
- bool get likedByMe;
+ bool get likedByMe;/// The viewer posted it, or manages the business that did.
+ bool get canDelete;
 /// Create a copy of FeedPost
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -827,16 +857,16 @@ $FeedPostCopyWith<FeedPost> get copyWith => _$FeedPostCopyWithImpl<FeedPost>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedPost&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.caption, caption) || other.caption == caption)&&const DeepCollectionEquality().equals(other.media, media)&&(identical(other.event, event) || other.event == event)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedPost&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.caption, caption) || other.caption == caption)&&const DeepCollectionEquality().equals(other.media, media)&&(identical(other.event, event) || other.event == event)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.canDelete, canDelete) || other.canDelete == canDelete));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,author,createdAt,caption,const DeepCollectionEquality().hash(media),event,likeCount,commentCount,likedByMe);
+int get hashCode => Object.hash(runtimeType,id,author,createdAt,caption,const DeepCollectionEquality().hash(media),event,likeCount,commentCount,likedByMe,canDelete);
 
 @override
 String toString() {
-  return 'FeedPost(id: $id, author: $author, createdAt: $createdAt, caption: $caption, media: $media, event: $event, likeCount: $likeCount, commentCount: $commentCount, likedByMe: $likedByMe)';
+  return 'FeedPost(id: $id, author: $author, createdAt: $createdAt, caption: $caption, media: $media, event: $event, likeCount: $likeCount, commentCount: $commentCount, likedByMe: $likedByMe, canDelete: $canDelete)';
 }
 
 
@@ -847,7 +877,7 @@ abstract mixin class $FeedPostCopyWith<$Res>  {
   factory $FeedPostCopyWith(FeedPost value, $Res Function(FeedPost) _then) = _$FeedPostCopyWithImpl;
 @useResult
 $Res call({
- String id, PostAuthor author, DateTime createdAt, String caption, List<PostMedia> media, PostEventRef? event, int likeCount, int commentCount, bool likedByMe
+ String id, PostAuthor author, DateTime createdAt, String caption, List<PostMedia> media, PostEventRef? event, int likeCount, int commentCount, bool likedByMe, bool canDelete
 });
 
 
@@ -864,7 +894,7 @@ class _$FeedPostCopyWithImpl<$Res>
 
 /// Create a copy of FeedPost
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? author = null,Object? createdAt = null,Object? caption = null,Object? media = null,Object? event = freezed,Object? likeCount = null,Object? commentCount = null,Object? likedByMe = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? author = null,Object? createdAt = null,Object? caption = null,Object? media = null,Object? event = freezed,Object? likeCount = null,Object? commentCount = null,Object? likedByMe = null,Object? canDelete = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
@@ -875,6 +905,7 @@ as List<PostMedia>,event: freezed == event ? _self.event : event // ignore: cast
 as PostEventRef?,likeCount: null == likeCount ? _self.likeCount : likeCount // ignore: cast_nullable_to_non_nullable
 as int,commentCount: null == commentCount ? _self.commentCount : commentCount // ignore: cast_nullable_to_non_nullable
 as int,likedByMe: null == likedByMe ? _self.likedByMe : likedByMe // ignore: cast_nullable_to_non_nullable
+as bool,canDelete: null == canDelete ? _self.canDelete : canDelete // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -981,10 +1012,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  PostAuthor author,  DateTime createdAt,  String caption,  List<PostMedia> media,  PostEventRef? event,  int likeCount,  int commentCount,  bool likedByMe)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  PostAuthor author,  DateTime createdAt,  String caption,  List<PostMedia> media,  PostEventRef? event,  int likeCount,  int commentCount,  bool likedByMe,  bool canDelete)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FeedPost() when $default != null:
-return $default(_that.id,_that.author,_that.createdAt,_that.caption,_that.media,_that.event,_that.likeCount,_that.commentCount,_that.likedByMe);case _:
+return $default(_that.id,_that.author,_that.createdAt,_that.caption,_that.media,_that.event,_that.likeCount,_that.commentCount,_that.likedByMe,_that.canDelete);case _:
   return orElse();
 
 }
@@ -1002,10 +1033,10 @@ return $default(_that.id,_that.author,_that.createdAt,_that.caption,_that.media,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  PostAuthor author,  DateTime createdAt,  String caption,  List<PostMedia> media,  PostEventRef? event,  int likeCount,  int commentCount,  bool likedByMe)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  PostAuthor author,  DateTime createdAt,  String caption,  List<PostMedia> media,  PostEventRef? event,  int likeCount,  int commentCount,  bool likedByMe,  bool canDelete)  $default,) {final _that = this;
 switch (_that) {
 case _FeedPost():
-return $default(_that.id,_that.author,_that.createdAt,_that.caption,_that.media,_that.event,_that.likeCount,_that.commentCount,_that.likedByMe);case _:
+return $default(_that.id,_that.author,_that.createdAt,_that.caption,_that.media,_that.event,_that.likeCount,_that.commentCount,_that.likedByMe,_that.canDelete);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1022,10 +1053,10 @@ return $default(_that.id,_that.author,_that.createdAt,_that.caption,_that.media,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  PostAuthor author,  DateTime createdAt,  String caption,  List<PostMedia> media,  PostEventRef? event,  int likeCount,  int commentCount,  bool likedByMe)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  PostAuthor author,  DateTime createdAt,  String caption,  List<PostMedia> media,  PostEventRef? event,  int likeCount,  int commentCount,  bool likedByMe,  bool canDelete)?  $default,) {final _that = this;
 switch (_that) {
 case _FeedPost() when $default != null:
-return $default(_that.id,_that.author,_that.createdAt,_that.caption,_that.media,_that.event,_that.likeCount,_that.commentCount,_that.likedByMe);case _:
+return $default(_that.id,_that.author,_that.createdAt,_that.caption,_that.media,_that.event,_that.likeCount,_that.commentCount,_that.likedByMe,_that.canDelete);case _:
   return null;
 
 }
@@ -1037,7 +1068,7 @@ return $default(_that.id,_that.author,_that.createdAt,_that.caption,_that.media,
 
 
 class _FeedPost extends FeedPost {
-  const _FeedPost({required this.id, required this.author, required this.createdAt, this.caption = '', final  List<PostMedia> media = const <PostMedia>[], this.event, this.likeCount = 0, this.commentCount = 0, this.likedByMe = false}): _media = media,super._();
+  const _FeedPost({required this.id, required this.author, required this.createdAt, this.caption = '', final  List<PostMedia> media = const <PostMedia>[], this.event, this.likeCount = 0, this.commentCount = 0, this.likedByMe = false, this.canDelete = false}): _media = media,super._();
   
 
 @override final  String id;
@@ -1056,6 +1087,8 @@ class _FeedPost extends FeedPost {
 @override@JsonKey() final  int commentCount;
 /// Whether the signed-in viewer has liked it. Always false signed out.
 @override@JsonKey() final  bool likedByMe;
+/// The viewer posted it, or manages the business that did.
+@override@JsonKey() final  bool canDelete;
 
 /// Create a copy of FeedPost
 /// with the given fields replaced by the non-null parameter values.
@@ -1067,16 +1100,16 @@ _$FeedPostCopyWith<_FeedPost> get copyWith => __$FeedPostCopyWithImpl<_FeedPost>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedPost&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.caption, caption) || other.caption == caption)&&const DeepCollectionEquality().equals(other._media, _media)&&(identical(other.event, event) || other.event == event)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedPost&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.caption, caption) || other.caption == caption)&&const DeepCollectionEquality().equals(other._media, _media)&&(identical(other.event, event) || other.event == event)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.canDelete, canDelete) || other.canDelete == canDelete));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,author,createdAt,caption,const DeepCollectionEquality().hash(_media),event,likeCount,commentCount,likedByMe);
+int get hashCode => Object.hash(runtimeType,id,author,createdAt,caption,const DeepCollectionEquality().hash(_media),event,likeCount,commentCount,likedByMe,canDelete);
 
 @override
 String toString() {
-  return 'FeedPost(id: $id, author: $author, createdAt: $createdAt, caption: $caption, media: $media, event: $event, likeCount: $likeCount, commentCount: $commentCount, likedByMe: $likedByMe)';
+  return 'FeedPost(id: $id, author: $author, createdAt: $createdAt, caption: $caption, media: $media, event: $event, likeCount: $likeCount, commentCount: $commentCount, likedByMe: $likedByMe, canDelete: $canDelete)';
 }
 
 
@@ -1087,7 +1120,7 @@ abstract mixin class _$FeedPostCopyWith<$Res> implements $FeedPostCopyWith<$Res>
   factory _$FeedPostCopyWith(_FeedPost value, $Res Function(_FeedPost) _then) = __$FeedPostCopyWithImpl;
 @override @useResult
 $Res call({
- String id, PostAuthor author, DateTime createdAt, String caption, List<PostMedia> media, PostEventRef? event, int likeCount, int commentCount, bool likedByMe
+ String id, PostAuthor author, DateTime createdAt, String caption, List<PostMedia> media, PostEventRef? event, int likeCount, int commentCount, bool likedByMe, bool canDelete
 });
 
 
@@ -1104,7 +1137,7 @@ class __$FeedPostCopyWithImpl<$Res>
 
 /// Create a copy of FeedPost
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? author = null,Object? createdAt = null,Object? caption = null,Object? media = null,Object? event = freezed,Object? likeCount = null,Object? commentCount = null,Object? likedByMe = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? author = null,Object? createdAt = null,Object? caption = null,Object? media = null,Object? event = freezed,Object? likeCount = null,Object? commentCount = null,Object? likedByMe = null,Object? canDelete = null,}) {
   return _then(_FeedPost(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
@@ -1115,6 +1148,7 @@ as List<PostMedia>,event: freezed == event ? _self.event : event // ignore: cast
 as PostEventRef?,likeCount: null == likeCount ? _self.likeCount : likeCount // ignore: cast_nullable_to_non_nullable
 as int,commentCount: null == commentCount ? _self.commentCount : commentCount // ignore: cast_nullable_to_non_nullable
 as int,likedByMe: null == likedByMe ? _self.likedByMe : likedByMe // ignore: cast_nullable_to_non_nullable
+as bool,canDelete: null == canDelete ? _self.canDelete : canDelete // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

@@ -1,9 +1,9 @@
+import 'package:petalsinajar/core/media/media_repository.dart';
+import 'package:petalsinajar/core/media/media_uploader.dart';
 import 'package:petalsinajar/core/network/dio_client.dart';
 import 'package:petalsinajar/core/session/active_actor.dart';
 import 'package:petalsinajar/features/auth/data/auth_repository_impl.dart';
 import 'package:petalsinajar/features/auth/domain/me.dart';
-import 'package:petalsinajar/core/media/media_repository.dart';
-import 'package:petalsinajar/core/media/media_uploader.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_session.g.dart';
@@ -68,13 +68,22 @@ class AuthSession extends _$AuthSession {
     if (ref.mounted) state = AsyncData(me);
   }
 
-  /// Email and password for the vendors' web dashboard.
+  /// Email and password for the vendors' web dashboard. Marks the user as
+  /// having one at once, without waiting for a reload.
   Future<void> setDashboardSignIn({
     required String email,
     required String password,
-  }) => ref
-      .read(authRepositoryProvider)
-      .setDashboardSignIn(email: email, password: password);
+  }) async {
+    await ref
+        .read(authRepositoryProvider)
+        .setDashboardSignIn(email: email, password: password);
+    final me = state.value;
+    if (ref.mounted && me != null) {
+      state = AsyncData(
+        me.copyWith(email: email.trim(), hasDashboardSignIn: true),
+      );
+    }
+  }
 
   Future<void> signOut() async {
     await ref.read(authRepositoryProvider).signOut();

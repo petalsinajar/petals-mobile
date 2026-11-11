@@ -47,7 +47,11 @@ class _Photo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => switch (photo) {
-    final Photo p => MediaImage(url: p.url, media: p.media, blurhash: p.blurhash),
+    final Photo p => MediaImage(
+      url: p.url,
+      media: p.media,
+      blurhash: p.blurhash,
+    ),
     null => ColoredBox(
       color: context.colors.surfaceContainerHighest,
       child: Icon(fallback, color: context.colors.onSurfaceVariant),

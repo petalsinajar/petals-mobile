@@ -18,6 +18,8 @@ class MeDto {
     this.settings = const {},
     this.needsProfile = false,
     this.vendors = const [],
+    this.email,
+    this.hasDashboardSignIn = false,
   });
 
   factory MeDto.fromJson(Map<String, dynamic> json) => _$MeDtoFromJson(json);
@@ -36,6 +38,8 @@ class MeDto {
   final Map<String, dynamic> settings;
   final bool needsProfile;
   final List<MeVendorDto> vendors;
+  final String? email;
+  final bool hasDashboardSignIn;
 
   Me toDomain() {
     final notify = settings['notify'] is Map
@@ -63,6 +67,8 @@ class MeDto {
       ),
       needsProfile: needsProfile,
       vendors: [for (final v in vendors) v.toDomain()],
+      email: (email ?? '').isEmpty ? null : email,
+      hasDashboardSignIn: hasDashboardSignIn,
     );
   }
 }

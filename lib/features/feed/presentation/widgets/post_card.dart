@@ -15,6 +15,7 @@ class PostCard extends StatelessWidget {
     required this.onLike,
     required this.onComments,
     this.onOpenEvent,
+    this.onDelete,
     super.key,
   });
 
@@ -24,6 +25,9 @@ class PostCard extends StatelessWidget {
 
   /// Tapping "at (event)". Omit to show the event without a link.
   final VoidCallback? onOpenEvent;
+
+  /// Shows "Delete post" in the post's menu. Omit when the viewer can't.
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +39,11 @@ class PostCard extends StatelessWidget {
         children: [
           Padding(
             padding: AppSpacing.screenPadding,
-            child: _Header(post: post, onOpenEvent: onOpenEvent),
+            child: _Header(
+              post: post,
+              onOpenEvent: onOpenEvent,
+              onDelete: onDelete,
+            ),
           ),
           if (post.media.isNotEmpty) ...[
             const SizedBox(height: AppSpacing.sm),
@@ -76,10 +84,15 @@ class PostCard extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.post, required this.onOpenEvent});
+  const _Header({
+    required this.post,
+    required this.onOpenEvent,
+    required this.onDelete,
+  });
 
   final FeedPost post;
   final VoidCallback? onOpenEvent;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +153,21 @@ class _Header extends StatelessWidget {
           TimeAgo.format(post.createdAt),
           style: text.bodySmall?.copyWith(color: colors.onSurfaceVariant),
         ),
+        if (onDelete case final delete?)
+          PopupMenuButton<void>(
+            tooltip: 'Post options',
+            icon: const Icon(Icons.more_vert_rounded),
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                onTap: delete,
+                child: const ListTile(
+                  leading: Icon(Icons.delete_outline_rounded),
+                  title: Text('Delete post'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+            ],
+          ),
       ],
     );
   }
@@ -248,7 +276,11 @@ class _Slide extends StatelessWidget {
   Widget build(BuildContext context) {
     final media = m.media;
     if (m.isVideo && media != null) {
-      return MediaVideo(media: media, autoplay: true, aspectRatio: m.aspectRatio);
+      return MediaVideo(
+        media: media,
+        autoplay: true,
+        aspectRatio: m.aspectRatio,
+      );
     }
     return MediaImage(url: m.url, media: media, blurhash: m.blurhash);
   }

@@ -13,13 +13,15 @@ import 'package:petalsinajar/core/widgets/app_button.dart';
 import 'package:petalsinajar/core/widgets/error_state.dart';
 import 'package:petalsinajar/features/auth/domain/handles.dart';
 import 'package:petalsinajar/features/auth/presentation/auth_session.dart';
+import 'package:petalsinajar/features/profile/presentation/dashboard_sign_in_screen.dart';
 import 'package:petalsinajar/features/vendor/data/vendor_repository_impl.dart';
 import 'package:petalsinajar/features/vendor/domain/vendor_models.dart';
 import 'package:petalsinajar/features/vendor/presentation/vendor_controllers.dart';
 
 /// "Start a business": name, @username, city, what you rent out and for
-/// which events. The signed-in user becomes the owner, and the app switches
-/// to vendor mode.
+/// which events, plus an email and password for the web dashboard (where
+/// items are added) if the user has none yet. The signed-in user becomes the
+/// owner, and the app switches to vendor mode.
 class StartBusinessScreen extends ConsumerStatefulWidget {
   const StartBusinessScreen({super.key});
 
@@ -39,6 +41,9 @@ class _StartBusinessScreenState extends ConsumerState<StartBusinessScreen> {
   final _name = TextEditingController();
   final _handle = TextEditingController();
   final _city = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  var _obscure = true;
   final _categories = <String>{};
   final _eventTypes = <String>{};
   final _errors = <String, String>{};
@@ -55,6 +60,8 @@ class _StartBusinessScreenState extends ConsumerState<StartBusinessScreen> {
     _name.dispose();
     _handle.dispose();
     _city.dispose();
+    _email.dispose();
+    _password.dispose();
     super.dispose();
   }
 
@@ -94,15 +101,27 @@ class _StartBusinessScreenState extends ConsumerState<StartBusinessScreen> {
     });
   }
 
+  /// Asked for only until the user has a web dashboard sign-in.
+  bool get _needsSignIn =>
+      !(ref.read(authSessionProvider).value?.hasDashboardSignIn ?? false);
+
   Future<void> _submit() async {
     final name = _name.text.trim();
     final handle = normalizeHandle(_handle.text);
+    final email = _email.text.trim();
+    final password = _password.text;
+    final needsSignIn = _needsSignIn;
     setState(() {
       _errors
         ..remove('form')
         ..addAll({
           if (name.isEmpty) 'name': 'Enter your business name.',
           if (handle.isEmpty) 'handle': 'Choose a username.',
+          if (needsSignIn &&
+              !RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email))
+            'email': 'Enter a valid email address.',
+          if (needsSignIn)
+            'password': ?DashboardSignInScreen.passwordProblem(password),
         });
       final problem = handle.isEmpty ? null : handleProblem(handle);
       if (problem != null) _errors['handle'] = problem;
@@ -111,6 +130,12 @@ class _StartBusinessScreenState extends ConsumerState<StartBusinessScreen> {
 
     setState(() => _saving = true);
     try {
+      // First, so a taken email stops here, before the business exists.
+      if (needsSignIn) {
+        await ref
+            .read(authSessionProvider.notifier)
+            .setDashboardSignIn(email: email, password: password);
+      }
       final business = await ref
           .read(vendorRepositoryProvider)
           .startBusiness(
@@ -139,7 +164,7 @@ class _StartBusinessScreenState extends ConsumerState<StartBusinessScreen> {
     } on ApiException catch (e) {
       if (!mounted) return;
       setState(() {
-        for (final field in ['name', 'handle', 'city']) {
+        for (final field in ['name', 'handle', 'city', 'email', 'password']) {
           if (e.fieldError(field) case final message?) _errors[field] = message;
         }
         if (_errors.isEmpty) _errors['form'] = ErrorState.describe(e).$2;
@@ -156,6 +181,8 @@ class _StartBusinessScreenState extends ConsumerState<StartBusinessScreen> {
     final categories = ref.watch(businessCategoriesProvider);
     const gap = SizedBox(height: AppSpacing.md);
     final handle = normalizeHandle(_handle.text);
+    final needsSignIn =
+        !(ref.watch(authSessionProvider).value?.hasDashboardSignIn ?? false);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Start a business')),
@@ -279,6 +306,57 @@ class _StartBusinessScreenState extends ConsumerState<StartBusinessScreen> {
                   ),
               ],
             ),
+            if (needsSignIn) ...[
+              const SizedBox(height: AppSpacing.xl),
+              Text('Web dashboard sign-in', style: text.titleSmall),
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                'You add items and prices at petalsinajar.com/vendor. The '
+                'app signs you in by phone; the website needs these.',
+                style: text.bodySmall?.copyWith(
+                  color: colors.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              TextField(
+                controller: _email,
+                enabled: !_saving,
+                keyboardType: TextInputType.emailAddress,
+                autocorrect: false,
+                autofillHints: const [AutofillHints.email],
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  prefixIcon: const Icon(Icons.email_outlined),
+                  errorText: _errors['email'],
+                ),
+                onChanged: (_) => setState(() => _errors.remove('email')),
+              ),
+              gap,
+              TextField(
+                controller: _password,
+                enabled: !_saving,
+                obscureText: _obscure,
+                autocorrect: false,
+                autofillHints: const [AutofillHints.newPassword],
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  helperText:
+                      'At least 10 characters, with letters and numbers.',
+                  prefixIcon: const Icon(Icons.lock_outline_rounded),
+                  errorText: _errors['password'],
+                  suffixIcon: IconButton(
+                    tooltip: _obscure ? 'Show password' : 'Hide password',
+                    icon: Icon(
+                      _obscure
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                    ),
+                    onPressed: () => setState(() => _obscure = !_obscure),
+                  ),
+                ),
+                onChanged: (_) => setState(() => _errors.remove('password')),
+              ),
+            ],
             const SizedBox(height: AppSpacing.xl),
             AppButton(
               label: 'Create business',

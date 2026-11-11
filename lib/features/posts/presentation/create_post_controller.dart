@@ -1,13 +1,16 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:petalsinajar/core/media/media_limits.dart';
 import 'package:petalsinajar/features/auth/presentation/auth_session.dart';
 import 'package:petalsinajar/features/posts/data/posts_repository_impl.dart';
 import 'package:petalsinajar/features/posts/domain/post_draft.dart';
+import 'package:petalsinajar/features/posts/presentation/pending_posts.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'create_post_controller.freezed.dart';
 part 'create_post_controller.g.dart';
 
-enum DraftPhase { editing, uploading, posting }
+/// `uploading` covers the moment Share hands the files to the queue.
+enum DraftPhase { editing, uploading }
 
 @freezed
 abstract class PostDraft with _$PostDraft {
@@ -19,9 +22,6 @@ abstract class PostDraft with _$PostDraft {
     @Default(PostVisibility.public) PostVisibility visibility,
     @Default(<DraftTag>[]) List<DraftTag> tags,
     @Default(DraftPhase.editing) DraftPhase phase,
-
-    /// Photos uploaded so far while sharing.
-    @Default(0) int uploaded,
   }) = _PostDraft;
 
   const PostDraft._();
@@ -34,22 +34,15 @@ abstract class PostDraft with _$PostDraft {
 /// The post being written. Kept alive so switching tabs doesn't lose it.
 @Riverpod(keepAlive: true)
 class CreatePost extends _$CreatePost {
-  static const maxPhotos = 10;
-
-  /// Uploads by local path, so a retry after a failure doesn't upload twice.
-  final _uploads = <String, UploadedImage>{};
+  static const int maxPhotos = MediaLimits.postMaxMedia;
 
   @override
   PostDraft build() => const PostDraft();
 
-  void addPhotos(List<String> paths) {
+  /// Adds picked photos and videos, up to [maxPhotos] in all.
+  void addPhotos(List<DraftPhoto> picked) {
     final room = maxPhotos - state.photos.length;
-    state = state.copyWith(
-      photos: [
-        ...state.photos,
-        for (final p in paths.take(room)) DraftPhoto(path: p),
-      ],
-    );
+    state = state.copyWith(photos: [...state.photos, ...picked.take(room)]);
   }
 
   /// Drops photo [index] and its pins; later photos' pins shift down.
@@ -90,39 +83,17 @@ class CreatePost extends _$CreatePost {
   void setVisibility(PostVisibility visibility) =>
       state = state.copyWith(visibility: visibility);
 
-  void discard() {
-    _uploads.clear();
-    state = const PostDraft();
-  }
+  void discard() => state = const PostDraft();
 
-  /// Uploads the photos, then publishes. Returns the new post's id and
-  /// clears the draft; on failure keeps the draft and rethrows.
-  Future<String> share() async {
+  /// Hands the post to the upload queue and clears the draft at once; it
+  /// shows in the feed as uploading and publishes when its media is ready.
+  Future<void> share() async {
     final draft = state;
     if (!draft.canShare) throw StateError('Nothing to share');
-    final repo = ref.read(postsRepositoryProvider);
-
+    state = draft.copyWith(phase: DraftPhase.uploading);
     try {
-      state = draft.copyWith(phase: DraftPhase.uploading, uploaded: 0);
-      final media = <UploadedImage>[];
-      for (final photo in draft.photos) {
-        media.add(_uploads[photo.path] ??= await repo.upload(photo.path));
-        state = state.copyWith(uploaded: media.length);
-      }
-
-      state = state.copyWith(phase: DraftPhase.posting);
-      final id = await repo.create(
-        NewPost(
-          media: media,
-          caption: draft.caption,
-          asVendorId: draft.asVendorId,
-          eventId: draft.event?.id,
-          visibility: draft.visibility,
-          tags: draft.tags,
-        ),
-      );
+      await ref.read(pendingPostsProvider.notifier).submit(draft);
       discard();
-      return id;
     } on Object {
       state = state.copyWith(phase: DraftPhase.editing);
       rethrow;

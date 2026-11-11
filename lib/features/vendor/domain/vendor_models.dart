@@ -18,6 +18,39 @@ enum VendorBookingStatus {
   disputed,
 }
 
+/// The statuses on the Calendar: everything that is or was going ahead.
+abstract final class CalendarStatuses {
+  static const List<VendorBookingStatus> all = [
+    VendorBookingStatus.pendingVendor,
+    VendorBookingStatus.accepted,
+    VendorBookingStatus.confirmed,
+    VendorBookingStatus.outForDelivery,
+    VendorBookingStatus.delivered,
+    VendorBookingStatus.returned,
+    VendorBookingStatus.completed,
+    VendorBookingStatus.disputed,
+  ];
+}
+
+/// Days (inclusive, local dates) the business takes no new bookings.
+/// Bookings already made are kept.
+@freezed
+abstract class Blackout with _$Blackout {
+  const factory Blackout({
+    required String id,
+    required DateTime startsOn,
+    required DateTime endsOn,
+    String? reason,
+  }) = _Blackout;
+
+  const Blackout._();
+
+  bool covers(DateTime day) {
+    final d = DateTime(day.year, day.month, day.day);
+    return !d.isBefore(startsOn) && !d.isAfter(endsOn);
+  }
+}
+
 /// The statuses on the Requests tab, by section.
 abstract final class RequestStatuses {
   /// Waiting for the vendor to accept or decline.
@@ -61,7 +94,74 @@ abstract class VendorBooking with _$VendorBooking {
     /// `delivery` or `pickup`.
     String? fulfilment,
     String? customerNote,
+
+    /// Recorded by the vendor for a booking made outside the app.
+    @Default(false) bool recorded,
+
+    /// Only on recorded bookings: the number the vendor took down.
+    String? customerPhone,
+
+    /// Where to deliver (delivery bookings).
+    String? address,
+
+    /// Who to call on the day: the customer's phone on recorded bookings,
+    /// else the contact given at checkout.
+    String? contactPhone,
   }) = _VendorBooking;
+}
+
+/// The next step a vendor marks on a booking that's going ahead.
+enum BookingStep {
+  /// Confirmed delivery → out for delivery.
+  dispatch,
+
+  /// Out for delivery, or a confirmed pickup → with the customer.
+  deliver,
+
+  /// With the customer → back in stock.
+  markReturned
+  ;
+
+  /// What comes next for [b], if anything.
+  static BookingStep? next(VendorBooking b) => switch (b.status) {
+    VendorBookingStatus.confirmed =>
+      b.fulfilment == 'pickup' ? deliver : dispatch,
+    VendorBookingStatus.outForDelivery => deliver,
+    VendorBookingStatus.delivered => markReturned,
+    _ => null,
+  };
+}
+
+/// One item on a booking the vendor records.
+@freezed
+abstract class RecordedLine with _$RecordedLine {
+  const factory RecordedLine({
+    required String itemId,
+    required String variantId,
+    required int qty,
+  }) = _RecordedLine;
+}
+
+/// A booking agreed outside the app (phone, walk-in), recorded so its stock
+/// comes off the calendar. Saved as confirmed; nothing is paid in the app.
+@freezed
+abstract class RecordedBooking with _$RecordedBooking {
+  const factory RecordedBooking({
+    required String customerName,
+    required String customerPhone,
+    required DateTime startsAt,
+    required DateTime endsAt,
+    required List<RecordedLine> lines,
+    @Default(false) bool delivery,
+    String? address,
+    @Default(0) int deliveryFeeMinor,
+
+    /// Already received from the customer, outside the app.
+    @Default(0) int paidMinor,
+
+    /// Only the business's team sees it.
+    String? note,
+  }) = _RecordedBooking;
 }
 
 /// A rental category a business can offer (chairs, tents, sound…).

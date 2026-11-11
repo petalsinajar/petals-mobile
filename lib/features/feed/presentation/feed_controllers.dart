@@ -3,6 +3,7 @@ import 'package:petalsinajar/core/network/paginated.dart';
 import 'package:petalsinajar/features/feed/data/feed_repository_impl.dart';
 import 'package:petalsinajar/features/feed/domain/feed_repository.dart';
 import 'package:petalsinajar/features/feed/domain/post.dart';
+import 'package:petalsinajar/features/posts/data/posts_repository_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'feed_controllers.g.dart';
@@ -63,6 +64,31 @@ class FeedPosts extends _$FeedPosts {
       if (ref.mounted) _update(postId, (p) => p.copyWith(likeCount: likes));
     } on Object {
       if (ref.mounted) _update(postId, (_) => before);
+      rethrow;
+    }
+  }
+
+  /// Takes the post off this feed at once and deletes it; puts it back and
+  /// rethrows if the server refuses. The other feed reloads.
+  Future<void> delete(String postId) async {
+    final before = state.value;
+    if (before == null) return;
+    state = AsyncData(
+      Paginated(
+        items: [
+          for (final p in before.items)
+            if (p.id != postId) p,
+        ],
+        nextCursor: before.nextCursor,
+      ),
+    );
+    try {
+      await ref.read(postsRepositoryProvider).delete(postId);
+      for (final other in FeedKind.values) {
+        if (other != kind) ref.invalidate(feedPostsProvider(other));
+      }
+    } on Object {
+      if (ref.mounted) state = AsyncData(before);
       rethrow;
     }
   }

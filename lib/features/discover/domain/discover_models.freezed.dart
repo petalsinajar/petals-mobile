@@ -1396,7 +1396,8 @@ $RatingCopyWith<$Res> get rating {
 /// @nodoc
 mixin _$Photo {
 
- String get url; String? get blurhash; int? get width; int? get height;
+ String get url; String? get blurhash; int? get width; int? get height;/// Every size, when the API sent them; [url] is the feed size.
+ Media? get media;
 /// Create a copy of Photo
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1407,16 +1408,16 @@ $PhotoCopyWith<Photo> get copyWith => _$PhotoCopyWithImpl<Photo>(this as Photo, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Photo&&(identical(other.url, url) || other.url == url)&&(identical(other.blurhash, blurhash) || other.blurhash == blurhash)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Photo&&(identical(other.url, url) || other.url == url)&&(identical(other.blurhash, blurhash) || other.blurhash == blurhash)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.media, media) || other.media == media));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,url,blurhash,width,height);
+int get hashCode => Object.hash(runtimeType,url,blurhash,width,height,media);
 
 @override
 String toString() {
-  return 'Photo(url: $url, blurhash: $blurhash, width: $width, height: $height)';
+  return 'Photo(url: $url, blurhash: $blurhash, width: $width, height: $height, media: $media)';
 }
 
 
@@ -1427,11 +1428,11 @@ abstract mixin class $PhotoCopyWith<$Res>  {
   factory $PhotoCopyWith(Photo value, $Res Function(Photo) _then) = _$PhotoCopyWithImpl;
 @useResult
 $Res call({
- String url, String? blurhash, int? width, int? height
+ String url, String? blurhash, int? width, int? height, Media? media
 });
 
 
-
+$MediaCopyWith<$Res>? get media;
 
 }
 /// @nodoc
@@ -1444,16 +1445,29 @@ class _$PhotoCopyWithImpl<$Res>
 
 /// Create a copy of Photo
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? url = null,Object? blurhash = freezed,Object? width = freezed,Object? height = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? url = null,Object? blurhash = freezed,Object? width = freezed,Object? height = freezed,Object? media = freezed,}) {
   return _then(_self.copyWith(
 url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
 as String,blurhash: freezed == blurhash ? _self.blurhash : blurhash // ignore: cast_nullable_to_non_nullable
 as String?,width: freezed == width ? _self.width : width // ignore: cast_nullable_to_non_nullable
 as int?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
-as int?,
+as int?,media: freezed == media ? _self.media : media // ignore: cast_nullable_to_non_nullable
+as Media?,
   ));
 }
+/// Create a copy of Photo
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$MediaCopyWith<$Res>? get media {
+    if (_self.media == null) {
+    return null;
+  }
 
+  return $MediaCopyWith<$Res>(_self.media!, (value) {
+    return _then(_self.copyWith(media: value));
+  });
+}
 }
 
 
@@ -1535,10 +1549,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String url,  String? blurhash,  int? width,  int? height)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String url,  String? blurhash,  int? width,  int? height,  Media? media)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Photo() when $default != null:
-return $default(_that.url,_that.blurhash,_that.width,_that.height);case _:
+return $default(_that.url,_that.blurhash,_that.width,_that.height,_that.media);case _:
   return orElse();
 
 }
@@ -1556,10 +1570,10 @@ return $default(_that.url,_that.blurhash,_that.width,_that.height);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String url,  String? blurhash,  int? width,  int? height)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String url,  String? blurhash,  int? width,  int? height,  Media? media)  $default,) {final _that = this;
 switch (_that) {
 case _Photo():
-return $default(_that.url,_that.blurhash,_that.width,_that.height);case _:
+return $default(_that.url,_that.blurhash,_that.width,_that.height,_that.media);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1576,10 +1590,10 @@ return $default(_that.url,_that.blurhash,_that.width,_that.height);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String url,  String? blurhash,  int? width,  int? height)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String url,  String? blurhash,  int? width,  int? height,  Media? media)?  $default,) {final _that = this;
 switch (_that) {
 case _Photo() when $default != null:
-return $default(_that.url,_that.blurhash,_that.width,_that.height);case _:
+return $default(_that.url,_that.blurhash,_that.width,_that.height,_that.media);case _:
   return null;
 
 }
@@ -1591,13 +1605,15 @@ return $default(_that.url,_that.blurhash,_that.width,_that.height);case _:
 
 
 class _Photo implements Photo {
-  const _Photo({required this.url, this.blurhash, this.width, this.height});
+  const _Photo({required this.url, this.blurhash, this.width, this.height, this.media});
   
 
 @override final  String url;
 @override final  String? blurhash;
 @override final  int? width;
 @override final  int? height;
+/// Every size, when the API sent them; [url] is the feed size.
+@override final  Media? media;
 
 /// Create a copy of Photo
 /// with the given fields replaced by the non-null parameter values.
@@ -1609,16 +1625,16 @@ _$PhotoCopyWith<_Photo> get copyWith => __$PhotoCopyWithImpl<_Photo>(this, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Photo&&(identical(other.url, url) || other.url == url)&&(identical(other.blurhash, blurhash) || other.blurhash == blurhash)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Photo&&(identical(other.url, url) || other.url == url)&&(identical(other.blurhash, blurhash) || other.blurhash == blurhash)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.media, media) || other.media == media));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,url,blurhash,width,height);
+int get hashCode => Object.hash(runtimeType,url,blurhash,width,height,media);
 
 @override
 String toString() {
-  return 'Photo(url: $url, blurhash: $blurhash, width: $width, height: $height)';
+  return 'Photo(url: $url, blurhash: $blurhash, width: $width, height: $height, media: $media)';
 }
 
 
@@ -1629,11 +1645,11 @@ abstract mixin class _$PhotoCopyWith<$Res> implements $PhotoCopyWith<$Res> {
   factory _$PhotoCopyWith(_Photo value, $Res Function(_Photo) _then) = __$PhotoCopyWithImpl;
 @override @useResult
 $Res call({
- String url, String? blurhash, int? width, int? height
+ String url, String? blurhash, int? width, int? height, Media? media
 });
 
 
-
+@override $MediaCopyWith<$Res>? get media;
 
 }
 /// @nodoc
@@ -1646,17 +1662,30 @@ class __$PhotoCopyWithImpl<$Res>
 
 /// Create a copy of Photo
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? url = null,Object? blurhash = freezed,Object? width = freezed,Object? height = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? url = null,Object? blurhash = freezed,Object? width = freezed,Object? height = freezed,Object? media = freezed,}) {
   return _then(_Photo(
 url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
 as String,blurhash: freezed == blurhash ? _self.blurhash : blurhash // ignore: cast_nullable_to_non_nullable
 as String?,width: freezed == width ? _self.width : width // ignore: cast_nullable_to_non_nullable
 as int?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
-as int?,
+as int?,media: freezed == media ? _self.media : media // ignore: cast_nullable_to_non_nullable
+as Media?,
   ));
 }
 
+/// Create a copy of Photo
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$MediaCopyWith<$Res>? get media {
+    if (_self.media == null) {
+    return null;
+  }
 
+  return $MediaCopyWith<$Res>(_self.media!, (value) {
+    return _then(_self.copyWith(media: value));
+  });
+}
 }
 
 /// @nodoc

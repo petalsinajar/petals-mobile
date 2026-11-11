@@ -27,6 +27,8 @@ MeDto _$MeDtoFromJson(Map<String, dynamic> json) => MeDto(
           ?.map((e) => MeVendorDto.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
+  email: json['email'] as String?,
+  hasDashboardSignIn: json['has_dashboard_sign_in'] as bool? ?? false,
 );
 
 MeVendorDto _$MeVendorDtoFromJson(Map<String, dynamic> json) => MeVendorDto(

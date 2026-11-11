@@ -278,7 +278,7 @@ void main() {
 
     expect(_navLabel('Inventory'), findsOneWidget);
     expect(_navLabel('Feed'), findsNothing);
-    expect(find.text('All quiet for now'), findsOneWidget);
+    expect(find.widgetWithText(AppBar, 'Today'), findsOneWidget);
 
     await tester.tap(_navLabel('Business'));
     await tester.pumpAndSettle();

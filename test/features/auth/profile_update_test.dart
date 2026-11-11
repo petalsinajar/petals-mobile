@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:petalsinajar/core/network/api_exception.dart';
@@ -127,15 +125,13 @@ void main() {
     expect(m.notify.sms, isFalse);
   });
 
-  test('a new photo is uploaded first and its url returned', () async {
-    final file = File(
-      '${Directory.systemTemp.createTempSync().path}/me.jpg',
-    )..writeAsBytesSync([0xFF, 0xD8, 0xFF]);
+  test('a new photo is saved by its media id', () async {
+    await repo.updateMe(
+      const ProfileChanges(avatarMediaId: '01jmedia0000000000000000'),
+    );
 
-    final url = await repo.uploadPhoto(file.path);
-
-    expect(url, 'https://petalsinajar.com/storage/uploads/2026/11/me.jpg');
-    expect(api.requests.single.data, isA<FormData>());
+    final patch = api.requests.singleWhere((r) => r.method == 'PATCH');
+    expect(patch.data, {'avatar_media_id': '01jmedia0000000000000000'});
   });
 
   test('a taken handle is a validation error on handle', () async {

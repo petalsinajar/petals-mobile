@@ -26,6 +26,12 @@ abstract class Me with _$Me {
 
     /// Businesses the user can act as in vendor mode.
     @Default(<MeVendor>[]) List<MeVendor> vendors,
+
+    /// For the web dashboard; phone accounts have none until it's set.
+    String? email,
+
+    /// Whether an email and password are set for the web dashboard.
+    @Default(false) bool hasDashboardSignIn,
   }) = _Me;
 }
 

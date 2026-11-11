@@ -13,13 +13,39 @@ abstract interface class VendorRepository {
   Future<CreatedBusiness> startBusiness(NewBusiness business);
 
   /// The business's bookings in [statuses], soonest first (every page).
+  /// With [from] and [to], only those out at some point in between.
   Future<List<VendorBooking>> bookings(
     String vendorId, {
     required List<VendorBookingStatus> statuses,
+    DateTime? from,
+    DateTime? to,
   });
+
+  /// Blocked days touching [from]–[to] (dates, inclusive).
+  Future<List<Blackout>> blackouts(
+    String vendorId, {
+    required DateTime from,
+    required DateTime to,
+  });
+
+  /// Stops new bookings from [from] to [to] (inclusive). Owners and
+  /// managers only.
+  Future<Blackout> addBlackout(
+    String vendorId, {
+    required DateTime from,
+    required DateTime to,
+    String? reason,
+  });
+
+  Future<void> removeBlackout(String vendorId, String blackoutId);
 
   /// Owners and managers only.
   Future<VendorBooking> accept(String bookingId);
+
+  /// Records a booking made outside the app; it comes back confirmed. Owners
+  /// and managers only. Dates already taken are an `ApiException` with a
+  /// `lines.<i>.qty` field error naming the item.
+  Future<VendorBooking> recordBooking(String vendorId, RecordedBooking booking);
 
   Future<BusinessProfile> business(String vendorId);
 
@@ -40,6 +66,10 @@ abstract interface class VendorRepository {
     String itemId,
     List<String> mediaIds,
   );
+
+  /// Marks [step] on the booking (any team member) and returns it. The
+  /// customer is told.
+  Future<VendorBooking> advance(String bookingId, BookingStep step);
 
   /// Owners and managers only. [reason] is shown to the customer.
   Future<VendorBooking> decline(String bookingId, {String? reason});

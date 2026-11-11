@@ -21,9 +21,6 @@ abstract interface class AuthSource {
   /// `handle` is a 422 on `handle`.
   Future<Json> updateMe(Json fields);
 
-  /// `POST /v1/uploads` multipart `file` → `{ url, width, height }`.
-  Future<Json> uploadImage(String path);
-
   /// `PUT /v1/me/dashboard-credentials` `{ email, password }` → `{ message }`.
   Future<Json> setDashboardCredentials(String email, String password);
 

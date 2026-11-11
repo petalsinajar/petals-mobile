@@ -360,12 +360,16 @@ class _Availability extends ConsumerWidget {
           'Couldn’t check availability. The vendor will confirm.',
           style: style,
         ),
-        data: (left) => Text(
-          left >= qty
-              ? '$left available on $when'
-              : 'Only $left available on $when',
+        data: (a) => Text(
+          a.closed
+              ? 'Not taking bookings on $when. Try another day.'
+              : a.left >= qty
+              ? '${a.left} available on $when'
+              : 'Only ${a.left} available on $when',
           style: style?.copyWith(
-            color: left >= qty ? context.palette.success : context.colors.error,
+            color: !a.closed && a.left >= qty
+                ? context.palette.success
+                : context.colors.error,
           ),
         ),
       ),

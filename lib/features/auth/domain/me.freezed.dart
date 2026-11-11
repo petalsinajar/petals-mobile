@@ -18,7 +18,9 @@ mixin _$Me {
  String get displayName; String? get avatarUrl; String? get bio; String? get city;/// Only approved followers see their posts.
  bool get isPrivate; MeCounts get counts; NotifySettings get notify;/// True until the user has set a display name.
  bool get needsProfile;/// Businesses the user can act as in vendor mode.
- List<MeVendor> get vendors;
+ List<MeVendor> get vendors;/// For the web dashboard; phone accounts have none until it's set.
+ String? get email;/// Whether an email and password are set for the web dashboard.
+ bool get hasDashboardSignIn;
 /// Create a copy of Me
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +31,16 @@ $MeCopyWith<Me> get copyWith => _$MeCopyWithImpl<Me>(this as Me, _$identity);
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Me&&(identical(other.id, id) || other.id == id)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.city, city) || other.city == city)&&(identical(other.isPrivate, isPrivate) || other.isPrivate == isPrivate)&&(identical(other.counts, counts) || other.counts == counts)&&(identical(other.notify, notify) || other.notify == notify)&&(identical(other.needsProfile, needsProfile) || other.needsProfile == needsProfile)&&const DeepCollectionEquality().equals(other.vendors, vendors));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Me&&(identical(other.id, id) || other.id == id)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.city, city) || other.city == city)&&(identical(other.isPrivate, isPrivate) || other.isPrivate == isPrivate)&&(identical(other.counts, counts) || other.counts == counts)&&(identical(other.notify, notify) || other.notify == notify)&&(identical(other.needsProfile, needsProfile) || other.needsProfile == needsProfile)&&const DeepCollectionEquality().equals(other.vendors, vendors)&&(identical(other.email, email) || other.email == email)&&(identical(other.hasDashboardSignIn, hasDashboardSignIn) || other.hasDashboardSignIn == hasDashboardSignIn));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,handle,phone,displayName,avatarUrl,bio,city,isPrivate,counts,notify,needsProfile,const DeepCollectionEquality().hash(vendors));
+int get hashCode => Object.hash(runtimeType,id,handle,phone,displayName,avatarUrl,bio,city,isPrivate,counts,notify,needsProfile,const DeepCollectionEquality().hash(vendors),email,hasDashboardSignIn);
 
 @override
 String toString() {
-  return 'Me(id: $id, handle: $handle, phone: $phone, displayName: $displayName, avatarUrl: $avatarUrl, bio: $bio, city: $city, isPrivate: $isPrivate, counts: $counts, notify: $notify, needsProfile: $needsProfile, vendors: $vendors)';
+  return 'Me(id: $id, handle: $handle, phone: $phone, displayName: $displayName, avatarUrl: $avatarUrl, bio: $bio, city: $city, isPrivate: $isPrivate, counts: $counts, notify: $notify, needsProfile: $needsProfile, vendors: $vendors, email: $email, hasDashboardSignIn: $hasDashboardSignIn)';
 }
 
 
@@ -49,7 +51,7 @@ abstract mixin class $MeCopyWith<$Res>  {
   factory $MeCopyWith(Me value, $Res Function(Me) _then) = _$MeCopyWithImpl;
 @useResult
 $Res call({
- String id, String handle, String phone, String displayName, String? avatarUrl, String? bio, String? city, bool isPrivate, MeCounts counts, NotifySettings notify, bool needsProfile, List<MeVendor> vendors
+ String id, String handle, String phone, String displayName, String? avatarUrl, String? bio, String? city, bool isPrivate, MeCounts counts, NotifySettings notify, bool needsProfile, List<MeVendor> vendors, String? email, bool hasDashboardSignIn
 });
 
 
@@ -66,7 +68,7 @@ class _$MeCopyWithImpl<$Res>
 
 /// Create a copy of Me
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? handle = null,Object? phone = null,Object? displayName = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? city = freezed,Object? isPrivate = null,Object? counts = null,Object? notify = null,Object? needsProfile = null,Object? vendors = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? handle = null,Object? phone = null,Object? displayName = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? city = freezed,Object? isPrivate = null,Object? counts = null,Object? notify = null,Object? needsProfile = null,Object? vendors = null,Object? email = freezed,Object? hasDashboardSignIn = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,handle: null == handle ? _self.handle : handle // ignore: cast_nullable_to_non_nullable
@@ -80,7 +82,9 @@ as bool,counts: null == counts ? _self.counts : counts // ignore: cast_nullable_
 as MeCounts,notify: null == notify ? _self.notify : notify // ignore: cast_nullable_to_non_nullable
 as NotifySettings,needsProfile: null == needsProfile ? _self.needsProfile : needsProfile // ignore: cast_nullable_to_non_nullable
 as bool,vendors: null == vendors ? _self.vendors : vendors // ignore: cast_nullable_to_non_nullable
-as List<MeVendor>,
+as List<MeVendor>,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,hasDashboardSignIn: null == hasDashboardSignIn ? _self.hasDashboardSignIn : hasDashboardSignIn // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 /// Create a copy of Me
@@ -183,10 +187,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String handle,  String phone,  String displayName,  String? avatarUrl,  String? bio,  String? city,  bool isPrivate,  MeCounts counts,  NotifySettings notify,  bool needsProfile,  List<MeVendor> vendors)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String handle,  String phone,  String displayName,  String? avatarUrl,  String? bio,  String? city,  bool isPrivate,  MeCounts counts,  NotifySettings notify,  bool needsProfile,  List<MeVendor> vendors,  String? email,  bool hasDashboardSignIn)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Me() when $default != null:
-return $default(_that.id,_that.handle,_that.phone,_that.displayName,_that.avatarUrl,_that.bio,_that.city,_that.isPrivate,_that.counts,_that.notify,_that.needsProfile,_that.vendors);case _:
+return $default(_that.id,_that.handle,_that.phone,_that.displayName,_that.avatarUrl,_that.bio,_that.city,_that.isPrivate,_that.counts,_that.notify,_that.needsProfile,_that.vendors,_that.email,_that.hasDashboardSignIn);case _:
   return orElse();
 
 }
@@ -204,10 +208,10 @@ return $default(_that.id,_that.handle,_that.phone,_that.displayName,_that.avatar
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String handle,  String phone,  String displayName,  String? avatarUrl,  String? bio,  String? city,  bool isPrivate,  MeCounts counts,  NotifySettings notify,  bool needsProfile,  List<MeVendor> vendors)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String handle,  String phone,  String displayName,  String? avatarUrl,  String? bio,  String? city,  bool isPrivate,  MeCounts counts,  NotifySettings notify,  bool needsProfile,  List<MeVendor> vendors,  String? email,  bool hasDashboardSignIn)  $default,) {final _that = this;
 switch (_that) {
 case _Me():
-return $default(_that.id,_that.handle,_that.phone,_that.displayName,_that.avatarUrl,_that.bio,_that.city,_that.isPrivate,_that.counts,_that.notify,_that.needsProfile,_that.vendors);case _:
+return $default(_that.id,_that.handle,_that.phone,_that.displayName,_that.avatarUrl,_that.bio,_that.city,_that.isPrivate,_that.counts,_that.notify,_that.needsProfile,_that.vendors,_that.email,_that.hasDashboardSignIn);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -224,10 +228,10 @@ return $default(_that.id,_that.handle,_that.phone,_that.displayName,_that.avatar
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String handle,  String phone,  String displayName,  String? avatarUrl,  String? bio,  String? city,  bool isPrivate,  MeCounts counts,  NotifySettings notify,  bool needsProfile,  List<MeVendor> vendors)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String handle,  String phone,  String displayName,  String? avatarUrl,  String? bio,  String? city,  bool isPrivate,  MeCounts counts,  NotifySettings notify,  bool needsProfile,  List<MeVendor> vendors,  String? email,  bool hasDashboardSignIn)?  $default,) {final _that = this;
 switch (_that) {
 case _Me() when $default != null:
-return $default(_that.id,_that.handle,_that.phone,_that.displayName,_that.avatarUrl,_that.bio,_that.city,_that.isPrivate,_that.counts,_that.notify,_that.needsProfile,_that.vendors);case _:
+return $default(_that.id,_that.handle,_that.phone,_that.displayName,_that.avatarUrl,_that.bio,_that.city,_that.isPrivate,_that.counts,_that.notify,_that.needsProfile,_that.vendors,_that.email,_that.hasDashboardSignIn);case _:
   return null;
 
 }
@@ -239,7 +243,7 @@ return $default(_that.id,_that.handle,_that.phone,_that.displayName,_that.avatar
 
 
 class _Me implements Me {
-  const _Me({required this.id, required this.handle, required this.phone, this.displayName = '', this.avatarUrl, this.bio, this.city, this.isPrivate = false, this.counts = const MeCounts(), this.notify = const NotifySettings(), this.needsProfile = false, final  List<MeVendor> vendors = const <MeVendor>[]}): _vendors = vendors;
+  const _Me({required this.id, required this.handle, required this.phone, this.displayName = '', this.avatarUrl, this.bio, this.city, this.isPrivate = false, this.counts = const MeCounts(), this.notify = const NotifySettings(), this.needsProfile = false, final  List<MeVendor> vendors = const <MeVendor>[], this.email, this.hasDashboardSignIn = false}): _vendors = vendors;
   
 
 @override final  String id;
@@ -265,6 +269,10 @@ class _Me implements Me {
   return EqualUnmodifiableListView(_vendors);
 }
 
+/// For the web dashboard; phone accounts have none until it's set.
+@override final  String? email;
+/// Whether an email and password are set for the web dashboard.
+@override@JsonKey() final  bool hasDashboardSignIn;
 
 /// Create a copy of Me
 /// with the given fields replaced by the non-null parameter values.
@@ -276,16 +284,16 @@ _$MeCopyWith<_Me> get copyWith => __$MeCopyWithImpl<_Me>(this, _$identity);
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Me&&(identical(other.id, id) || other.id == id)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.city, city) || other.city == city)&&(identical(other.isPrivate, isPrivate) || other.isPrivate == isPrivate)&&(identical(other.counts, counts) || other.counts == counts)&&(identical(other.notify, notify) || other.notify == notify)&&(identical(other.needsProfile, needsProfile) || other.needsProfile == needsProfile)&&const DeepCollectionEquality().equals(other._vendors, _vendors));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Me&&(identical(other.id, id) || other.id == id)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.city, city) || other.city == city)&&(identical(other.isPrivate, isPrivate) || other.isPrivate == isPrivate)&&(identical(other.counts, counts) || other.counts == counts)&&(identical(other.notify, notify) || other.notify == notify)&&(identical(other.needsProfile, needsProfile) || other.needsProfile == needsProfile)&&const DeepCollectionEquality().equals(other._vendors, _vendors)&&(identical(other.email, email) || other.email == email)&&(identical(other.hasDashboardSignIn, hasDashboardSignIn) || other.hasDashboardSignIn == hasDashboardSignIn));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,handle,phone,displayName,avatarUrl,bio,city,isPrivate,counts,notify,needsProfile,const DeepCollectionEquality().hash(_vendors));
+int get hashCode => Object.hash(runtimeType,id,handle,phone,displayName,avatarUrl,bio,city,isPrivate,counts,notify,needsProfile,const DeepCollectionEquality().hash(_vendors),email,hasDashboardSignIn);
 
 @override
 String toString() {
-  return 'Me(id: $id, handle: $handle, phone: $phone, displayName: $displayName, avatarUrl: $avatarUrl, bio: $bio, city: $city, isPrivate: $isPrivate, counts: $counts, notify: $notify, needsProfile: $needsProfile, vendors: $vendors)';
+  return 'Me(id: $id, handle: $handle, phone: $phone, displayName: $displayName, avatarUrl: $avatarUrl, bio: $bio, city: $city, isPrivate: $isPrivate, counts: $counts, notify: $notify, needsProfile: $needsProfile, vendors: $vendors, email: $email, hasDashboardSignIn: $hasDashboardSignIn)';
 }
 
 
@@ -296,7 +304,7 @@ abstract mixin class _$MeCopyWith<$Res> implements $MeCopyWith<$Res> {
   factory _$MeCopyWith(_Me value, $Res Function(_Me) _then) = __$MeCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String handle, String phone, String displayName, String? avatarUrl, String? bio, String? city, bool isPrivate, MeCounts counts, NotifySettings notify, bool needsProfile, List<MeVendor> vendors
+ String id, String handle, String phone, String displayName, String? avatarUrl, String? bio, String? city, bool isPrivate, MeCounts counts, NotifySettings notify, bool needsProfile, List<MeVendor> vendors, String? email, bool hasDashboardSignIn
 });
 
 
@@ -313,7 +321,7 @@ class __$MeCopyWithImpl<$Res>
 
 /// Create a copy of Me
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? handle = null,Object? phone = null,Object? displayName = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? city = freezed,Object? isPrivate = null,Object? counts = null,Object? notify = null,Object? needsProfile = null,Object? vendors = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? handle = null,Object? phone = null,Object? displayName = null,Object? avatarUrl = freezed,Object? bio = freezed,Object? city = freezed,Object? isPrivate = null,Object? counts = null,Object? notify = null,Object? needsProfile = null,Object? vendors = null,Object? email = freezed,Object? hasDashboardSignIn = null,}) {
   return _then(_Me(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,handle: null == handle ? _self.handle : handle // ignore: cast_nullable_to_non_nullable
@@ -327,7 +335,9 @@ as bool,counts: null == counts ? _self.counts : counts // ignore: cast_nullable_
 as MeCounts,notify: null == notify ? _self.notify : notify // ignore: cast_nullable_to_non_nullable
 as NotifySettings,needsProfile: null == needsProfile ? _self.needsProfile : needsProfile // ignore: cast_nullable_to_non_nullable
 as bool,vendors: null == vendors ? _self._vendors : vendors // ignore: cast_nullable_to_non_nullable
-as List<MeVendor>,
+as List<MeVendor>,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,hasDashboardSignIn: null == hasDashboardSignIn ? _self.hasDashboardSignIn : hasDashboardSignIn // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -883,7 +893,8 @@ as bool,
 /// @nodoc
 mixin _$ProfileChanges {
 
- String? get displayName; String? get handle; String? get bio; String? get city; String? get avatarUrl; bool? get isPrivate; NotifySettings? get notify;
+ String? get displayName; String? get handle; String? get bio; String? get city;/// A new photo: a ready upload from the shared media uploader.
+ String? get avatarMediaId; bool? get isPrivate; NotifySettings? get notify;
 /// Create a copy of ProfileChanges
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -894,16 +905,16 @@ $ProfileChangesCopyWith<ProfileChanges> get copyWith => _$ProfileChangesCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileChanges&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.city, city) || other.city == city)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isPrivate, isPrivate) || other.isPrivate == isPrivate)&&(identical(other.notify, notify) || other.notify == notify));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileChanges&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.city, city) || other.city == city)&&(identical(other.avatarMediaId, avatarMediaId) || other.avatarMediaId == avatarMediaId)&&(identical(other.isPrivate, isPrivate) || other.isPrivate == isPrivate)&&(identical(other.notify, notify) || other.notify == notify));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,displayName,handle,bio,city,avatarUrl,isPrivate,notify);
+int get hashCode => Object.hash(runtimeType,displayName,handle,bio,city,avatarMediaId,isPrivate,notify);
 
 @override
 String toString() {
-  return 'ProfileChanges(displayName: $displayName, handle: $handle, bio: $bio, city: $city, avatarUrl: $avatarUrl, isPrivate: $isPrivate, notify: $notify)';
+  return 'ProfileChanges(displayName: $displayName, handle: $handle, bio: $bio, city: $city, avatarMediaId: $avatarMediaId, isPrivate: $isPrivate, notify: $notify)';
 }
 
 
@@ -914,7 +925,7 @@ abstract mixin class $ProfileChangesCopyWith<$Res>  {
   factory $ProfileChangesCopyWith(ProfileChanges value, $Res Function(ProfileChanges) _then) = _$ProfileChangesCopyWithImpl;
 @useResult
 $Res call({
- String? displayName, String? handle, String? bio, String? city, String? avatarUrl, bool? isPrivate, NotifySettings? notify
+ String? displayName, String? handle, String? bio, String? city, String? avatarMediaId, bool? isPrivate, NotifySettings? notify
 });
 
 
@@ -931,13 +942,13 @@ class _$ProfileChangesCopyWithImpl<$Res>
 
 /// Create a copy of ProfileChanges
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? displayName = freezed,Object? handle = freezed,Object? bio = freezed,Object? city = freezed,Object? avatarUrl = freezed,Object? isPrivate = freezed,Object? notify = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? displayName = freezed,Object? handle = freezed,Object? bio = freezed,Object? city = freezed,Object? avatarMediaId = freezed,Object? isPrivate = freezed,Object? notify = freezed,}) {
   return _then(_self.copyWith(
 displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String?,handle: freezed == handle ? _self.handle : handle // ignore: cast_nullable_to_non_nullable
 as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
 as String?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
-as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
+as String?,avatarMediaId: freezed == avatarMediaId ? _self.avatarMediaId : avatarMediaId // ignore: cast_nullable_to_non_nullable
 as String?,isPrivate: freezed == isPrivate ? _self.isPrivate : isPrivate // ignore: cast_nullable_to_non_nullable
 as bool?,notify: freezed == notify ? _self.notify : notify // ignore: cast_nullable_to_non_nullable
 as NotifySettings?,
@@ -1037,10 +1048,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? displayName,  String? handle,  String? bio,  String? city,  String? avatarUrl,  bool? isPrivate,  NotifySettings? notify)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? displayName,  String? handle,  String? bio,  String? city,  String? avatarMediaId,  bool? isPrivate,  NotifySettings? notify)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileChanges() when $default != null:
-return $default(_that.displayName,_that.handle,_that.bio,_that.city,_that.avatarUrl,_that.isPrivate,_that.notify);case _:
+return $default(_that.displayName,_that.handle,_that.bio,_that.city,_that.avatarMediaId,_that.isPrivate,_that.notify);case _:
   return orElse();
 
 }
@@ -1058,10 +1069,10 @@ return $default(_that.displayName,_that.handle,_that.bio,_that.city,_that.avatar
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? displayName,  String? handle,  String? bio,  String? city,  String? avatarUrl,  bool? isPrivate,  NotifySettings? notify)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? displayName,  String? handle,  String? bio,  String? city,  String? avatarMediaId,  bool? isPrivate,  NotifySettings? notify)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileChanges():
-return $default(_that.displayName,_that.handle,_that.bio,_that.city,_that.avatarUrl,_that.isPrivate,_that.notify);case _:
+return $default(_that.displayName,_that.handle,_that.bio,_that.city,_that.avatarMediaId,_that.isPrivate,_that.notify);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1078,10 +1089,10 @@ return $default(_that.displayName,_that.handle,_that.bio,_that.city,_that.avatar
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? displayName,  String? handle,  String? bio,  String? city,  String? avatarUrl,  bool? isPrivate,  NotifySettings? notify)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? displayName,  String? handle,  String? bio,  String? city,  String? avatarMediaId,  bool? isPrivate,  NotifySettings? notify)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileChanges() when $default != null:
-return $default(_that.displayName,_that.handle,_that.bio,_that.city,_that.avatarUrl,_that.isPrivate,_that.notify);case _:
+return $default(_that.displayName,_that.handle,_that.bio,_that.city,_that.avatarMediaId,_that.isPrivate,_that.notify);case _:
   return null;
 
 }
@@ -1093,14 +1104,15 @@ return $default(_that.displayName,_that.handle,_that.bio,_that.city,_that.avatar
 
 
 class _ProfileChanges implements ProfileChanges {
-  const _ProfileChanges({this.displayName, this.handle, this.bio, this.city, this.avatarUrl, this.isPrivate, this.notify});
+  const _ProfileChanges({this.displayName, this.handle, this.bio, this.city, this.avatarMediaId, this.isPrivate, this.notify});
   
 
 @override final  String? displayName;
 @override final  String? handle;
 @override final  String? bio;
 @override final  String? city;
-@override final  String? avatarUrl;
+/// A new photo: a ready upload from the shared media uploader.
+@override final  String? avatarMediaId;
 @override final  bool? isPrivate;
 @override final  NotifySettings? notify;
 
@@ -1114,16 +1126,16 @@ _$ProfileChangesCopyWith<_ProfileChanges> get copyWith => __$ProfileChangesCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileChanges&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.city, city) || other.city == city)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isPrivate, isPrivate) || other.isPrivate == isPrivate)&&(identical(other.notify, notify) || other.notify == notify));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileChanges&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.city, city) || other.city == city)&&(identical(other.avatarMediaId, avatarMediaId) || other.avatarMediaId == avatarMediaId)&&(identical(other.isPrivate, isPrivate) || other.isPrivate == isPrivate)&&(identical(other.notify, notify) || other.notify == notify));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,displayName,handle,bio,city,avatarUrl,isPrivate,notify);
+int get hashCode => Object.hash(runtimeType,displayName,handle,bio,city,avatarMediaId,isPrivate,notify);
 
 @override
 String toString() {
-  return 'ProfileChanges(displayName: $displayName, handle: $handle, bio: $bio, city: $city, avatarUrl: $avatarUrl, isPrivate: $isPrivate, notify: $notify)';
+  return 'ProfileChanges(displayName: $displayName, handle: $handle, bio: $bio, city: $city, avatarMediaId: $avatarMediaId, isPrivate: $isPrivate, notify: $notify)';
 }
 
 
@@ -1134,7 +1146,7 @@ abstract mixin class _$ProfileChangesCopyWith<$Res> implements $ProfileChangesCo
   factory _$ProfileChangesCopyWith(_ProfileChanges value, $Res Function(_ProfileChanges) _then) = __$ProfileChangesCopyWithImpl;
 @override @useResult
 $Res call({
- String? displayName, String? handle, String? bio, String? city, String? avatarUrl, bool? isPrivate, NotifySettings? notify
+ String? displayName, String? handle, String? bio, String? city, String? avatarMediaId, bool? isPrivate, NotifySettings? notify
 });
 
 
@@ -1151,13 +1163,13 @@ class __$ProfileChangesCopyWithImpl<$Res>
 
 /// Create a copy of ProfileChanges
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? displayName = freezed,Object? handle = freezed,Object? bio = freezed,Object? city = freezed,Object? avatarUrl = freezed,Object? isPrivate = freezed,Object? notify = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? displayName = freezed,Object? handle = freezed,Object? bio = freezed,Object? city = freezed,Object? avatarMediaId = freezed,Object? isPrivate = freezed,Object? notify = freezed,}) {
   return _then(_ProfileChanges(
 displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String?,handle: freezed == handle ? _self.handle : handle // ignore: cast_nullable_to_non_nullable
 as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
 as String?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
-as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
+as String?,avatarMediaId: freezed == avatarMediaId ? _self.avatarMediaId : avatarMediaId // ignore: cast_nullable_to_non_nullable
 as String?,isPrivate: freezed == isPrivate ? _self.isPrivate : isPrivate // ignore: cast_nullable_to_non_nullable
 as bool?,notify: freezed == notify ? _self.notify : notify // ignore: cast_nullable_to_non_nullable
 as NotifySettings?,

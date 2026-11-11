@@ -15,14 +15,6 @@ AuthorDto _$AuthorDtoFromJson(Map<String, dynamic> json) => AuthorDto(
   isVerified: json['is_verified'] as bool? ?? false,
 );
 
-MediaDto _$MediaDtoFromJson(Map<String, dynamic> json) => MediaDto(
-  url: json['url'] as String,
-  type: json['type'] as String?,
-  w: (json['w'] as num?)?.toInt(),
-  h: (json['h'] as num?)?.toInt(),
-  blurhash: json['blurhash'] as String?,
-);
-
 PostDto _$PostDtoFromJson(Map<String, dynamic> json) => PostDto(
   id: json['id'] as String,
   createdAt: DateTime.parse(json['created_at'] as String),
@@ -42,6 +34,7 @@ PostDto _$PostDtoFromJson(Map<String, dynamic> json) => PostDto(
       ) ??
       const {},
   myReaction: json['my_reaction'] as String?,
+  canDelete: json['can_delete'] as bool? ?? false,
 );
 
 CommentDto _$CommentDtoFromJson(Map<String, dynamic> json) => CommentDto(

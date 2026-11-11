@@ -123,7 +123,7 @@ class BookingsRepositoryImpl implements BookingsRepository {
   );
 
   @override
-  Future<int> available({
+  Future<Availability> available({
     required String itemId,
     required String variantId,
     required DateTime from,
@@ -141,10 +141,15 @@ class BookingsRepositoryImpl implements BookingsRepository {
       ),
       (body) {
         final days = (body['days'] as List? ?? const []).cast<Json>();
-        if (days.isEmpty) return body['capacity'] as int? ?? 0;
-        return days
-            .map((d) => d['available'] as int? ?? 0)
-            .reduce((a, b) => a < b ? a : b);
+        if (days.isEmpty) {
+          return (left: body['capacity'] as int? ?? 0, closed: false);
+        }
+        return (
+          left: days
+              .map((d) => d['available'] as int? ?? 0)
+              .reduce((a, b) => a < b ? a : b),
+          closed: days.any((d) => d['closed'] == true),
+        );
       },
     );
   }

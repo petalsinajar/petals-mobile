@@ -40,6 +40,7 @@ abstract final class Routes {
   static const vendorShellPrefix = '/vendor/';
   static const vendorToday = '/vendor/today';
   static const vendorRequests = '/vendor/requests';
+  static const vendorRecordBooking = '/vendor/requests/new';
   static const vendorCalendar = '/vendor/calendar';
   static const vendorInventory = '/vendor/inventory';
   static const vendorProfile = '/vendor/profile';

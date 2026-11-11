@@ -283,13 +283,6 @@ class EventsMockSource implements EventsSource {
   }
 
   @override
-  Future<Json> uploadImage(String path) async {
-    await _delay();
-    // No server: point at the picked file, as the app shows it right away.
-    return {'url': Uri.file(path).toString(), 'width': null, 'height': null};
-  }
-
-  @override
   Future<Json> create(Json fields) async {
     final events = await _loadEvents();
     await _delay();

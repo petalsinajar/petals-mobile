@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DraftPhoto {
 
- String get path;
+ String get path; bool get isVideo;
 /// Create a copy of DraftPhoto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $DraftPhotoCopyWith<DraftPhoto> get copyWith => _$DraftPhotoCopyWithImpl<DraftPh
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DraftPhoto&&(identical(other.path, path) || other.path == path));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DraftPhoto&&(identical(other.path, path) || other.path == path)&&(identical(other.isVideo, isVideo) || other.isVideo == isVideo));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,path);
+int get hashCode => Object.hash(runtimeType,path,isVideo);
 
 @override
 String toString() {
-  return 'DraftPhoto(path: $path)';
+  return 'DraftPhoto(path: $path, isVideo: $isVideo)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $DraftPhotoCopyWith<$Res>  {
   factory $DraftPhotoCopyWith(DraftPhoto value, $Res Function(DraftPhoto) _then) = _$DraftPhotoCopyWithImpl;
 @useResult
 $Res call({
- String path
+ String path, bool isVideo
 });
 
 
@@ -62,10 +62,11 @@ class _$DraftPhotoCopyWithImpl<$Res>
 
 /// Create a copy of DraftPhoto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? path = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? path = null,Object? isVideo = null,}) {
   return _then(_self.copyWith(
 path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
-as String,
+as String,isVideo: null == isVideo ? _self.isVideo : isVideo // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -150,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String path)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String path,  bool isVideo)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DraftPhoto() when $default != null:
-return $default(_that.path);case _:
+return $default(_that.path,_that.isVideo);case _:
   return orElse();
 
 }
@@ -171,10 +172,10 @@ return $default(_that.path);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String path)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String path,  bool isVideo)  $default,) {final _that = this;
 switch (_that) {
 case _DraftPhoto():
-return $default(_that.path);case _:
+return $default(_that.path,_that.isVideo);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -191,10 +192,10 @@ return $default(_that.path);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String path)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String path,  bool isVideo)?  $default,) {final _that = this;
 switch (_that) {
 case _DraftPhoto() when $default != null:
-return $default(_that.path);case _:
+return $default(_that.path,_that.isVideo);case _:
   return null;
 
 }
@@ -206,10 +207,11 @@ return $default(_that.path);case _:
 
 
 class _DraftPhoto implements DraftPhoto {
-  const _DraftPhoto({required this.path});
+  const _DraftPhoto({required this.path, this.isVideo = false});
   
 
 @override final  String path;
+@override@JsonKey() final  bool isVideo;
 
 /// Create a copy of DraftPhoto
 /// with the given fields replaced by the non-null parameter values.
@@ -221,16 +223,16 @@ _$DraftPhotoCopyWith<_DraftPhoto> get copyWith => __$DraftPhotoCopyWithImpl<_Dra
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DraftPhoto&&(identical(other.path, path) || other.path == path));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DraftPhoto&&(identical(other.path, path) || other.path == path)&&(identical(other.isVideo, isVideo) || other.isVideo == isVideo));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,path);
+int get hashCode => Object.hash(runtimeType,path,isVideo);
 
 @override
 String toString() {
-  return 'DraftPhoto(path: $path)';
+  return 'DraftPhoto(path: $path, isVideo: $isVideo)';
 }
 
 
@@ -241,7 +243,7 @@ abstract mixin class _$DraftPhotoCopyWith<$Res> implements $DraftPhotoCopyWith<$
   factory _$DraftPhotoCopyWith(_DraftPhoto value, $Res Function(_DraftPhoto) _then) = __$DraftPhotoCopyWithImpl;
 @override @useResult
 $Res call({
- String path
+ String path, bool isVideo
 });
 
 
@@ -258,10 +260,11 @@ class __$DraftPhotoCopyWithImpl<$Res>
 
 /// Create a copy of DraftPhoto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? path = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? path = null,Object? isVideo = null,}) {
   return _then(_DraftPhoto(
 path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
-as String,
+as String,isVideo: null == isVideo ? _self.isVideo : isVideo // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -1352,272 +1355,10 @@ as String?,
 }
 
 /// @nodoc
-mixin _$UploadedImage {
-
- String get url; int? get width; int? get height;
-/// Create a copy of UploadedImage
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$UploadedImageCopyWith<UploadedImage> get copyWith => _$UploadedImageCopyWithImpl<UploadedImage>(this as UploadedImage, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UploadedImage&&(identical(other.url, url) || other.url == url)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,url,width,height);
-
-@override
-String toString() {
-  return 'UploadedImage(url: $url, width: $width, height: $height)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $UploadedImageCopyWith<$Res>  {
-  factory $UploadedImageCopyWith(UploadedImage value, $Res Function(UploadedImage) _then) = _$UploadedImageCopyWithImpl;
-@useResult
-$Res call({
- String url, int? width, int? height
-});
-
-
-
-
-}
-/// @nodoc
-class _$UploadedImageCopyWithImpl<$Res>
-    implements $UploadedImageCopyWith<$Res> {
-  _$UploadedImageCopyWithImpl(this._self, this._then);
-
-  final UploadedImage _self;
-  final $Res Function(UploadedImage) _then;
-
-/// Create a copy of UploadedImage
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? url = null,Object? width = freezed,Object? height = freezed,}) {
-  return _then(_self.copyWith(
-url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
-as String,width: freezed == width ? _self.width : width // ignore: cast_nullable_to_non_nullable
-as int?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
-as int?,
-  ));
-}
-
-}
-
-
-/// Adds pattern-matching-related methods to [UploadedImage].
-extension UploadedImagePatterns on UploadedImage {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _UploadedImage value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _UploadedImage() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _UploadedImage value)  $default,){
-final _that = this;
-switch (_that) {
-case _UploadedImage():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _UploadedImage value)?  $default,){
-final _that = this;
-switch (_that) {
-case _UploadedImage() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String url,  int? width,  int? height)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _UploadedImage() when $default != null:
-return $default(_that.url,_that.width,_that.height);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String url,  int? width,  int? height)  $default,) {final _that = this;
-switch (_that) {
-case _UploadedImage():
-return $default(_that.url,_that.width,_that.height);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String url,  int? width,  int? height)?  $default,) {final _that = this;
-switch (_that) {
-case _UploadedImage() when $default != null:
-return $default(_that.url,_that.width,_that.height);case _:
-  return null;
-
-}
-}
-
-}
-
-/// @nodoc
-
-
-class _UploadedImage implements UploadedImage {
-  const _UploadedImage({required this.url, this.width, this.height});
-  
-
-@override final  String url;
-@override final  int? width;
-@override final  int? height;
-
-/// Create a copy of UploadedImage
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$UploadedImageCopyWith<_UploadedImage> get copyWith => __$UploadedImageCopyWithImpl<_UploadedImage>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UploadedImage&&(identical(other.url, url) || other.url == url)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,url,width,height);
-
-@override
-String toString() {
-  return 'UploadedImage(url: $url, width: $width, height: $height)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$UploadedImageCopyWith<$Res> implements $UploadedImageCopyWith<$Res> {
-  factory _$UploadedImageCopyWith(_UploadedImage value, $Res Function(_UploadedImage) _then) = __$UploadedImageCopyWithImpl;
-@override @useResult
-$Res call({
- String url, int? width, int? height
-});
-
-
-
-
-}
-/// @nodoc
-class __$UploadedImageCopyWithImpl<$Res>
-    implements _$UploadedImageCopyWith<$Res> {
-  __$UploadedImageCopyWithImpl(this._self, this._then);
-
-  final _UploadedImage _self;
-  final $Res Function(_UploadedImage) _then;
-
-/// Create a copy of UploadedImage
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? url = null,Object? width = freezed,Object? height = freezed,}) {
-  return _then(_UploadedImage(
-url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
-as String,width: freezed == width ? _self.width : width // ignore: cast_nullable_to_non_nullable
-as int?,height: freezed == height ? _self.height : height // ignore: cast_nullable_to_non_nullable
-as int?,
-  ));
-}
-
-
-}
-
-/// @nodoc
 mixin _$NewPost {
 
- List<UploadedImage> get media; String get caption; String? get asVendorId; String? get eventId; PostVisibility get visibility; List<DraftTag> get tags;
+/// Ready media ids, in order.
+ List<String> get mediaIds; String get caption; String? get asVendorId; String? get eventId; PostVisibility get visibility; List<DraftTag> get tags;
 /// Create a copy of NewPost
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1628,16 +1369,16 @@ $NewPostCopyWith<NewPost> get copyWith => _$NewPostCopyWithImpl<NewPost>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NewPost&&const DeepCollectionEquality().equals(other.media, media)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.asVendorId, asVendorId) || other.asVendorId == asVendorId)&&(identical(other.eventId, eventId) || other.eventId == eventId)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other.tags, tags));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NewPost&&const DeepCollectionEquality().equals(other.mediaIds, mediaIds)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.asVendorId, asVendorId) || other.asVendorId == asVendorId)&&(identical(other.eventId, eventId) || other.eventId == eventId)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other.tags, tags));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(media),caption,asVendorId,eventId,visibility,const DeepCollectionEquality().hash(tags));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(mediaIds),caption,asVendorId,eventId,visibility,const DeepCollectionEquality().hash(tags));
 
 @override
 String toString() {
-  return 'NewPost(media: $media, caption: $caption, asVendorId: $asVendorId, eventId: $eventId, visibility: $visibility, tags: $tags)';
+  return 'NewPost(mediaIds: $mediaIds, caption: $caption, asVendorId: $asVendorId, eventId: $eventId, visibility: $visibility, tags: $tags)';
 }
 
 
@@ -1648,7 +1389,7 @@ abstract mixin class $NewPostCopyWith<$Res>  {
   factory $NewPostCopyWith(NewPost value, $Res Function(NewPost) _then) = _$NewPostCopyWithImpl;
 @useResult
 $Res call({
- List<UploadedImage> media, String caption, String? asVendorId, String? eventId, PostVisibility visibility, List<DraftTag> tags
+ List<String> mediaIds, String caption, String? asVendorId, String? eventId, PostVisibility visibility, List<DraftTag> tags
 });
 
 
@@ -1665,10 +1406,10 @@ class _$NewPostCopyWithImpl<$Res>
 
 /// Create a copy of NewPost
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? media = null,Object? caption = null,Object? asVendorId = freezed,Object? eventId = freezed,Object? visibility = null,Object? tags = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? mediaIds = null,Object? caption = null,Object? asVendorId = freezed,Object? eventId = freezed,Object? visibility = null,Object? tags = null,}) {
   return _then(_self.copyWith(
-media: null == media ? _self.media : media // ignore: cast_nullable_to_non_nullable
-as List<UploadedImage>,caption: null == caption ? _self.caption : caption // ignore: cast_nullable_to_non_nullable
+mediaIds: null == mediaIds ? _self.mediaIds : mediaIds // ignore: cast_nullable_to_non_nullable
+as List<String>,caption: null == caption ? _self.caption : caption // ignore: cast_nullable_to_non_nullable
 as String,asVendorId: freezed == asVendorId ? _self.asVendorId : asVendorId // ignore: cast_nullable_to_non_nullable
 as String?,eventId: freezed == eventId ? _self.eventId : eventId // ignore: cast_nullable_to_non_nullable
 as String?,visibility: null == visibility ? _self.visibility : visibility // ignore: cast_nullable_to_non_nullable
@@ -1758,10 +1499,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<UploadedImage> media,  String caption,  String? asVendorId,  String? eventId,  PostVisibility visibility,  List<DraftTag> tags)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<String> mediaIds,  String caption,  String? asVendorId,  String? eventId,  PostVisibility visibility,  List<DraftTag> tags)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NewPost() when $default != null:
-return $default(_that.media,_that.caption,_that.asVendorId,_that.eventId,_that.visibility,_that.tags);case _:
+return $default(_that.mediaIds,_that.caption,_that.asVendorId,_that.eventId,_that.visibility,_that.tags);case _:
   return orElse();
 
 }
@@ -1779,10 +1520,10 @@ return $default(_that.media,_that.caption,_that.asVendorId,_that.eventId,_that.v
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<UploadedImage> media,  String caption,  String? asVendorId,  String? eventId,  PostVisibility visibility,  List<DraftTag> tags)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<String> mediaIds,  String caption,  String? asVendorId,  String? eventId,  PostVisibility visibility,  List<DraftTag> tags)  $default,) {final _that = this;
 switch (_that) {
 case _NewPost():
-return $default(_that.media,_that.caption,_that.asVendorId,_that.eventId,_that.visibility,_that.tags);case _:
+return $default(_that.mediaIds,_that.caption,_that.asVendorId,_that.eventId,_that.visibility,_that.tags);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1799,10 +1540,10 @@ return $default(_that.media,_that.caption,_that.asVendorId,_that.eventId,_that.v
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<UploadedImage> media,  String caption,  String? asVendorId,  String? eventId,  PostVisibility visibility,  List<DraftTag> tags)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<String> mediaIds,  String caption,  String? asVendorId,  String? eventId,  PostVisibility visibility,  List<DraftTag> tags)?  $default,) {final _that = this;
 switch (_that) {
 case _NewPost() when $default != null:
-return $default(_that.media,_that.caption,_that.asVendorId,_that.eventId,_that.visibility,_that.tags);case _:
+return $default(_that.mediaIds,_that.caption,_that.asVendorId,_that.eventId,_that.visibility,_that.tags);case _:
   return null;
 
 }
@@ -1814,14 +1555,16 @@ return $default(_that.media,_that.caption,_that.asVendorId,_that.eventId,_that.v
 
 
 class _NewPost implements NewPost {
-  const _NewPost({required final  List<UploadedImage> media, this.caption = '', this.asVendorId, this.eventId, this.visibility = PostVisibility.public, final  List<DraftTag> tags = const <DraftTag>[]}): _media = media,_tags = tags;
+  const _NewPost({required final  List<String> mediaIds, this.caption = '', this.asVendorId, this.eventId, this.visibility = PostVisibility.public, final  List<DraftTag> tags = const <DraftTag>[]}): _mediaIds = mediaIds,_tags = tags;
   
 
- final  List<UploadedImage> _media;
-@override List<UploadedImage> get media {
-  if (_media is EqualUnmodifiableListView) return _media;
+/// Ready media ids, in order.
+ final  List<String> _mediaIds;
+/// Ready media ids, in order.
+@override List<String> get mediaIds {
+  if (_mediaIds is EqualUnmodifiableListView) return _mediaIds;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_media);
+  return EqualUnmodifiableListView(_mediaIds);
 }
 
 @override@JsonKey() final  String caption;
@@ -1846,16 +1589,16 @@ _$NewPostCopyWith<_NewPost> get copyWith => __$NewPostCopyWithImpl<_NewPost>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NewPost&&const DeepCollectionEquality().equals(other._media, _media)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.asVendorId, asVendorId) || other.asVendorId == asVendorId)&&(identical(other.eventId, eventId) || other.eventId == eventId)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other._tags, _tags));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NewPost&&const DeepCollectionEquality().equals(other._mediaIds, _mediaIds)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.asVendorId, asVendorId) || other.asVendorId == asVendorId)&&(identical(other.eventId, eventId) || other.eventId == eventId)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other._tags, _tags));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_media),caption,asVendorId,eventId,visibility,const DeepCollectionEquality().hash(_tags));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_mediaIds),caption,asVendorId,eventId,visibility,const DeepCollectionEquality().hash(_tags));
 
 @override
 String toString() {
-  return 'NewPost(media: $media, caption: $caption, asVendorId: $asVendorId, eventId: $eventId, visibility: $visibility, tags: $tags)';
+  return 'NewPost(mediaIds: $mediaIds, caption: $caption, asVendorId: $asVendorId, eventId: $eventId, visibility: $visibility, tags: $tags)';
 }
 
 
@@ -1866,7 +1609,7 @@ abstract mixin class _$NewPostCopyWith<$Res> implements $NewPostCopyWith<$Res> {
   factory _$NewPostCopyWith(_NewPost value, $Res Function(_NewPost) _then) = __$NewPostCopyWithImpl;
 @override @useResult
 $Res call({
- List<UploadedImage> media, String caption, String? asVendorId, String? eventId, PostVisibility visibility, List<DraftTag> tags
+ List<String> mediaIds, String caption, String? asVendorId, String? eventId, PostVisibility visibility, List<DraftTag> tags
 });
 
 
@@ -1883,10 +1626,10 @@ class __$NewPostCopyWithImpl<$Res>
 
 /// Create a copy of NewPost
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? media = null,Object? caption = null,Object? asVendorId = freezed,Object? eventId = freezed,Object? visibility = null,Object? tags = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? mediaIds = null,Object? caption = null,Object? asVendorId = freezed,Object? eventId = freezed,Object? visibility = null,Object? tags = null,}) {
   return _then(_NewPost(
-media: null == media ? _self._media : media // ignore: cast_nullable_to_non_nullable
-as List<UploadedImage>,caption: null == caption ? _self.caption : caption // ignore: cast_nullable_to_non_nullable
+mediaIds: null == mediaIds ? _self._mediaIds : mediaIds // ignore: cast_nullable_to_non_nullable
+as List<String>,caption: null == caption ? _self.caption : caption // ignore: cast_nullable_to_non_nullable
 as String,asVendorId: freezed == asVendorId ? _self.asVendorId : asVendorId // ignore: cast_nullable_to_non_nullable
 as String?,eventId: freezed == eventId ? _self.eventId : eventId // ignore: cast_nullable_to_non_nullable
 as String?,visibility: null == visibility ? _self.visibility : visibility // ignore: cast_nullable_to_non_nullable

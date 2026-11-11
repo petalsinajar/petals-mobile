@@ -144,7 +144,7 @@ class _HeaderState extends ConsumerState<_Header> {
                 width: double.infinity,
                 child: b.coverUrl == null
                     ? ColoredBox(color: context.palette.vendor.container)
-                    : MediaImage(url: b.coverUrl!, semanticLabel: 'Cover'),
+                    : MediaImage(url: b.coverUrl, semanticLabel: 'Cover'),
               ),
               Positioned(
                 left: AppSpacing.screen,

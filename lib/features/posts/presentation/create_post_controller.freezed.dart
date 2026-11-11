@@ -14,8 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PostDraft {
 
- List<DraftPhoto> get photos; String get caption; String? get asVendorId; PostableEvent? get event; PostVisibility get visibility; List<DraftTag> get tags; DraftPhase get phase;/// Photos uploaded so far while sharing.
- int get uploaded;
+ List<DraftPhoto> get photos; String get caption; String? get asVendorId; PostableEvent? get event; PostVisibility get visibility; List<DraftTag> get tags; DraftPhase get phase;
 /// Create a copy of PostDraft
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +25,16 @@ $PostDraftCopyWith<PostDraft> get copyWith => _$PostDraftCopyWithImpl<PostDraft>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostDraft&&const DeepCollectionEquality().equals(other.photos, photos)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.asVendorId, asVendorId) || other.asVendorId == asVendorId)&&(identical(other.event, event) || other.event == event)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other.tags, tags)&&(identical(other.phase, phase) || other.phase == phase)&&(identical(other.uploaded, uploaded) || other.uploaded == uploaded));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostDraft&&const DeepCollectionEquality().equals(other.photos, photos)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.asVendorId, asVendorId) || other.asVendorId == asVendorId)&&(identical(other.event, event) || other.event == event)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other.tags, tags)&&(identical(other.phase, phase) || other.phase == phase));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(photos),caption,asVendorId,event,visibility,const DeepCollectionEquality().hash(tags),phase,uploaded);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(photos),caption,asVendorId,event,visibility,const DeepCollectionEquality().hash(tags),phase);
 
 @override
 String toString() {
-  return 'PostDraft(photos: $photos, caption: $caption, asVendorId: $asVendorId, event: $event, visibility: $visibility, tags: $tags, phase: $phase, uploaded: $uploaded)';
+  return 'PostDraft(photos: $photos, caption: $caption, asVendorId: $asVendorId, event: $event, visibility: $visibility, tags: $tags, phase: $phase)';
 }
 
 
@@ -46,7 +45,7 @@ abstract mixin class $PostDraftCopyWith<$Res>  {
   factory $PostDraftCopyWith(PostDraft value, $Res Function(PostDraft) _then) = _$PostDraftCopyWithImpl;
 @useResult
 $Res call({
- List<DraftPhoto> photos, String caption, String? asVendorId, PostableEvent? event, PostVisibility visibility, List<DraftTag> tags, DraftPhase phase, int uploaded
+ List<DraftPhoto> photos, String caption, String? asVendorId, PostableEvent? event, PostVisibility visibility, List<DraftTag> tags, DraftPhase phase
 });
 
 
@@ -63,7 +62,7 @@ class _$PostDraftCopyWithImpl<$Res>
 
 /// Create a copy of PostDraft
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? photos = null,Object? caption = null,Object? asVendorId = freezed,Object? event = freezed,Object? visibility = null,Object? tags = null,Object? phase = null,Object? uploaded = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? photos = null,Object? caption = null,Object? asVendorId = freezed,Object? event = freezed,Object? visibility = null,Object? tags = null,Object? phase = null,}) {
   return _then(_self.copyWith(
 photos: null == photos ? _self.photos : photos // ignore: cast_nullable_to_non_nullable
 as List<DraftPhoto>,caption: null == caption ? _self.caption : caption // ignore: cast_nullable_to_non_nullable
@@ -72,8 +71,7 @@ as String?,event: freezed == event ? _self.event : event // ignore: cast_nullabl
 as PostableEvent?,visibility: null == visibility ? _self.visibility : visibility // ignore: cast_nullable_to_non_nullable
 as PostVisibility,tags: null == tags ? _self.tags : tags // ignore: cast_nullable_to_non_nullable
 as List<DraftTag>,phase: null == phase ? _self.phase : phase // ignore: cast_nullable_to_non_nullable
-as DraftPhase,uploaded: null == uploaded ? _self.uploaded : uploaded // ignore: cast_nullable_to_non_nullable
-as int,
+as DraftPhase,
   ));
 }
 /// Create a copy of PostDraft
@@ -170,10 +168,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<DraftPhoto> photos,  String caption,  String? asVendorId,  PostableEvent? event,  PostVisibility visibility,  List<DraftTag> tags,  DraftPhase phase,  int uploaded)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<DraftPhoto> photos,  String caption,  String? asVendorId,  PostableEvent? event,  PostVisibility visibility,  List<DraftTag> tags,  DraftPhase phase)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PostDraft() when $default != null:
-return $default(_that.photos,_that.caption,_that.asVendorId,_that.event,_that.visibility,_that.tags,_that.phase,_that.uploaded);case _:
+return $default(_that.photos,_that.caption,_that.asVendorId,_that.event,_that.visibility,_that.tags,_that.phase);case _:
   return orElse();
 
 }
@@ -191,10 +189,10 @@ return $default(_that.photos,_that.caption,_that.asVendorId,_that.event,_that.vi
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<DraftPhoto> photos,  String caption,  String? asVendorId,  PostableEvent? event,  PostVisibility visibility,  List<DraftTag> tags,  DraftPhase phase,  int uploaded)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<DraftPhoto> photos,  String caption,  String? asVendorId,  PostableEvent? event,  PostVisibility visibility,  List<DraftTag> tags,  DraftPhase phase)  $default,) {final _that = this;
 switch (_that) {
 case _PostDraft():
-return $default(_that.photos,_that.caption,_that.asVendorId,_that.event,_that.visibility,_that.tags,_that.phase,_that.uploaded);case _:
+return $default(_that.photos,_that.caption,_that.asVendorId,_that.event,_that.visibility,_that.tags,_that.phase);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -211,10 +209,10 @@ return $default(_that.photos,_that.caption,_that.asVendorId,_that.event,_that.vi
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<DraftPhoto> photos,  String caption,  String? asVendorId,  PostableEvent? event,  PostVisibility visibility,  List<DraftTag> tags,  DraftPhase phase,  int uploaded)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<DraftPhoto> photos,  String caption,  String? asVendorId,  PostableEvent? event,  PostVisibility visibility,  List<DraftTag> tags,  DraftPhase phase)?  $default,) {final _that = this;
 switch (_that) {
 case _PostDraft() when $default != null:
-return $default(_that.photos,_that.caption,_that.asVendorId,_that.event,_that.visibility,_that.tags,_that.phase,_that.uploaded);case _:
+return $default(_that.photos,_that.caption,_that.asVendorId,_that.event,_that.visibility,_that.tags,_that.phase);case _:
   return null;
 
 }
@@ -226,7 +224,7 @@ return $default(_that.photos,_that.caption,_that.asVendorId,_that.event,_that.vi
 
 
 class _PostDraft extends PostDraft {
-  const _PostDraft({final  List<DraftPhoto> photos = const <DraftPhoto>[], this.caption = '', this.asVendorId, this.event, this.visibility = PostVisibility.public, final  List<DraftTag> tags = const <DraftTag>[], this.phase = DraftPhase.editing, this.uploaded = 0}): _photos = photos,_tags = tags,super._();
+  const _PostDraft({final  List<DraftPhoto> photos = const <DraftPhoto>[], this.caption = '', this.asVendorId, this.event, this.visibility = PostVisibility.public, final  List<DraftTag> tags = const <DraftTag>[], this.phase = DraftPhase.editing}): _photos = photos,_tags = tags,super._();
   
 
  final  List<DraftPhoto> _photos;
@@ -248,8 +246,6 @@ class _PostDraft extends PostDraft {
 }
 
 @override@JsonKey() final  DraftPhase phase;
-/// Photos uploaded so far while sharing.
-@override@JsonKey() final  int uploaded;
 
 /// Create a copy of PostDraft
 /// with the given fields replaced by the non-null parameter values.
@@ -261,16 +257,16 @@ _$PostDraftCopyWith<_PostDraft> get copyWith => __$PostDraftCopyWithImpl<_PostDr
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostDraft&&const DeepCollectionEquality().equals(other._photos, _photos)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.asVendorId, asVendorId) || other.asVendorId == asVendorId)&&(identical(other.event, event) || other.event == event)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other._tags, _tags)&&(identical(other.phase, phase) || other.phase == phase)&&(identical(other.uploaded, uploaded) || other.uploaded == uploaded));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostDraft&&const DeepCollectionEquality().equals(other._photos, _photos)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.asVendorId, asVendorId) || other.asVendorId == asVendorId)&&(identical(other.event, event) || other.event == event)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other._tags, _tags)&&(identical(other.phase, phase) || other.phase == phase));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_photos),caption,asVendorId,event,visibility,const DeepCollectionEquality().hash(_tags),phase,uploaded);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_photos),caption,asVendorId,event,visibility,const DeepCollectionEquality().hash(_tags),phase);
 
 @override
 String toString() {
-  return 'PostDraft(photos: $photos, caption: $caption, asVendorId: $asVendorId, event: $event, visibility: $visibility, tags: $tags, phase: $phase, uploaded: $uploaded)';
+  return 'PostDraft(photos: $photos, caption: $caption, asVendorId: $asVendorId, event: $event, visibility: $visibility, tags: $tags, phase: $phase)';
 }
 
 
@@ -281,7 +277,7 @@ abstract mixin class _$PostDraftCopyWith<$Res> implements $PostDraftCopyWith<$Re
   factory _$PostDraftCopyWith(_PostDraft value, $Res Function(_PostDraft) _then) = __$PostDraftCopyWithImpl;
 @override @useResult
 $Res call({
- List<DraftPhoto> photos, String caption, String? asVendorId, PostableEvent? event, PostVisibility visibility, List<DraftTag> tags, DraftPhase phase, int uploaded
+ List<DraftPhoto> photos, String caption, String? asVendorId, PostableEvent? event, PostVisibility visibility, List<DraftTag> tags, DraftPhase phase
 });
 
 
@@ -298,7 +294,7 @@ class __$PostDraftCopyWithImpl<$Res>
 
 /// Create a copy of PostDraft
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? photos = null,Object? caption = null,Object? asVendorId = freezed,Object? event = freezed,Object? visibility = null,Object? tags = null,Object? phase = null,Object? uploaded = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? photos = null,Object? caption = null,Object? asVendorId = freezed,Object? event = freezed,Object? visibility = null,Object? tags = null,Object? phase = null,}) {
   return _then(_PostDraft(
 photos: null == photos ? _self._photos : photos // ignore: cast_nullable_to_non_nullable
 as List<DraftPhoto>,caption: null == caption ? _self.caption : caption // ignore: cast_nullable_to_non_nullable
@@ -307,8 +303,7 @@ as String?,event: freezed == event ? _self.event : event // ignore: cast_nullabl
 as PostableEvent?,visibility: null == visibility ? _self.visibility : visibility // ignore: cast_nullable_to_non_nullable
 as PostVisibility,tags: null == tags ? _self._tags : tags // ignore: cast_nullable_to_non_nullable
 as List<DraftTag>,phase: null == phase ? _self.phase : phase // ignore: cast_nullable_to_non_nullable
-as DraftPhase,uploaded: null == uploaded ? _self.uploaded : uploaded // ignore: cast_nullable_to_non_nullable
-as int,
+as DraftPhase,
   ));
 }
 

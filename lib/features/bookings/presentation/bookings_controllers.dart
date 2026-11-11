@@ -2,6 +2,7 @@ import 'package:petalsinajar/app/session/viewer.dart';
 import 'package:petalsinajar/core/network/paginated.dart';
 import 'package:petalsinajar/features/bookings/data/bookings_repository_impl.dart';
 import 'package:petalsinajar/features/bookings/domain/booking.dart';
+import 'package:petalsinajar/features/bookings/domain/bookings_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'bookings_controllers.g.dart';
@@ -67,9 +68,9 @@ class BookingRequester extends _$BookingRequester {
   }
 }
 
-/// How many of a variant are free on [day].
+/// How many of a variant are free on [day], and whether it's closed.
 @riverpod
-Future<int> variantAvailability(
+Future<Availability> variantAvailability(
   Ref ref,
   String itemId,
   String variantId,

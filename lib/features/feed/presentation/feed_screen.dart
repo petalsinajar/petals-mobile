@@ -15,6 +15,7 @@ import 'package:petalsinajar/features/feed/domain/post.dart';
 import 'package:petalsinajar/features/feed/presentation/feed_controllers.dart';
 import 'package:petalsinajar/features/feed/presentation/widgets/comments_sheet.dart';
 import 'package:petalsinajar/features/feed/presentation/widgets/post_card.dart';
+import 'package:petalsinajar/features/posts/presentation/widgets/pending_post_card.dart';
 
 /// The home tab: "For you" (public, works signed out) and "Following".
 class FeedScreen extends StatelessWidget {
@@ -34,10 +35,18 @@ class FeedScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(
+        body: const Column(
           children: [
-            _FeedTab(kind: FeedKind.forYou),
-            _FeedTab(kind: FeedKind.following),
+            // Posts still uploading, whatever the feed below is doing.
+            PendingPostsList(),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  _FeedTab(kind: FeedKind.forYou),
+                  _FeedTab(kind: FeedKind.following),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -102,6 +111,39 @@ class _FeedTab extends ConsumerWidget {
       ),
     );
 
+    Future<void> delete(FeedPost post) async {
+      final ok = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Delete this post?'),
+          content: const Text(
+            'It’s removed for everyone, with its photos and videos. This '
+            'can’t be undone.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Keep'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('Delete'),
+            ),
+          ],
+        ),
+      );
+      if (!(ok ?? false) || !context.mounted) return;
+      final messenger = ScaffoldMessenger.of(context);
+      try {
+        await notifier.delete(post.id);
+        messenger.showSnackBar(const SnackBar(content: Text('Post deleted')));
+      } on Object catch (e) {
+        messenger.showSnackBar(
+          SnackBar(content: Text(ErrorState.describe(e).$2)),
+        );
+      }
+    }
+
     // Events need an account to open; send signed-out people to sign in
     // and on to the event.
     void openEvent(PostEventRef event) => signedIn
@@ -156,6 +198,7 @@ class _FeedTab extends ConsumerWidget {
               onOpenEvent: post.event == null
                   ? null
                   : () => openEvent(post.event!),
+              onDelete: post.canDelete ? () => delete(post) : null,
             );
           },
         ),

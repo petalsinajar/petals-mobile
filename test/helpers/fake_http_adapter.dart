@@ -12,6 +12,10 @@ class FakeHttpAdapter implements HttpClientAdapter {
   final FakeHandler handler;
   final requests = <RequestOptions>[];
 
+  /// Bytes received in each request's body, like a real server reads them
+  /// (which is also what drives Dio's upload progress).
+  final bodyBytes = <int>[];
+
   int countPath(String path) => requests.where((r) => r.path == path).length;
 
   @override
@@ -19,8 +23,15 @@ class FakeHttpAdapter implements HttpClientAdapter {
     RequestOptions options,
     Stream<Uint8List>? requestStream,
     Future<void>? cancelFuture,
-  ) {
+  ) async {
     requests.add(options);
+    var received = 0;
+    if (requestStream != null) {
+      await for (final chunk in requestStream) {
+        received += chunk.length;
+      }
+    }
+    bodyBytes.add(received);
     return handler(options);
   }
 

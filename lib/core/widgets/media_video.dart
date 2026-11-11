@@ -50,6 +50,9 @@ class _MediaVideoState extends ConsumerState<MediaVideo> {
   var _wantsPlay = false;
   var _failed = false;
 
+  /// How much is on screen, as last reported.
+  var _visible = 0.0;
+
   @override
   void dispose() {
     unawaited(_controller?.dispose());
@@ -84,11 +87,13 @@ class _MediaVideoState extends ConsumerState<MediaVideo> {
 
   void _onVisibility(VisibilityInfo info) {
     if (!mounted) return;
-    final visible = info.visibleFraction;
-    if (visible < MediaVideo.pauseBelow) return _pause();
-    if (widget.autoplay &&
-        visible >= MediaVideo.playAbove &&
-        ref.read(canAutoplayProvider)) {
+    _visible = info.visibleFraction;
+    if (_visible < MediaVideo.pauseBelow) return _pause();
+    _maybeAutoplay(allowed: ref.read(canAutoplayProvider));
+  }
+
+  void _maybeAutoplay({required bool allowed}) {
+    if (widget.autoplay && allowed && _visible >= MediaVideo.playAbove) {
       unawaited(_play());
     }
   }
@@ -100,6 +105,10 @@ class _MediaVideoState extends ConsumerState<MediaVideo> {
 
   @override
   Widget build(BuildContext context) {
+    // Wi-Fi is often known only after the video is on screen: start then.
+    ref.listen(canAutoplayProvider, (_, allowed) {
+      if (mounted) _maybeAutoplay(allowed: allowed);
+    });
     final media = widget.media;
     final ratio = widget.aspectRatio ?? media.aspectRatio ?? 9 / 16;
     final controller = _controller;
@@ -191,7 +200,10 @@ class _Processing extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (failed)
-                Icon(Icons.error_outline_rounded, color: context.colors.onPrimary)
+                Icon(
+                  Icons.error_outline_rounded,
+                  color: context.colors.onPrimary,
+                )
               else
                 SizedBox.square(
                   dimension: AppSizes.iconMd,

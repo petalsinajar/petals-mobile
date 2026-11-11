@@ -168,14 +168,10 @@ class AuthMockSource implements AuthSource {
   }
 
   @override
-  Future<Json> uploadImage(String path) async {
-    await _delay();
-    return {'url': Uri.file(path).toString(), 'width': null, 'height': null};
-  }
-
-  @override
   Future<Json> setDashboardCredentials(String email, String password) async {
     await _delay();
+    _account?['email'] = email;
+    _account?['has_dashboard_sign_in'] = true;
     return {'message': 'Dashboard sign-in saved.'};
   }
 

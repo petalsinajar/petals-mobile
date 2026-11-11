@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 import 'package:petalsinajar/core/media/media.dart';
 import 'package:petalsinajar/core/mock/seed_loader.dart';
 import 'package:petalsinajar/core/network/api_exception.dart';
@@ -55,8 +56,22 @@ VendorBooking _booking(Json j) {
     // `{ type: delivery|pickup, address, deliver_at, … }`.
     fulfilment: (j['fulfilment'] as Json?)?['type'] as String?,
     customerNote: notes?['customer'] as String?,
+    recorded: j['source'] == 'vendor_manual',
+    customerPhone: customer?['phone'] as String?,
+    address: (j['fulfilment'] as Json?)?['address'] as String?,
+    contactPhone:
+        customer?['phone'] as String? ??
+        (j['fulfilment'] as Json?)?['contact_phone'] as String?,
   );
 }
+
+/// `{ id, starts_on, ends_on, reason }`, dates as `yyyy-MM-dd`.
+Blackout _blackout(Json j) => Blackout(
+  id: j['id'] as String,
+  startsOn: DateTime.parse(j['starts_on'] as String),
+  endsOn: DateTime.parse(j['ends_on'] as String),
+  reason: j['reason'] as String?,
+);
 
 /// `ItemResource`. The "from" price falls back to the cheapest tier for
 /// servers that don't send `from_price_minor` yet.
@@ -213,6 +228,8 @@ class VendorRepositoryImpl implements VendorRepository {
   Future<List<VendorBooking>> bookings(
     String vendorId, {
     required List<VendorBookingStatus> statuses,
+    DateTime? from,
+    DateTime? to,
   }) async {
     final rows = <VendorBooking>[];
     String? cursor;
@@ -223,6 +240,8 @@ class VendorRepositoryImpl implements VendorRepository {
           queryParameters: {
             // `status[]=a&status[]=b`: how Laravel reads an array.
             'status[]': [for (final s in statuses) _snake(s)],
+            'from': ?from?.toUtc().toIso8601String(),
+            'to': ?to?.toUtc().toIso8601String(),
             'cursor': ?cursor,
           },
         ),
@@ -235,6 +254,55 @@ class VendorRepositoryImpl implements VendorRepository {
       if (cursor == null) break;
     }
     return rows;
+  }
+
+  static final _day = DateFormat('yyyy-MM-dd');
+
+  @override
+  Future<List<Blackout>> blackouts(
+    String vendorId, {
+    required DateTime from,
+    required DateTime to,
+  }) async {
+    final body = await _call(
+      () => _dio.get<Json>(
+        '/vendors/$vendorId/blackouts',
+        queryParameters: {'from': _day.format(from), 'to': _day.format(to)},
+      ),
+    );
+    return [
+      for (final j in (body['data'] as List? ?? const []).cast<Json>())
+        _blackout(j),
+    ];
+  }
+
+  @override
+  Future<Blackout> addBlackout(
+    String vendorId, {
+    required DateTime from,
+    required DateTime to,
+    String? reason,
+  }) async {
+    final note = reason?.trim() ?? '';
+    return _blackout(
+      await _call(
+        () => _dio.post<Json>(
+          '/vendors/$vendorId/blackouts',
+          data: {
+            'starts_on': _day.format(from),
+            'ends_on': _day.format(to),
+            if (note.isNotEmpty) 'reason': note,
+          },
+        ),
+      ),
+    );
+  }
+
+  @override
+  Future<void> removeBlackout(String vendorId, String blackoutId) async {
+    await _call(
+      () => _dio.delete<Json>('/vendors/$vendorId/blackouts/$blackoutId'),
+    );
   }
 
   @override
@@ -276,6 +344,52 @@ class VendorRepositoryImpl implements VendorRepository {
   Future<VendorBooking> accept(String bookingId) async => _booking(
     await _call(() => _dio.post<Json>('/bookings/$bookingId/accept')),
   );
+
+  @override
+  Future<VendorBooking> recordBooking(
+    String vendorId,
+    RecordedBooking booking,
+  ) async {
+    final note = booking.note?.trim() ?? '';
+    return _booking(
+      await _call(
+        () => _dio.post<Json>(
+          '/vendors/$vendorId/bookings',
+          data: {
+            'customer': {
+              'name': booking.customerName.trim(),
+              'phone': booking.customerPhone.trim(),
+            },
+            'deliver_at': booking.startsAt.toUtc().toIso8601String(),
+            'collect_at': booking.endsAt.toUtc().toIso8601String(),
+            'fulfilment': {
+              'type': booking.delivery ? 'delivery' : 'pickup',
+              if (booking.delivery) 'address': booking.address?.trim(),
+            },
+            'lines': [
+              for (final l in booking.lines)
+                {'item_id': l.itemId, 'variant_id': l.variantId, 'qty': l.qty},
+            ],
+            if (booking.delivery) 'delivery_minor': booking.deliveryFeeMinor,
+            'paid_minor': booking.paidMinor,
+            if (note.isNotEmpty) 'note': note,
+          },
+        ),
+      ),
+    );
+  }
+
+  @override
+  Future<VendorBooking> advance(String bookingId, BookingStep step) async {
+    final path = switch (step) {
+      BookingStep.dispatch => 'dispatch',
+      BookingStep.deliver => 'deliver',
+      BookingStep.markReturned => 'return',
+    };
+    return _booking(
+      await _call(() => _dio.post<Json>('/bookings/$bookingId/$path')),
+    );
+  }
 
   @override
   Future<VendorBooking> decline(String bookingId, {String? reason}) async {

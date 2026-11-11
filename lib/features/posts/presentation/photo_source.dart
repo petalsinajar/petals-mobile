@@ -1,39 +1,44 @@
 import 'package:image_picker/image_picker.dart';
+import 'package:petalsinajar/features/posts/domain/post_draft.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'photo_source.g.dart';
 
+const _videoExtensions = {'mp4', 'mov', 'm4v', '3gp', 'webm', 'mkv'};
+
+bool isVideoPath(String path) =>
+    _videoExtensions.contains(path.split('.').last.toLowerCase());
+
 /// The phone's gallery and camera, behind a seam tests can replace.
+/// Picks are the originals: the shared uploader compresses them.
 class PhotoSource {
   const PhotoSource();
 
-  /// Big enough for a full-screen photo, small enough to upload on 3G.
-  static const _maxWidth = 1600.0;
-  static const _quality = 85;
-
-  Future<List<String>> gallery({required int limit}) async {
+  /// Photos and videos from the gallery, up to [limit].
+  Future<List<DraftPhoto>> gallery({required int limit}) async {
     if (limit <= 0) return const [];
     final files = limit == 1
-        ? [
-            ?await ImagePicker().pickImage(
-              source: ImageSource.gallery,
-              maxWidth: _maxWidth,
-              imageQuality: _quality,
-            ),
-          ]
-        : await ImagePicker().pickMultiImage(
-            maxWidth: _maxWidth,
-            imageQuality: _quality,
-            limit: limit,
-          );
-    return [for (final f in files.take(limit)) f.path];
+        ? [?await ImagePicker().pickMedia()]
+        : await ImagePicker().pickMultipleMedia(limit: limit);
+    return [
+      for (final f in files.take(limit))
+        DraftPhoto(path: f.path, isVideo: isVideoPath(f.path)),
+    ];
   }
 
-  Future<String?> camera() async => (await ImagePicker().pickImage(
-    source: ImageSource.camera,
-    maxWidth: _maxWidth,
-    imageQuality: _quality,
-  ))?.path;
+  Future<DraftPhoto?> camera() async {
+    final file = await ImagePicker().pickImage(source: ImageSource.camera);
+    return file == null ? null : DraftPhoto(path: file.path);
+  }
+
+  /// Up to the server's three minutes.
+  Future<DraftPhoto?> recordVideo() async {
+    final file = await ImagePicker().pickVideo(
+      source: ImageSource.camera,
+      maxDuration: const Duration(minutes: 3),
+    );
+    return file == null ? null : DraftPhoto(path: file.path, isVideo: true);
+  }
 }
 
 @Riverpod(keepAlive: true)

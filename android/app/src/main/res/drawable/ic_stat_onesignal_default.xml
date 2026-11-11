@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Status-bar icon for pushes (OneSignal uses this name by default). White on
+     transparent: Android tints it, vendor-teal for pushes to a business. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Lid -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M8.9,5.75 H15.1 A0.55,0.55 0 0 1 15.65,6.3 V7.15 H8.35 V6.3 A0.55,0.55 0 0 1 8.9,5.75 Z" />
+    <!-- Jar -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="0.85"
+        android:fillColor="#00000000"
+        android:pathData="M9.4,7.6 H14.6 C16.6,8.2 17.6,10 17.6,12.6 V18.5 A2,2 0 0 1 15.6,20.5 H8.4 A2,2 0 0 1 6.4,18.5 V12.6 C6.4,10 7.4,8.2 9.4,7.6 Z" />
+    <group android:translateX="10.85" android:translateY="4.0" android:rotation="-20">
+        <path android:fillColor="#FFFFFFFF" android:pathData="M0,-1.1 A1.54,1.54 0 0 1 0,1.1 A1.54,1.54 0 0 1 0,-1.1 Z" />
+    </group>
+    <group android:translateX="14.05" android:translateY="3.7" android:rotation="30">
+        <path android:fillColor="#FFFFFFFF" android:pathData="M0,-1.0 A1.4,1.4 0 0 1 0,1.0 A1.4,1.4 0 0 1 0,-1.0 Z" />
+    </group>
+    <group android:translateX="10.75" android:translateY="14.4" android:rotation="25">
+        <path android:fillColor="#FFFFFFFF" android:pathData="M0,-1.8 A2.52,2.52 0 0 1 0,1.8 A2.52,2.52 0 0 1 0,-1.8 Z" />
+    </group>
+    <group android:translateX="13.4" android:translateY="14.4" android:rotation="-25">
+        <path android:fillColor="#FFFFFFFF" android:pathData="M0,-1.8 A2.52,2.52 0 0 1 0,1.8 A2.52,2.52 0 0 1 0,-1.8 Z" />
+    </group>
+    <group android:translateX="9.65" android:translateY="17.4" android:rotation="-45">
+        <path android:fillColor="#FFFFFFFF" android:pathData="M0,-1.6 A2.24,2.24 0 0 1 0,1.6 A2.24,2.24 0 0 1 0,-1.6 Z" />
+    </group>
+    <group android:translateX="12.0" android:translateY="17.9" android:rotation="0">
+        <path android:fillColor="#FFFFFFFF" android:pathData="M0,-1.6 A2.24,2.24 0 0 1 0,1.6 A2.24,2.24 0 0 1 0,-1.6 Z" />
+    </group>
+    <group android:translateX="14.35" android:translateY="17.4" android:rotation="45">
+        <path android:fillColor="#FFFFFFFF" android:pathData="M0,-1.6 A2.24,2.24 0 0 1 0,1.6 A2.24,2.24 0 0 1 0,-1.6 Z" />
+    </group>
+</vector>

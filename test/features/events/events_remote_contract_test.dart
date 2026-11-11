@@ -12,6 +12,8 @@ import '../../helpers/fake_http_adapter.dart';
 
 /// The live path: the repository over [EventsRemoteSource], against JSON
 /// shaped like the Laravel API's, checking the requests it sends.
+final uploadedCovers = <String>[];
+
 void main() {
   late FakeHttpAdapter api;
   late EventsRepositoryImpl repo;
@@ -96,14 +98,23 @@ void main() {
         }),
         ('POST', '/events') => jsonBody(201, {
           ...event('new', isHost: true, myRsvp: 'going'),
-          'cover_url': (o.data as Map)['cover_url'],
+          // EventResource: the cover's feed size, from its media.
+          'cover_url': (o.data as Map)['cover_media_id'] == null
+              ? null
+              : 'https://cdn.test/cover/feed.webp',
         }),
         _ => jsonBody(500, {'message': 'Unexpected ${o.method} $path'}),
       };
     });
     final dio = Dio(BaseOptions(baseUrl: 'https://api.test/v1'))
       ..httpClientAdapter = api;
-    repo = EventsRepositoryImpl(EventsRemoteSource(dio));
+    repo = EventsRepositoryImpl(
+      EventsRemoteSource(dio),
+      uploadCover: (path) async {
+        uploadedCovers.add(path);
+        return '01jmediacover0000000000000';
+      },
+    );
   });
 
   test('my events reads every page of both scopes', () async {
@@ -143,6 +154,7 @@ void main() {
   });
 
   test('create uploads the cover first, then posts flat fields', () async {
+    uploadedCovers.clear();
     final cover = File(
       '${Directory.systemTemp.createTempSync().path}/cover.jpg',
     )..writeAsBytesSync([0xFF, 0xD8, 0xFF]);
@@ -160,11 +172,9 @@ void main() {
       ),
     );
 
-    final [upload, post] = api.requests
-        .where((r) => r.method == 'POST')
-        .toList();
-    expect(upload.path, '/uploads');
-    expect(upload.data, isA<FormData>());
+    // The shared uploader sends the photo; the event gets its media id.
+    expect(uploadedCovers, [cover.path]);
+    final post = api.requests.singleWhere((r) => r.method == 'POST');
     expect(post.path, '/events');
     expect(post.data, {
       'type': 'wedding',
@@ -176,8 +186,8 @@ void main() {
       'venue_city': 'Aburi',
       'guest_count': 250,
       'visibility': 'guests',
-      'cover_url': 'https://petalsinajar.com/storage/uploads/2026/11/a.jpg',
+      'cover_media_id': '01jmediacover0000000000000',
     });
-    expect(created.cover?.url, endsWith('/uploads/2026/11/a.jpg'));
+    expect(created.cover?.url, 'https://cdn.test/cover/feed.webp');
   });
 }

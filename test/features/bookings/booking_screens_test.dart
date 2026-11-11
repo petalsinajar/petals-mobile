@@ -56,12 +56,12 @@ class _Bookings implements BookingsRepository {
   }
 
   @override
-  Future<int> available({
+  Future<Availability> available({
     required String itemId,
     required String variantId,
     required DateTime from,
     required DateTime to,
-  }) async => 80;
+  }) async => (left: 80, closed: false);
 
   @override
   Future<Paginated<CustomerBooking>> mine({String? cursor}) async =>

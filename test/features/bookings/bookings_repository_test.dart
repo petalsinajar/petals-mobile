@@ -99,6 +99,14 @@ void main() {
             {'day': '2026-12-13', 'available': 50},
           ],
         }),
+        // The vendor blocked the 25th.
+        ('GET', '/items/i2/availability') => jsonBody(200, {
+          'capacity': 200,
+          'days': [
+            {'day': '2026-12-24', 'available': 200, 'closed': false},
+            {'day': '2026-12-25', 'available': 0, 'closed': true},
+          ],
+        }),
         _ => jsonBody(404, {'message': 'Not found'}),
       };
     });
@@ -178,11 +186,21 @@ void main() {
       from: DateTime(2026, 12, 12),
       to: DateTime(2026, 12, 13),
     );
-    expect(left, 50);
+    expect(left, (left: 50, closed: false));
     expect(api.requests.last.queryParameters, {
       'variant_id': 'var1',
       'from': '2026-12-12',
       'to': '2026-12-13',
     });
+  });
+
+  test('a day the vendor blocked comes back closed', () async {
+    final a = await repo.available(
+      itemId: 'i2',
+      variantId: 'var1',
+      from: DateTime(2026, 12, 24),
+      to: DateTime(2026, 12, 25),
+    );
+    expect(a, (left: 0, closed: true));
   });
 }

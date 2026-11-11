@@ -13,6 +13,7 @@ import 'package:petalsinajar/features/posts/domain/post_draft.dart';
 import 'package:petalsinajar/features/posts/domain/posts_repository.dart';
 import 'package:petalsinajar/features/posts/presentation/create_post_controller.dart';
 import 'package:petalsinajar/features/posts/presentation/create_screen.dart';
+import 'package:petalsinajar/features/posts/presentation/pending_posts.dart';
 import 'package:petalsinajar/features/posts/presentation/photo_source.dart';
 
 import '../../helpers/fake_http_adapter.dart';
@@ -25,19 +26,11 @@ const _chair = TagTarget(
 );
 
 class _Repo implements PostsRepository {
-  final uploads = <String>[];
   final created = <NewPost>[];
   bool failCreate = false;
 
   @override
-  Future<UploadedImage> upload(String path) async {
-    uploads.add(path);
-    return UploadedImage(
-      url: 'https://cdn.test/$path',
-      width: 1600,
-      height: 2000,
-    );
-  }
+  Future<void> delete(String postId) async {}
 
   @override
   Future<String> create(NewPost post) async {
@@ -64,11 +57,36 @@ class _Repo implements PostsRepository {
 
 class _Photos implements PhotoSource {
   @override
-  Future<List<String>> gallery({required int limit}) async =>
-      ['a.jpg', 'b.jpg'].take(limit).toList();
+  Future<List<DraftPhoto>> gallery({required int limit}) async => const [
+    DraftPhoto(path: 'a.jpg'),
+    DraftPhoto(path: 'b.mp4', isVideo: true),
+  ].take(limit).toList();
 
   @override
-  Future<String?> camera() async => 'cam.jpg';
+  Future<DraftPhoto?> camera() async => const DraftPhoto(path: 'cam.jpg');
+
+  @override
+  Future<DraftPhoto?> recordVideo() async =>
+      const DraftPhoto(path: 'clip.mp4', isVideo: true);
+}
+
+/// Records what Share hands over, instead of uploading.
+class _Pending extends PendingPosts {
+  final submitted = <PostDraft>[];
+
+  @override
+  List<PendingPost> build() => const [];
+
+  @override
+  Future<PendingPost> submit(PostDraft draft) async {
+    submitted.add(draft);
+    return PendingPost(
+      id: 'pp1',
+      jobIds: const [],
+      previews: draft.photos,
+      createdAt: DateTime(2026),
+    );
+  }
 }
 
 class _Auth implements AuthRepository {
@@ -132,12 +150,9 @@ void main() {
     test('a post is sent in the backend’s shape', () async {
       await repo.create(
         const NewPost(
-          media: [
-            UploadedImage(
-              url: 'https://cdn.test/a.jpg',
-              width: 1600,
-              height: 2000,
-            ),
+          mediaIds: [
+            '01jmedia00000000000000000a',
+            '01jmedia00000000000000000b',
           ],
           caption: '  Our day #wedding ',
           asVendorId: 'v1',
@@ -152,14 +167,7 @@ void main() {
         'event_id': 'e1',
         'caption': 'Our day #wedding',
         'visibility': 'event_members',
-        'media': [
-          {
-            'url': 'https://cdn.test/a.jpg',
-            'type': 'image',
-            'w': 1600,
-            'h': 2000,
-          },
-        ],
+        'media': ['01jmedia00000000000000000a', '01jmedia00000000000000000b'],
         'tags': [
           {
             'media_index': 0,
@@ -185,7 +193,10 @@ void main() {
     setUp(() {
       repo = _Repo();
       c = ProviderContainer(
-        overrides: [postsRepositoryProvider.overrideWithValue(repo)],
+        overrides: [
+          postsRepositoryProvider.overrideWithValue(repo),
+          pendingPostsProvider.overrideWith(_Pending.new),
+        ],
       );
       addTearDown(c.dispose);
     });
@@ -194,7 +205,11 @@ void main() {
 
     test('removing a photo drops its tags and shifts the later ones', () {
       draft()
-        ..addPhotos(['a', 'b', 'c'])
+        ..addPhotos(const [
+          DraftPhoto(path: 'a'),
+          DraftPhoto(path: 'b'),
+          DraftPhoto(path: 'c'),
+        ])
         ..addTag(const DraftTag(mediaIndex: 0, x: 0, y: 0, target: _chair))
         ..addTag(const DraftTag(mediaIndex: 1, x: 0, y: 0, target: _chair))
         ..addTag(const DraftTag(mediaIndex: 2, x: 0, y: 0, target: _chair))
@@ -204,7 +219,7 @@ void main() {
     });
 
     test('at most 10 photos', () {
-      draft().addPhotos([for (var i = 0; i < 14; i++) '$i.jpg']);
+      draft().addPhotos([for (var i = 0; i < 14; i++) DraftPhoto(path: '$i')]);
       expect(c.read(createPostProvider).photos, hasLength(10));
     });
 
@@ -218,24 +233,22 @@ void main() {
       expect(c.read(createPostProvider).visibility, PostVisibility.public);
     });
 
-    test(
-      'a failed share keeps the draft, and the retry does not re-upload',
-      () async {
-        draft()
-          ..addPhotos(['a.jpg', 'b.jpg'])
-          ..setCaption('Hello');
-        repo.failCreate = true;
-        await expectLater(draft().share(), throwsA(isA<ApiException>()));
-        expect(c.read(createPostProvider).photos, hasLength(2));
-        expect(c.read(createPostProvider).phase, DraftPhase.editing);
+    test('sharing hands the draft to the upload queue and clears it', () async {
+      draft()
+        ..addPhotos(const [
+          DraftPhoto(path: 'a.jpg'),
+          DraftPhoto(path: 'v.mp4', isVideo: true),
+        ])
+        ..setCaption('Hello');
 
-        repo.failCreate = false;
-        expect(await draft().share(), 'p1');
-        expect(repo.uploads, ['a.jpg', 'b.jpg'], reason: 'uploaded once each');
-        expect(repo.created.single.caption, 'Hello');
-        expect(c.read(createPostProvider).isEmpty, isTrue);
-      },
-    );
+      await draft().share();
+
+      final pending = c.read(pendingPostsProvider.notifier) as _Pending;
+      expect(pending.submitted.single.caption, 'Hello');
+      expect(pending.submitted.single.photos.last.isVideo, isTrue);
+      expect(c.read(createPostProvider).isEmpty, isTrue);
+      expect(repo.created, isEmpty, reason: 'publishes once uploads are ready');
+    });
   });
 
   testWidgets('pick, tag, choose who sees it, share, land on the feed', (
@@ -247,6 +260,7 @@ void main() {
     addTearDown(tester.view.reset);
 
     final repo = _Repo();
+    final pending = _Pending();
     final router = GoRouter(
       initialLocation: '/create',
       routes: [
@@ -265,6 +279,7 @@ void main() {
           postsRepositoryProvider.overrideWithValue(repo),
           photoSourceProvider.overrideWithValue(_Photos()),
           authRepositoryProvider.overrideWithValue(_Auth()),
+          pendingPostsProvider.overrideWith(() => pending),
         ],
         child: MaterialApp.router(
           theme: themes.light,
@@ -307,13 +322,14 @@ void main() {
     await tester.tap(find.text('Share'));
     await tester.pumpAndSettle();
 
-    final post = repo.created.single;
-    expect(post.media, hasLength(2));
+    // Share returns at once: the post uploads in the background.
+    final post = pending.submitted.single;
+    expect(post.photos.map((p) => p.isVideo), [false, true]);
     expect(post.caption, 'Our day #wedding');
     expect(post.visibility, PostVisibility.followers);
     expect(post.tags.single.target, _chair);
     expect(post.tags.single.x, closeTo(0.5, 0.01));
     expect(find.text('the feed'), findsOneWidget);
-    expect(find.text('Posted'), findsOneWidget);
+    expect(find.text('Posting… it’s uploading in the feed'), findsOneWidget);
   });
 }
